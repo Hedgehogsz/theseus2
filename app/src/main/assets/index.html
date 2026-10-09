@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en-GB" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>Survival Guide</title>
+<link rel="stylesheet" href="app.css">
+<script>
+  // Apply theme and text size before first paint (no flash of the wrong theme).
+  try {
+    var s = JSON.parse(localStorage.getItem("settings") || "{}");
+    document.documentElement.setAttribute("data-theme", s.theme || "dark");
+    document.documentElement.style.setProperty("--fs", (s.fs || 18) + "px");
+  } catch (e) {}
+</script>
+</head>
+<body>
+<header id="bar">
+  <button id="back" class="icon-btn" aria-label="Back">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 4.5 8 12l7.5 7.5" /></svg>
+  </button>
+  <h1 id="title">Survival Guide</h1>
+  <button id="searchBtn" class="icon-btn" aria-label="Search">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></svg>
+  </button>
+  <button id="homeBtn" class="icon-btn" aria-label="Home">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7M6 9.5V20h4.5v-5.5h3V20H18V9.5" /></svg>
+  </button>
+</header>
+<main id="view" tabindex="-1"></main>
+
+<div id="viewer" hidden>
+  <div id="viewer-stage"><img id="viewer-img" alt=""></div>
+  <button id="viewer-close" class="icon-btn" aria-label="Close photo">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 5 14 14M19 5 5 19" /></svg>
+  </button>
+  <button id="viewer-prev" class="icon-btn" aria-label="Previous photo">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 4.5 8 12l7.5 7.5" /></svg>
+  </button>
+  <button id="viewer-next" class="icon-btn" aria-label="Next photo">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 4.5 16 12l-7.5 7.5" /></svg>
+  </button>
+  <p id="viewer-caption"></p>
+</div>
+<div id="dim" aria-hidden="true"></div>
+
+<noscript>This guide needs JavaScript enabled.</noscript>
+<script src="content/index.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

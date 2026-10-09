@@ -1,0 +1,54 @@
+# Commons files rejected after visual review (wrong species, cultivar, seeds only, objects, etc.).
+# One file name per line; text after # is a comment. fetch_images.py and build_content.py both honour this list.
+Laccaria amethystina spores.jpg  # amethyst-deceiver #3
+Animaldentition melesmeles.jpg  # badger #2
+Badger-head sporran 5.jpg  # badger #3
+Copperbeechmystic.jpg  # beech #3
+Solanum dulcamara, Fogner, Oslo..JPG  # bittersweet #3
+Dioscorea communis MHNT.BOT.2004.0.790.jpg  # black-bryony #1
+Tamus Communis - Kuke.JPG  # black-bryony #3
+Makoi or Solanum nigrum berries.jpg  # black-nightshade #2
+Solanum Nigrum Berries.jpg  # black-nightshade #3
+Halved blackberry (Rubus fruticosus).jpg  # blackberry #3
+Buckthorn cutting board.JPG  # buckthorn #1
+Rhamnus cathartica R0015175.jpg  # buckthorn #3
+Cattle-livestock-count-heads.png  # cattle #3
+Laetiporus sulphureus dish 2010 G1.jpg  # chicken-of-the-woods #3
+Anthriscus sylvestris W.jpg  # cow-parsley #2
+Warming-Skudbygning-Fig5-Anthriscus-sylvestris.jpg  # cow-parsley #3
+Narcissus pseudonarcissus MHNT.BOT.2009.13.31.jpg  # daffodil #1
+Trompetnarcis-trumpet-narcissus 13-06-2025 (d.j.b.).jpg  # daffodil #3
+1belladonna.jpg  # deadly-nightshade #1
+"Godfrey's Extract of Elder-Flowers" ad - Woman's Exhibition, 1900, Earl's Court, London, S.W. - official fine art, historical and general catalogue (IA gri 33125013839424) (page 7 crop).jpg  # elder #1
+Marasmius oreades string.jpg  # fairy-ring-champignon #2
+False morel sauce with vegetables.jpg  # false-morel #2
+False morels for sale - don't touch.jpg  # false-morel #3
+2008-10-19 Hygrophoropsis morganii (Peck) H.E. Bigelow 25987 mod.jpg  # false-chanterelle #1
+Common earthball 1.jpg  # common-earthball #1
+Heracleum sphondylium fruit.jpg  # common-hogweed #3
+Rumex acetosa (subsp. acetosa) sl39.jpg  # common-sorrel #3
+Stellaria Media (Common Chickweed).jpg  # chickweed #3
+Amanita crocea - Lindsey.jpg  # death-cap #1
+Amanita muscaria (38010247562).jpg  # death-cap #2
+Amanita crocea - Lindsey.jpg  # destroying-angel #1
+Amanita muscaria (38010247562).jpg  # destroying-angel #2
+Amanita crocea - Lindsey.jpg  # fly-agaric #2
+Gewone berenklauw vruchten Heracleum sphondylium.jpg  # giant-hogweed #2
+Heracleum mantegazzianum (giant hogweed) seeds.jpg  # giant-hogweed #3
+Old Giant puffball Calvatia gigantea.jpg  # giant-puffball #3
+Alliaria petiolataseeds.jpg  # garlic-mustard #3
+BatrixNatrixBellyPattern.JPG  # grass-snake #3
+Albino Grey Squirrel (25421305328).jpg  # grey-squirrel #1
+Eastern Gray Squirrels (Sciurus carolinensis), Family - Mississauga 02.jpg  # grey-squirrel #2
+Eastern Grey Squirrel-black.jpg  # grey-squirrel #3
+2013-05-23 07 24 06 Crataegus monogyna 'Crimson Cloud' blossoms in Elko Nevada.jpg  # hawthorn #2
+Corylus avellana 'heterophylla'.jpg  # hazel #2
+2014-08-29 13 46 38 Variegated English Holly at the Pinelands Preservation Alliance headquarters in Southampton Township, New Jersey.JPG  # holly #1
+Conium maculatum MHNT.BOT.2005.0.956 graines.jpg  # hemlock #3
+Depressaria daucella with Oenanthe crocata.jpg  # hemlock-water-dropwort #1
+Oenanthe crocata clump.jpg  # hemlock-water-dropwort #3
+Hrepandummkt.jpg  # hedgehog-fungus #1
+Aegopodium podagraria-(dkrb)-1.jpg  # ground-elder #1
+Hornet. Vespra crabro - Flickr - gailhampshire.jpg  # hornet #2
+(MHNT) Viburnum opulus - immature inflorescences.jpg  # guelder-rose #1
+A white bunch of hanging inflorescence of the guelder-rose (Viburnum opulus).jpg  # guelder-rose #2

@@ -35,7 +35,7 @@ jobs:
 
       # Downloads only photos not yet in content/images.json, so this is quick once the library exists.
       - name: Fetch new photos from Wikimedia Commons
-        run: python3 tools/fetch_images.py
+        run: python3 tools/fetch_images.py ${{ contains(github.event.head_commit.message, '[refresh-images]') && '--refresh' || '' }}
         continue-on-error: true
 
       - name: Commit newly fetched photos back to the branch

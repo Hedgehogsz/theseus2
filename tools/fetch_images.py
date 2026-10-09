@@ -50,12 +50,15 @@ COMMONS_API = "https://commons.wikimedia.org/w/api.php"
 
 MAX_EDGE = 1000
 QUALITY = 75
-THUMB_WIDTH = 1280  # a standard Wikimedia thumbnail step; we downscale locally
+THUMB_WIDTH = 1280
+THUMB_EDGE = 192  # square list thumbnails  # a standard Wikimedia thumbnail step; we downscale locally
 OK_LICENSE = re.compile(r"^(cc0|cc[- ]by|pd|public domain|cc-pd)", re.I)
 BAD_NAME = re.compile(
     r"(?<![a-z])(map|maps|distribution|range|logo|icon|symbol|flag|coat of arms|stamp|diagram|chart|"
     r"drawing|illustration|plate|k[oö]hler|thom[eé]|sowerby|botanical|herbarium|skull|skeleton|"
-    r"specimen|museum|wiki|status|iucn)(?![a-z])|\.(svg|gif|tiff?)$",
+    r"specimen|museum|wiki|status|iucn|seed|seeds|market|dish|food|cooked|recipe|soup|meal|albino|"
+    r"melanistic|leucistic|tincture|bottle|sem|micrograph|microscope|spore|spores|cultivar|cv|var|"
+    r"sporran|dentition|teeth|mhnt|mount|stuffed|taxidermy|sign|label|stamps)(?![a-z])|\.(svg|gif|tiff?)$",
     re.I,
 )
 
@@ -147,8 +150,26 @@ def to_webp(data: bytes) -> tuple[bytes, int, int]:
     return buf.getvalue(), im.width, im.height
 
 
+def make_thumbnails(manifest: dict) -> None:
+    """Small list/thumbnail versions (img/t/<name>), so lists never decode full-size photos."""
+    from PIL import Image
+
+    tdir = IMG_DIR / "t"
+    tdir.mkdir(parents=True, exist_ok=True)
+    for name in manifest["files"]:
+        src, dst = IMG_DIR / name, tdir / name
+        if dst.exists() or not src.exists():
+            continue
+        im = Image.open(src)
+        w, h = im.size
+        side = min(w, h)  # centre-crop to a square, then shrink
+        im = im.crop(((w - side) // 2, (h - side) // 2, (w - side) // 2 + side, (h - side) // 2 + side))
+        im = im.resize((THUMB_EDGE, THUMB_EDGE), Image.LANCZOS)
+        im.save(dst, "WEBP", quality=70, method=6)
+
+
 def name_matches(fname: str, words: list[str]) -> bool:
-    f = fname.lower().replace("_", " ")
+    f = re.sub(r"[_\-]+", " ", fname.lower())
     return any(w and w in f for w in words)
 
 
@@ -165,10 +186,15 @@ def resolve(entry: dict, kind: str, excluded: set[str], want: int) -> list[str]:
         if name and name not in excluded and name not in picks and not re.search(r"\.(svg|gif|tif+)$", name, re.I):
             picks.append(name)
     if kind == "species" and len(picks) < want and titles:
-        latin = entry["meta"].get("latin", "").lower().split()
-        words = [w for w in latin[:2] if len(w) > 3]
+        # Extra photos must name the exact species (full binomial) or its full common name in the
+        # file name. Matching on the genus alone pulled in other species (e.g. fly agaric for
+        # death cap), so it is deliberately not allowed.
+        latin = entry["meta"].get("latin", "").lower().replace("×", "x").split()
+        words = [" ".join(latin[:2])] if len(latin) >= 2 and latin[1] not in ("spp.", "agg.") else []
         common = entry["meta"].get("name", "").lower()
-        words += [common] if len(common) > 4 else []
+        common = re.sub(r"\s*\(.*?\)", "", common).strip()
+        if len(common) > 4:
+            words.append(common)
         for name in page_images(titles[0]):
             if len(picks) >= want + 2:  # a few spare candidates in case licences fail
                 break
@@ -265,12 +291,15 @@ def main() -> int:
         manifest["owners"][owner] = names
         MANIFEST.write_text(json.dumps(manifest, indent=1, ensure_ascii=False, sort_keys=True), encoding="utf-8")
 
+    make_thumbnails(manifest)
+
     # Drop files no longer referenced by anything.
     used = {n for ns in manifest["owners"].values() for n in ns}
     for name in list(manifest["files"]):
         if name not in used:
             del manifest["files"][name]
             (IMG_DIR / name).unlink(missing_ok=True)
+            (IMG_DIR / "t" / name).unlink(missing_ok=True)
     MANIFEST.write_text(json.dumps(manifest, indent=1, ensure_ascii=False, sort_keys=True), encoding="utf-8")
     total = sum((IMG_DIR / n).stat().st_size for n in used if (IMG_DIR / n).exists())
     print(f"fetched {fetched} new photos, {failed} lookups failed; {len(used)} photos, {total / 1e6:.1f} MB total")

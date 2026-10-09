@@ -170,6 +170,7 @@ CALLOUTS = {
     "note": ("callout note", "Note"),
     "tip": ("callout tip", "Tip"),
     "law": ("callout law", "The law"),
+    "checklist": ("callout checklist", "Checklist"),
 }
 
 
@@ -396,12 +397,12 @@ def load_images() -> tuple[dict, dict]:
             info = files.get(name)
             if not info or info.get("commons") in exclude or name in exclude:
                 continue
-            if not (IMG_DIR / name).exists():
-                warn(f"image file missing on disk: {name}")
+            if not (IMG_DIR / name).exists() or not (IMG_DIR / "t" / name).exists():
+                warn(f"image or thumbnail missing on disk: {name}")
                 continue
             keep.append(name)
-        by_owner[owner] = keep
-    used = {n for names in by_owner.values() for n in names}
+        by_owner[owner] = [[n, files[n].get("w", 0), files[n].get("h", 0)] for n in keep]
+    used = {im[0] for names in by_owner.values() for im in names}
     credits = {n: files[n] for n in sorted(used)}
     return by_owner, credits
 

@@ -55,9 +55,14 @@ def main() -> int:
     targets = {"a": arts, "s": spp, "c": cats}
     checked_links = 0
 
-    def check_img(owner: str, name: str):
+    def check_img(owner: str, im):
+        name = im[0]
         if not (ASSETS / "img" / name).is_file():
             problems.append(f"{owner}: image img/{name} missing")
+        if not (ASSETS / "img" / "t" / name).is_file():
+            problems.append(f"{owner}: thumbnail img/t/{name} missing")
+        if not (im[1] > 0 and im[2] > 0):
+            problems.append(f"{owner}: image {name} has no dimensions")
         if name not in credits:
             problems.append(f"{owner}: image {name} has no credits entry")
 
@@ -83,8 +88,8 @@ def main() -> int:
             for src in re.findall(r'src="([^"]*)"', body):
                 if not (ASSETS / src).is_file():
                     problems.append(f"{owner}: missing embedded file {src}")
-            for name in item.get("images", []):
-                check_img(owner, name)
+            for im in item.get("images", []):
+                check_img(owner, im)
             for sid in item.get("compare", []) + item.get("lookalikes", []):
                 checked_links += 1
                 if sid not in spp:
