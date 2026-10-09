@@ -650,7 +650,7 @@
     setTitle(a.title);
     addRecent("a:" + id);
     view.innerHTML = '<p class="crumb"><a href="#/c/' + a.cat + '">' + c.icon + " " + esc(c.title) + "</a></p>" +
-      favButton("a:" + id) + '<h1 class="page">' + esc(a.title) + '</h1><div class="body" id="body"><p class="muted">Loading…</p></div>';
+      favButton("a:" + id) + '<h1 class="page">' + esc(a.title) + '</h1><div class="body" id="body"><p class="muted" id="loading">Loading…</p></div>';
     wireFav("a:" + id);
     return loadBody("a/" + id).then(function (html) {
       if (token !== renderToken) return;
