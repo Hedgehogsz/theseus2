@@ -102,6 +102,7 @@ def lead_image(title: str) -> str | None:
     src = (data.get("originalimage") or {}).get("source") or (data.get("thumbnail") or {}).get("source")
     if not src or "/wikipedia/commons/" not in src:
         return None  # no image, or a non-free local (en.wikipedia) upload
+    src = src.split("?", 1)[0].split("#", 1)[0]  # REST URLs carry ?utm_source=... tracking params
     name = urllib.parse.unquote(src.split("/")[-1])
     if "/thumb/" in src:
         name = urllib.parse.unquote(src.split("/")[-2])
@@ -238,7 +239,9 @@ def main() -> int:
         if only and e["id"] not in only:
             continue
         # Entries that got no photo last time (rate limits, licence failures) are retried every run.
-        if manifest["owners"].get(owner) and not args.refresh and not only:
+        kept = [n for n in manifest["owners"].get(owner, [])
+                if manifest["files"].get(n, {}).get("commons") not in excluded]
+        if kept and not args.refresh and not only:
             continue
         want = args.photos if kind == "species" else int(e["meta"].get("photos", "1"))
         print(f"{owner}")

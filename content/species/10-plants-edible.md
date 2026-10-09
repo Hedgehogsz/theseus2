@@ -993,7 +993,7 @@ habitat: Riverbanks, wet ground, fens and lakesides
 summary: Trees of wet places with long narrow leaves (or oval in goat willow) and catkins. Flexible rods for weaving; the bark contains salicin.
 lookalikes: 
 tags: willow, bark, salicin, weaving, withies, fibre
-wiki: Salix alba
+wiki: Salix alba|Salix caprea|Salix fragilis
 ---
 ## Identification
 - Usually beside water. White willow: long, narrow leaves with silvery undersides. Goat willow: oval leaves and fluffy "pussy willow" catkins in early spring.
@@ -1119,7 +1119,7 @@ habitat: Bogs, wet moorland, wet heath, wet hollows in upland woods
 summary: Soft, very absorbent bog moss in green, red or golden cushions. Used as a wound dressing in WW1; also marks dangerous bog.
 lookalikes: 
 tags: moss, dressing, absorbent, bog, water indicator
-wiki: Sphagnum
+wiki: Sphagnum|Sphagnum palustre|Sphagnum capillifolium
 ---
 ## Identification
 - Soft cushions or carpets, green to red or orange, in very wet ground.
@@ -1195,7 +1195,7 @@ habitat: Moorland and heath on acid soils; vast areas in the uplands
 summary: Low woody shrub with tiny scale-like leaves and pink-purple flower spikes covering moorland. Useful bedding, fuel and tea.
 lookalikes: 
 tags: ling, moorland, bedding, tea, brush
-wiki: Calluna vulgaris
+wiki: Calluna vulgaris|Heather
 ---
 ## Identification
 - Knee-high, wiry shrub; tiny overlapping scale-like leaves in four rows on the shoots.

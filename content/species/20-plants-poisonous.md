@@ -387,7 +387,7 @@ habitat: Pasture, verges, sand dunes, waste ground
 summary: Yellow daisy-flowered plant in flat-topped clusters with ragged, deeply cut leaves. Toxic to the liver; do not eat or handle with bare hands for long.
 lookalikes: 
 tags: liver, horses, yellow flowers, pyrrolizidine
-wiki: Jacobaea vulgaris
+wiki: Jacobaea vulgaris|Ragwort
 ---
 ## Identification
 - 30–100 cm, with ragged, deeply lobed, dark green leaves (unpleasant smell).
@@ -617,7 +617,7 @@ habitat: Damp meadows, pasture, verges
 summary: Glossy yellow cup-shaped flowers on tall stems over deeply divided leaves. Blistering juice; never eat buttercups.
 lookalikes: lesser-celandine
 tags: yellow flowers, protoanemonin, blisters
-wiki: Ranunculus acris
+wiki: Ranunculus acris|Ranunculus repens|Ranunculus bulbosus
 ---
 ## Identification
 - Five glossy, bright yellow petals forming a cup.

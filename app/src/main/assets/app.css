@@ -274,7 +274,7 @@ html[data-theme="dark"] .banner { color: #fff; }
 figure { margin: 12px 0; }
 figure.diagram { background: #f6f3ea; border-radius: var(--radius); padding: 8px; color: #111; }
 figure.diagram svg { width: 100%; height: auto; display: block; }
-html[data-theme="red"] figure.diagram { background: #1a0303; filter: sepia(1) saturate(5) hue-rotate(-40deg) brightness(0.7); }
+html[data-theme="red"] figure.diagram { filter: grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brightness(0.8) contrast(1.2); }
 
 /* lookalike comparison grid */
 .compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
