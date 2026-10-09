@@ -1,0 +1,13 @@
+[
+  {"id": "emergency", "title": "Emergency", "icon": "🆘", "summary": "999/112, priorities, reporting your location, signalling, if you are lost"},
+  {"id": "first-aid", "title": "First aid", "icon": "⛑️", "summary": "Primary survey, CPR, bleeding, hypothermia, bites, poisoning (NHS / St John aligned)"},
+  {"id": "water", "title": "Water", "icon": "💧", "summary": "Finding, choosing and boiling water safely"},
+  {"id": "fire", "title": "Fire", "icon": "🔥", "summary": "Ferro rod, flint & steel, char cloth, tinder, fire lays, wet weather"},
+  {"id": "shelter", "title": "Shelter", "icon": "⛺", "summary": "Priorities, site choice, debris hut, tarp shelters, insulation"},
+  {"id": "navigation", "title": "Navigation", "icon": "🧭", "summary": "Map and compass, grid references, finding north, Naismith, lost"},
+  {"id": "weather", "title": "Weather", "icon": "🌦️", "summary": "UK clouds, fronts, wind chill, lightning, cold and wet"},
+  {"id": "food", "title": "Food & foraging", "icon": "🫐", "summary": "Foraging rules, seasonal calendar, the law on trapping, fishing, insects"},
+  {"id": "identify", "title": "Plants, fungi & wildlife", "icon": "🍄", "summary": "Species guide with photos, deadly lookalike comparisons, ID basics"},
+  {"id": "skills", "title": "Tools, repairs & skills", "icon": "🪢", "summary": "Knots, cordage, sharpening, tarp rigging, batteries and solar"},
+  {"id": "kit", "title": "My kit", "icon": "🎒", "summary": "Your exact kit: how to use and maintain each item, checklist"}
+]

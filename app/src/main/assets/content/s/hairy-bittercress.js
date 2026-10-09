@@ -1,0 +1,1 @@
+__body("s/hairy-bittercress","<h2 id=\"identification\">Identification</h2><ul><li>Basal rosette of pinnate leaves with small round leaflets.</li><li>Tiny white four-petalled flowers; thin upright seed pods that flick seeds when touched.</li></ul><h2 id=\"uses\">Uses</h2><ul><li>Raw in salads: a pleasant peppery cress flavour. Edible all through winter.</li></ul>");

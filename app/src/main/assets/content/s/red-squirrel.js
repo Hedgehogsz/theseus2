@@ -1,0 +1,1 @@
+__body("s/red-squirrel","<h2 id=\"identification\">Identification</h2><ul><li>Smaller than a grey; <strong>russet-red</strong> fur (can look brownish), cream belly, prominent <strong>ear tufts</strong> in winter.</li></ul><h2 id=\"law\">Law</h2><ul><li>Fully protected: it is an offence to kill, injure or take one, or to damage its drey.</li></ul>");

@@ -1,0 +1,1 @@
+__body("s/buttercup","<h2 id=\"identification\">Identification</h2><ul><li>Five glossy, bright yellow petals forming a cup.</li><li>Leaves deeply divided into 3–7 toothed lobes (palm-shaped).</li></ul><h2 id=\"cautions\">Cautions</h2><ul><li>Fresh plants release protoanemonin, which blisters skin and mouth and causes vomiting. (Dried in hay it is harmless.)</li></ul>");

@@ -1,0 +1,1 @@
+window.GUIDE_CREDITS={};

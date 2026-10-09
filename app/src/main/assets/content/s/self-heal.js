@@ -1,0 +1,1 @@
+__body("s/self-heal","<h2 id=\"identification\">Identification</h2><ul><li>Low, creeping, square stems; oval leaves in pairs.</li><li>Compact, square-ish heads of violet two-lipped flowers with purplish bracts.</li></ul><h2 id=\"uses\">Uses</h2><ul><li>Young leaves raw or cooked; tea. Traditionally used as a wash for small cuts and sore throats.</li></ul>");

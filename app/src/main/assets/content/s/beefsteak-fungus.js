@@ -1,0 +1,1 @@
+__body("s/beefsteak-fungus","<h2 id=\"identification\">Identification</h2><ul><li>Tongue- or liver-shaped bracket 10–25 cm, <strong>blood-red to liver-brown</strong>, moist, oozing red juice.</li><li>Flesh streaked like raw meat; cream pores underneath that redden.</li></ul><h2 id=\"uses\">Uses</h2><ul><li>Edible; slightly sour. Soak and cook.</li></ul>");

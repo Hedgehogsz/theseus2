@@ -1,0 +1,1 @@
+__body("s/sea-beet","<h2 id=\"identification\">Identification</h2><ul><li>Sprawling clumps of thick, glossy, leathery, dark green leaves, often reddish at the base.</li><li>Long spikes of tiny green flowers in summer.</li></ul><h2 id=\"uses\">Uses</h2><ul><li>Young leaves raw; older leaves cooked like spinach or chard.</li></ul>");

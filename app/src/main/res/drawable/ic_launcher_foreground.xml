@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Flame inside a compass ring. 108dp canvas, art kept inside the 66dp safe zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFE8E2D0"
+        android:strokeWidth="3"
+        android:pathData="M54,25a29,29 0,1 1,0 58a29,29 0,1 1,0 -58z" />
+    <path android:fillColor="#FFE8E2D0" android:pathData="M54,21 L57,29 L51,29 Z" />
+    <path android:fillColor="#FFE8E2D0" android:pathData="M54,87 L57,79 L51,79 Z" />
+    <path android:fillColor="#FFE8E2D0" android:pathData="M21,54 L29,51 L29,57 Z" />
+    <path android:fillColor="#FFE8E2D0" android:pathData="M87,54 L79,51 L79,57 Z" />
+    <path
+        android:fillColor="#FFF2B33D"
+        android:pathData="M54,36 C58,44 66,49 66,60 C66,68 60.5,73 54,73 C47.5,73 42,68 42,60 C42,53 46,49 48,45 C49,50 51,52 53,52 C53,46 52,41 54,36 Z" />
+    <path
+        android:fillColor="#FFD9531E"
+        android:pathData="M54,52 C56.5,56 60,58.5 60,63.5 C60,67.5 57.3,70 54,70 C50.7,70 48,67.5 48,63.5 C48,60 50.5,58 51.5,56 C52.3,58.5 53.4,59 54.5,59 C54.5,57 53.6,54.5 54,52 Z" />
+</vector>

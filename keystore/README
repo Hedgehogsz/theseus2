@@ -1,0 +1,18 @@
+Release signing keystore for the Survival Guide app
+===================================================
+
+This is a personal, single-device app, so the keystore and its password are
+deliberately committed to the repository (as requested). Anyone with this
+repository can sign an update for the app. Do not reuse this key for anything else.
+
+  File:           keystore/release.jks   (PKCS12)
+  Store password: uVsfBXYuIZKPVihsvtZ7
+  Key alias:      survival
+  Key password:   uVsfBXYuIZKPVihsvtZ7
+  Algorithm:      RSA 4096, valid 100 years
+  SHA-256 cert:   74:80:DA:C3:E9:1C:14:6E:81:91:A5:DB:6A:43:83:0B:B2:D9:F5:DF:DA:3A:6C:96:E2:27:BE:B5:7B:4F:8F:69
+
+The same values are read by app/build.gradle.kts from keystore/keystore.properties.
+Keep this key: Android only installs an update (adb install -r) over the existing
+app if it is signed with the same key. Losing it means uninstalling first, which
+also wipes favourites/settings and (if set) requires removing device owner.

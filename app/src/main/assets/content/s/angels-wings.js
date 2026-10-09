@@ -1,0 +1,1 @@
+__body("s/angels-wings","<h2 id=\"identification\">Identification</h2><ul><li>Thin, pure white, fan- or ear-shaped caps 2–10 cm, with crowded white gills and no stem.</li><li>On <strong>conifer</strong> wood only.</li></ul><h2 id=\"cautions\">Cautions</h2><ul><li>Linked to fatal encephalopathy, mainly in people with kidney disease. Do not eat.</li></ul>");

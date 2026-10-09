@@ -1,0 +1,1 @@
+__body("s/bitter-bolete","<h2 id=\"identification\">Identification</h2><ul><li>Cap brown, like a cep.</li><li>Pores white becoming <strong>pink</strong>; stem with a <strong>dark brown, coarse net</strong>.</li><li>Extremely bitter: touch a tiny piece to your tongue and spit it out.</li></ul>");
