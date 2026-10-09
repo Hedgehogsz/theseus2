@@ -270,6 +270,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Trifolium_pratense_-_Keila2.jpg",
    "w": 750
   },
+  "c-1074a88d91c6.webp": {
+   "author": "Hectonichus",
+   "commons": "Ranuncolaceae - Clematis vitalba-1.JPG",
+   "h": 750,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Ranuncolaceae_-_Clematis_vitalba-1.JPG",
+   "w": 1000
+  },
   "c-10f01cca80a4.webp": {
    "author": "Holger Krisp",
    "commons": "Blindschleiche Anguis fragilis.jpg",
@@ -727,6 +736,15 @@
    "license": "Public domain",
    "licenseUrl": "",
    "source": "https://commons.wikimedia.org/wiki/File:A_monograph_of_the_pheasants_(10052488785).jpg",
+   "w": 1000
+  },
+  "c-2d7f56503d7e.webp": {
+   "author": "Michael Gasperl (Migas)",
+   "commons": "Clematis-vitalba-Waldrebe(Samenstand).jpg",
+   "h": 811,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+   "source": "https://commons.wikimedia.org/wiki/File:Clematis-vitalba-Waldrebe(Samenstand).jpg",
    "w": 1000
   },
   "c-2e3280e3ba23.webp": {
@@ -1242,6 +1260,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Red_Squirrel_eating_chestnuts_on_Tresco_Isles_of_Scilly_Cornwall_UK.jpg",
    "w": 1000
   },
+  "c-4f825fd152ff.webp": {
+   "author": "Rosser1954 Roger Griffith",
+   "commons": "Woodbine on Willow - Honeysuckle.JPG",
+   "h": 748,
+   "license": "Public domain",
+   "licenseUrl": "",
+   "source": "https://commons.wikimedia.org/wiki/File:Woodbine_on_Willow_-_Honeysuckle.JPG",
+   "w": 1000
+  },
   "c-50bcb5a8c51e.webp": {
    "author": "Alex Lockton",
    "commons": "Oenanthe crocata flowers.jpg",
@@ -1359,6 +1386,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Achillea_millefolium_(bright).jpg",
    "w": 667
   },
+  "c-59a958ab2429.webp": {
+   "author": "Kamil Nowacki",
+   "commons": "Cumulonimbus incus over Warsaw, Poland.jpg",
+   "h": 667,
+   "license": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Cumulonimbus_incus_over_Warsaw,_Poland.jpg",
+   "w": 1000
+  },
   "c-59d3612ec8a0.webp": {
    "author": "Mysserli",
    "commons": "Columba palumbus -nest in tree-8.jpg",
@@ -1412,6 +1448,15 @@
    "licenseUrl": "",
    "source": "https://commons.wikimedia.org/wiki/File:Rhododendron-by-eiffel-public-domain-20040617.jpg",
    "w": 640
+  },
+  "c-5d8eacfd2ed8.webp": {
+   "author": "Unknown author",
+   "commons": "European honeysuckle 800.jpg",
+   "h": 747,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+   "source": "https://commons.wikimedia.org/wiki/File:European_honeysuckle_800.jpg",
+   "w": 800
   },
   "c-5ea58933ac07.webp": {
    "author": "Meneerke bloem",
@@ -3087,6 +3132,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Iris_pseudacorus_bud_-_Niitv%C3%A4lja.jpg",
    "w": 562
   },
+  "c-e3d598e5fc4a.webp": {
+   "author": "Billy Hathorn",
+   "commons": "Kindling for starting a campfire IMG 2454.JPG",
+   "h": 666,
+   "license": "CC BY 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Kindling_for_starting_a_campfire_IMG_2454.JPG",
+   "w": 1000
+  },
   "c-e47972d5afd2.webp": {
    "author": "photo en:User:MPF",
    "commons": "European Beech.jpg",
@@ -3420,6 +3474,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Feldhase,_Lepus_europaeus_3a.JPG",
    "w": 1000
   },
+  "c-fec6d6e9381e.webp": {
+   "author": "H. Zell",
+   "commons": "Clematis vitalba 002.JPG",
+   "h": 1000,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Clematis_vitalba_002.JPG",
+   "w": 750
+  },
   "c-ff1cb179075a.webp": {
    "author": "No machine-readable author provided. Taka assumed (based on copyright claims).",
    "commons": "Mentha aquatica (2005 09 18) - uitsnede.jpg",
@@ -3458,6 +3521,27 @@
   }
  },
  "owners": {
+  "article/bowline": [],
+  "article/char-cloth": [],
+  "article/clove-hitch": [],
+  "article/feather-sticks": [],
+  "article/ferro-rod": [],
+  "article/fire-lays": [
+   "c-e3d598e5fc4a.webp"
+  ],
+  "article/flint-and-steel": [],
+  "article/grid-references": [],
+  "article/magnifier-fire": [],
+  "article/map-compass-basics": [],
+  "article/natural-tinders": [],
+  "article/prusik": [],
+  "article/settle-strain-boil": [],
+  "article/sheet-bend": [],
+  "article/taut-line-hitch": [],
+  "article/truckers-hitch": [],
+  "article/uk-clouds": [
+   "c-59a958ab2429.webp"
+  ],
   "species/adder": [
    "c-13e5f2d5f415.webp",
    "c-92f0c7ddd7b2.webp",
@@ -3582,6 +3666,11 @@
    "c-843f3e489d27.webp",
    "c-4593a64fb268.webp",
    "c-d50b8dae93ee.webp"
+  ],
+  "species/clematis": [
+   "c-2d7f56503d7e.webp",
+   "c-fec6d6e9381e.webp",
+   "c-1074a88d91c6.webp"
   ],
   "species/comfrey": [
    "c-4ea40a78fc17.webp",
@@ -3809,6 +3898,10 @@
   "species/honey-fungus": [
    "c-764965e6c740.webp",
    "c-a38e7d3b3441.webp"
+  ],
+  "species/honeysuckle": [
+   "c-5d8eacfd2ed8.webp",
+   "c-4f825fd152ff.webp"
   ],
   "species/hornet": [
    "c-2b16a9b35e82.webp",
