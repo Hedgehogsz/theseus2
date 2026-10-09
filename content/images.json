@@ -126,15 +126,6 @@
    "source": "https://commons.wikimedia.org/wiki/File:Kaldari_Stellaria_media_01.jpg",
    "w": 1000
   },
-  "c-080235825f2c.webp": {
-   "author": "Badagnani",
-   "commons": "Whitewillowtincture.jpg",
-   "h": 595,
-   "license": "CC BY 3.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:Whitewillowtincture.jpg",
-   "w": 321
-  },
   "c-0814f0bbafa3.webp": {
    "author": "Unknown author",
    "commons": "Mentha aquatica01.jpg",
@@ -351,6 +342,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Amanita_rubescens_12.jpg",
    "w": 750
   },
+  "c-1531ced8d270.webp": {
+   "author": "Markus Bärlocher",
+   "commons": "Schotstek rechts.jpg",
+   "h": 750,
+   "license": "Public domain",
+   "licenseUrl": "",
+   "source": "https://commons.wikimedia.org/wiki/File:Schotstek_rechts.jpg",
+   "w": 1000
+  },
   "c-168cf57251e4.webp": {
    "author": "Lukas from London, England",
    "commons": "Lepista nuda (27105376950).jpg",
@@ -405,6 +405,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Cortinarius_rubellus_01.jpg",
    "w": 800
   },
+  "c-18eaee46b265.webp": {
+   "author": "Auckland Museum",
+   "commons": "Flint and tinder box (AM 1965.78.196-6).jpg",
+   "h": 850,
+   "license": "CC BY 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Flint_and_tinder_box_(AM_1965.78.196-6).jpg",
+   "w": 1000
+  },
   "c-1a0b5894aaf5.webp": {
    "author": "Johann Georg Sturm (Painter: Jacob Sturm)",
    "commons": "Cornus sanguinea Sturm39.jpg",
@@ -449,6 +458,15 @@
    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
    "source": "https://commons.wikimedia.org/wiki/File:Plantago_lanceolata_P6200323_%E7%AE%86%E5%A4%A7%E8%91%89%E5%AD%90%E3%80%81%E3%83%98%E3%83%A9%E3%82%AA%E3%82%AA%E3%83%90%E3%82%B3.jpg",
    "w": 750
+  },
+  "c-1d5aaf52006d.webp": {
+   "author": "Markus Bärlocher",
+   "commons": "Palstek innen.jpg",
+   "h": 750,
+   "license": "Public domain",
+   "licenseUrl": "",
+   "source": "https://commons.wikimedia.org/wiki/File:Palstek_innen.jpg",
+   "w": 1000
   },
   "c-1d9da4841f27.webp": {
    "author": "George Chernilevsky",
@@ -720,6 +738,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Galerina_marginata_Point_Reyes.jpg",
    "w": 1000
   },
+  "c-2c405c1f40b9.webp": {
+   "author": "MPF",
+   "commons": "Salix alba leaves.jpg",
+   "h": 750,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+   "source": "https://commons.wikimedia.org/wiki/File:Salix_alba_leaves.jpg",
+   "w": 1000
+  },
   "c-2cf5bc8b4410.webp": {
    "author": "Alex Lockton",
    "commons": "Oenanthe crocata bracteoles.jpg",
@@ -864,6 +891,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Schmetterlingstramete_Trametes_versicolor_004.jpg",
    "w": 1000
   },
+  "c-351a8881f38c.webp": {
+   "author": "de:user:Markus Bärlocher",
+   "commons": "Topsegelschotstek.jpg",
+   "h": 750,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+   "source": "https://commons.wikimedia.org/wiki/File:Topsegelschotstek.jpg",
+   "w": 1000
+  },
   "c-35b8eb1512e6.webp": {
    "author": "T. Kebert",
    "commons": "Anthriscus sylvestris TK 2021-05-16 2.jpg",
@@ -917,6 +953,15 @@
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
    "source": "https://commons.wikimedia.org/wiki/File:Malva_sylvestris_Aberystwyth.jpg",
    "w": 801
+  },
+  "c-384678c5d6e3.webp": {
+   "author": "Jacek Halicki",
+   "commons": "2016 Busola.JPG",
+   "h": 900,
+   "license": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:2016_Busola.JPG",
+   "w": 1000
   },
   "c-3a78f8b239eb.webp": {
    "author": "Stch2022",
@@ -1080,14 +1125,14 @@
    "source": "https://commons.wikimedia.org/wiki/File:Elder_growing_on_Sycamore,_Dalry,_Scotland.JPG",
    "w": 748
   },
-  "c-40f7eba40e31.webp": {
-   "author": "William James",
-   "commons": "Making sphagnum moss dressings, University of Toronto.jpg",
-   "h": 712,
-   "license": "Public domain",
-   "licenseUrl": "",
-   "source": "https://commons.wikimedia.org/wiki/File:Making_sphagnum_moss_dressings,_University_of_Toronto.jpg",
-   "w": 1000
+  "c-4115a46af78a.webp": {
+   "author": "Mindbuilder",
+   "commons": "TruckersHitchUsingAlpineButterfly2.jpg",
+   "h": 1000,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:TruckersHitchUsingAlpineButterfly2.jpg",
+   "w": 576
   },
   "c-444eaa9dd06e.webp": {
    "author": "James Lindsey at Ecology of Commanster",
@@ -1098,6 +1143,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Coprinopsis_atramentaria_3_-_Lindsey.jpg",
    "w": 640
   },
+  "c-44cb8bab54f0.webp": {
+   "author": "Hustvedt",
+   "commons": "Fatwood firestarters.jpg",
+   "h": 684,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Fatwood_firestarters.jpg",
+   "w": 1000
+  },
   "c-4593a64fb268.webp": {
    "author": "(name)",
    "commons": "Galium aparine.png",
@@ -1106,6 +1160,15 @@
    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
    "source": "https://commons.wikimedia.org/wiki/File:Galium_aparine.png",
    "w": 1000
+  },
+  "c-469db9db546f.webp": {
+   "author": "James Lindsey at Ecology of Commanster",
+   "commons": "Sphagnum.palustre.-.lindsey.jpg",
+   "h": 425,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Sphagnum.palustre.-.lindsey.jpg",
+   "w": 640
   },
   "c-48da42161163.webp": {
    "author": "Astacoides",
@@ -1161,6 +1224,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Columba_palumbus_-Quinton,_Birmingham,_England_-head-8.jpg",
    "w": 958
   },
+  "c-4a79100d51d9.webp": {
+   "author": "R HORNE",
+   "commons": "Feather stick.jpg",
+   "h": 338,
+   "license": "Public domain",
+   "licenseUrl": "",
+   "source": "https://commons.wikimedia.org/wiki/File:Feather_stick.jpg",
+   "w": 480
+  },
   "c-4ab9c206c305.webp": {
    "author": "Bernard DUPONT from FRANCE",
    "commons": "Banded Pig (Sus scrofa vittatus) (8750051577).jpg",
@@ -1206,6 +1278,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Trifolium_pratense_-_Keila.jpg",
    "w": 1000
   },
+  "c-4c3f49f73b5f.webp": {
+   "author": "AkselA",
+   "commons": "Lighter flint spark trails.png",
+   "h": 1000,
+   "license": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Lighter_flint_spark_trails.png",
+   "w": 1000
+  },
   "c-4ca9f2f9338d.webp": {
    "author": "Ivar Leidus",
    "commons": "Bombus schrencki - Trifolium pratense - Keila.jpg",
@@ -1241,6 +1322,15 @@
    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
    "source": "https://commons.wikimedia.org/wiki/File:Common_comfrey_in_port_edward.webp",
    "w": 1000
+  },
+  "c-4ea7ae45d65b.webp": {
+   "author": "Von.grzanka",
+   "commons": "Pieczarka polowa vongrzanka.JPG",
+   "h": 1000,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Pieczarka_polowa_vongrzanka.JPG",
+   "w": 667
   },
   "c-4ec3f4f18615.webp": {
    "author": "David Perez",
@@ -1439,6 +1529,15 @@
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
    "source": "https://commons.wikimedia.org/wiki/File:Anagallis-arvensis-Horashim2014-Zachi-Evenor01.jpg",
    "w": 879
+  },
+  "c-5c0998508920.webp": {
+   "author": "Carl Axel Magnus Lindman",
+   "commons": "Illustration Senecio jacobaea.jpg",
+   "h": 843,
+   "license": "Public domain",
+   "licenseUrl": "",
+   "source": "https://commons.wikimedia.org/wiki/File:Illustration_Senecio_jacobaea.jpg",
+   "w": 538
   },
   "c-5cec959684c5.webp": {
    "author": "Eiffel",
@@ -1665,6 +1764,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Cervus_elaphus_Luc_Viatour_6.jpg",
    "w": 1000
   },
+  "c-6ec2fc9a4660.webp": {
+   "author": "Strobilomyces",
+   "commons": "Pleurocybella 050919low.jpg",
+   "h": 666,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Pleurocybella_050919low.jpg",
+   "w": 1000
+  },
   "c-6ee4ab99788e.webp": {
    "author": "W.carter",
    "commons": "Lion's mane jellyfish in Gullmarn fjord at Sämstad 7.jpg",
@@ -1836,6 +1944,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Rowan_tree_20081002b.jpg",
    "w": 1000
   },
+  "c-7c8b8f8bf56a.webp": {
+   "author": "The original uploader was Michaelll at English Wikipedia.",
+   "commons": "Corellanus.jpg",
+   "h": 339,
+   "license": "CC BY-SA 2.5",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+   "source": "https://commons.wikimedia.org/wiki/File:Corellanus.jpg",
+   "w": 650
+  },
   "c-7f84afed4499.webp": {
    "author": "Björn S...",
    "commons": "Coprinus comatus (30053094063).jpg",
@@ -1989,6 +2106,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Bloemknoppen_van_een_Laurierkers_(Prunus_laurocerasus)._26-04-2026_(d.j.b.).jpg",
    "w": 667
   },
+  "c-8db4d01ddc14.webp": {
+   "author": "James Lindsey at Ecology of Commanster",
+   "commons": "Sphagnum.flexuosum.jpg",
+   "h": 426,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Sphagnum.flexuosum.jpg",
+   "w": 640
+  },
   "c-8f8c17b29288.webp": {
    "author": "Rosser1954 Roger Griffith",
    "commons": "Pleurotus ostreatus Eglinton.JPG",
@@ -2105,6 +2231,15 @@
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
    "source": "https://commons.wikimedia.org/wiki/File:European_Brown_Hares_1.jpg",
    "w": 1000
+  },
+  "c-981e7ac2baee.webp": {
+   "author": "Plorpy2",
+   "commons": "Boilingkettle.jpg",
+   "h": 1000,
+   "license": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Boilingkettle.jpg",
+   "w": 778
   },
   "c-9822e1cb7ca6.webp": {
    "author": "Fernando Losada Rodríguez",
@@ -2277,6 +2412,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Atropa_belladonna_%27Lutea%27_Pokrzyk_wilcza_jagoda_2019-10-26_01.jpg",
    "w": 1000
   },
+  "c-a4c0836c12fa.webp": {
+   "author": "Aqwis (Aqwis)",
+   "commons": "CallunaVulgaris.jpg",
+   "h": 854,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:CallunaVulgaris.jpg",
+   "w": 1000
+  },
   "c-a4d6cde43ff1.webp": {
    "author": "TristramBrelstaff",
    "commons": "Bryonia-dioica-White-bryony-20100606a.JPG",
@@ -2394,6 +2538,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Badger_25-07-09.jpg",
    "w": 1000
   },
+  "c-abac7c4e33bf.webp": {
+   "author": "User:Ruhrfisch",
+   "commons": "Priestley Burning Lens Replica.jpg",
+   "h": 1000,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+   "source": "https://commons.wikimedia.org/wiki/File:Priestley_Burning_Lens_Replica.jpg",
+   "w": 750
+  },
   "c-ac58296bf944.webp": {
    "author": "© Hans Hillewaert",
    "commons": "Calvatia gigantea.jpg",
@@ -2455,6 +2608,15 @@
    "license": "CC0",
    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
    "source": "https://commons.wikimedia.org/wiki/File:Carnivora_-_Vulpes_vulpes,_Felis_domesticus,_Martes_martes_(skulls).jpg",
+   "w": 1000
+  },
+  "c-b0cceb69dbe9.webp": {
+   "author": "Fungus Guy",
+   "commons": "Small red peat moss (Orphan Lk) 3.JPG",
+   "h": 750,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Small_red_peat_moss_(Orphan_Lk)_3.JPG",
    "w": 1000
   },
   "c-b115318c02e3.webp": {
@@ -2889,6 +3051,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Galerina_marginata_63678.jpg",
    "w": 1000
   },
+  "c-d1aad93ae804.webp": {
+   "author": "Photo by Archenzo. Northern Apennine Mountains (Appennino piacentino).",
+   "commons": "Boletus satanas.JPG",
+   "h": 998,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+   "source": "https://commons.wikimedia.org/wiki/File:Boletus_satanas.JPG",
+   "w": 1000
+  },
   "c-d241d6e61e96.webp": {
    "author": "Nichole Ouellette",
    "commons": "Arctium minus 010.jpg",
@@ -2970,6 +3141,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:10_Pest_damage_-_horse-chestnut_leaf_miner_(Cameraria_ohridella)_in_Parma,_Italy.jpg",
    "w": 1000
   },
+  "c-d99412777678.webp": {
+   "author": "Gaius Cornelius",
+   "commons": "Firesteels assorted.jpg",
+   "h": 1000,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Firesteels_assorted.jpg",
+   "w": 750
+  },
   "c-da3e06eaac3c.webp": {
    "author": "Tutmos",
    "commons": "Salicornia europaea baku 2006.jpg",
@@ -3033,6 +3213,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:387_Allium_ursinum.jpg",
    "w": 419
   },
+  "c-dece18c61dce.webp": {
+   "author": "de:Benutzer:Agneta",
+   "commons": "Prusik.jpg",
+   "h": 284,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+   "source": "https://commons.wikimedia.org/wiki/File:Prusik.jpg",
+   "w": 360
+  },
   "c-df0df0ae3239.webp": {
    "author": "Dan Molter (shroomydan)",
    "commons": "Hygrophoropsis aurantiaca 52882.jpg",
@@ -3087,6 +3276,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Corylus_avellana_female_flower_-_Keila.jpg",
    "w": 750
   },
+  "c-e0cdc8d45ff4.webp": {
+   "author": "Antonio Abbatiello",
+   "commons": "Omphalotus olearius.JPG",
+   "h": 750,
+   "license": "Public domain",
+   "licenseUrl": "",
+   "source": "https://commons.wikimedia.org/wiki/File:Omphalotus_olearius.JPG",
+   "w": 1000
+  },
   "c-e0ddba348af8.webp": {
    "author": "Totnesmartin",
    "commons": "Hemlockseeds.jpg",
@@ -3132,15 +3330,6 @@
    "source": "https://commons.wikimedia.org/wiki/File:Iris_pseudacorus_bud_-_Niitv%C3%A4lja.jpg",
    "w": 562
   },
-  "c-e3d598e5fc4a.webp": {
-   "author": "Billy Hathorn",
-   "commons": "Kindling for starting a campfire IMG 2454.JPG",
-   "h": 666,
-   "license": "CC BY 3.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:Kindling_for_starting_a_campfire_IMG_2454.JPG",
-   "w": 1000
-  },
   "c-e47972d5afd2.webp": {
    "author": "photo en:User:MPF",
    "commons": "European Beech.jpg",
@@ -3149,6 +3338,15 @@
    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
    "source": "https://commons.wikimedia.org/wiki/File:European_Beech.jpg",
    "w": 550
+  },
+  "c-e4b7868ed10f.webp": {
+   "author": "Unknown author",
+   "commons": "Tamus communis.jpg",
+   "h": 750,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+   "source": "https://commons.wikimedia.org/wiki/File:Tamus_communis.jpg",
+   "w": 1000
   },
   "c-e628ff5c5073.webp": {
    "author": "Ivar Leidus",
@@ -3212,6 +3410,15 @@
    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
    "source": "https://commons.wikimedia.org/wiki/File:Amanita_muscaria-Portland.jpg",
    "w": 1000
+  },
+  "c-e93aa16bd103.webp": {
+   "author": "Unknown author",
+   "commons": "Creeping butercup close 800.jpg",
+   "h": 674,
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+   "source": "https://commons.wikimedia.org/wiki/File:Creeping_butercup_close_800.jpg",
+   "w": 800
   },
   "c-e98808232cc6.webp": {
    "author": "Hans-Martin Scheibner",
@@ -3294,15 +3501,6 @@
    "source": "https://commons.wikimedia.org/wiki/File:2012-06-09_Tylopilus_felleus_(Bull.)_P._Karst_226780_crop.jpg",
    "w": 1000
   },
-  "c-ef0e08404085.webp": {
-   "author": "Joecompan",
-   "commons": "Common Ragwort Glen Coe.jpg",
-   "h": 750,
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:Common_Ragwort_Glen_Coe.jpg",
-   "w": 1000
-  },
   "c-efd3b0990965.webp": {
    "author": "Kurt Stüber [1]",
    "commons": "Ulex europaeus8.jpg",
@@ -3374,6 +3572,33 @@
    "licenseUrl": "",
    "source": "https://commons.wikimedia.org/wiki/File:Brown_Trout_(Salmo_trutta)_(53678765394).jpg",
    "w": 1000
+  },
+  "c-f4e7521607c8.webp": {
+   "author": "Trougnouf (Benoit Brummer)",
+   "commons": "Waterwilg (DSC 2539).jpg",
+   "h": 1000,
+   "license": "CC BY 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Waterwilg_(DSC_2539).jpg",
+   "w": 761
+  },
+  "c-f5f7e9ced3f1.webp": {
+   "author": "USCG PTC Developer",
+   "commons": "Clove Hitch - ABoK 11 - USCG.jpg",
+   "h": 666,
+   "license": "CC0",
+   "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "source": "https://commons.wikimedia.org/wiki/File:Clove_Hitch_-_ABoK_11_-_USCG.jpg",
+   "w": 1000
+  },
+  "c-f7e0ebbfad17.webp": {
+   "author": "Jay Sturner from USA",
+   "commons": "Bulbous Buttercup (Ranunculus bulbosus) - Flickr - Jay Sturner (4).jpg",
+   "h": 1000,
+   "license": "CC BY 2.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+   "source": "https://commons.wikimedia.org/wiki/File:Bulbous_Buttercup_(Ranunculus_bulbosus)_-_Flickr_-_Jay_Sturner_(4).jpg",
+   "w": 581
   },
   "c-f99adc1d343f.webp": {
    "author": "Unknown author",
@@ -3456,6 +3681,15 @@
    "source": "https://commons.wikimedia.org/wiki/File:Chanterelle_Cantharellus_cibarius.jpg",
    "w": 1000
   },
+  "c-fd5c5b507931.webp": {
+   "author": "Unknown author",
+   "commons": "Illustration Ranunculus acris0.jpg",
+   "h": 1000,
+   "license": "Public domain",
+   "licenseUrl": "",
+   "source": "https://commons.wikimedia.org/wiki/File:Illustration_Ranunculus_acris0.jpg",
+   "w": 637
+  },
   "c-fddace7f4190.webp": {
    "author": "Magnefl",
    "commons": "Anguis fragilis-t.jpg",
@@ -3521,24 +3755,50 @@
   }
  },
  "owners": {
-  "article/bowline": [],
-  "article/char-cloth": [],
-  "article/clove-hitch": [],
-  "article/feather-sticks": [],
-  "article/ferro-rod": [],
-  "article/fire-lays": [
-   "c-e3d598e5fc4a.webp"
+  "article/bowline": [
+   "c-1d5aaf52006d.webp"
   ],
-  "article/flint-and-steel": [],
+  "article/char-cloth": [
+   "c-18eaee46b265.webp"
+  ],
+  "article/clove-hitch": [
+   "c-f5f7e9ced3f1.webp"
+  ],
+  "article/feather-sticks": [
+   "c-4a79100d51d9.webp"
+  ],
+  "article/ferro-rod": [
+   "c-4c3f49f73b5f.webp"
+  ],
+  "article/fire-lays": [],
+  "article/flint-and-steel": [
+   "c-d99412777678.webp"
+  ],
   "article/grid-references": [],
-  "article/magnifier-fire": [],
-  "article/map-compass-basics": [],
-  "article/natural-tinders": [],
-  "article/prusik": [],
-  "article/settle-strain-boil": [],
-  "article/sheet-bend": [],
-  "article/taut-line-hitch": [],
-  "article/truckers-hitch": [],
+  "article/magnifier-fire": [
+   "c-abac7c4e33bf.webp"
+  ],
+  "article/map-compass-basics": [
+   "c-384678c5d6e3.webp"
+  ],
+  "article/natural-tinders": [
+   "c-44cb8bab54f0.webp"
+  ],
+  "article/prusik": [
+   "c-dece18c61dce.webp"
+  ],
+  "article/settle-strain-boil": [
+   "c-981e7ac2baee.webp"
+  ],
+  "article/sheet-bend": [
+   "c-1531ced8d270.webp"
+  ],
+  "article/taut-line-hitch": [
+   "c-351a8881f38c.webp"
+  ],
+  "article/truckers-hitch": [
+   "c-4115a46af78a.webp"
+  ],
   "article/uk-clouds": [
    "c-59a958ab2429.webp"
   ],
@@ -3551,7 +3811,9 @@
    "c-3c22a98710d2.webp",
    "c-d32aeff33f93.webp"
   ],
-  "species/angels-wings": [],
+  "species/angels-wings": [
+   "c-6ec2fc9a4660.webp"
+  ],
   "species/badger": [
    "c-afad620f0089.webp",
    "c-aa7abd40f623.webp",
@@ -3588,7 +3850,9 @@
    "c-2884a7fe095b.webp",
    "c-df7a91e097a8.webp"
   ],
-  "species/black-bryony": [],
+  "species/black-bryony": [
+   "c-e4b7868ed10f.webp"
+  ],
   "species/black-nightshade": [
    "c-06c62c74d576.webp",
    "c-d5470d945c78.webp",
@@ -3636,7 +3900,11 @@
    "c-d241d6e61e96.webp",
    "c-7205c70c4f30.webp"
   ],
-  "species/buttercup": [],
+  "species/buttercup": [
+   "c-fd5c5b507931.webp",
+   "c-e93aa16bd103.webp",
+   "c-f7e0ebbfad17.webp"
+  ],
   "species/cattle": [
    "c-2e572ca90a86.webp",
    "c-f47b59871141.webp",
@@ -3751,7 +4019,9 @@
    "c-2bc0314d9fff.webp",
    "c-be5de40e1d05.webp"
   ],
-  "species/devils-bolete": [],
+  "species/devils-bolete": [
+   "c-d1aad93ae804.webp"
+  ],
   "species/dog-rose": [
    "c-c9e0e7c807ce.webp",
    "c-fb30e1596a04.webp",
@@ -3805,7 +4075,9 @@
    "c-40a6d06d40a4.webp",
    "c-9660f0ad195f.webp"
   ],
-  "species/fools-webcap": [],
+  "species/fools-webcap": [
+   "c-7c8b8f8bf56a.webp"
+  ],
   "species/foxglove": [
    "c-0e4ce3d5f539.webp",
    "c-8646c85d4f74.webp",
@@ -3872,7 +4144,9 @@
    "c-e0badcbc6d51.webp",
    "c-084c6c5e0c29.webp"
   ],
-  "species/heather": [],
+  "species/heather": [
+   "c-a4c0836c12fa.webp"
+  ],
   "species/hedgehog-fungus": [
    "c-31a888ce841e.webp",
    "c-3e538a1eabbb.webp"
@@ -3913,7 +4187,9 @@
    "c-a7a6c686736e.webp",
    "c-0c319e4878fb.webp"
   ],
-  "species/horse-mushroom": [],
+  "species/horse-mushroom": [
+   "c-4ea7ae45d65b.webp"
+  ],
   "species/horsetail": [
    "c-5b6640f64458.webp",
    "c-de5d97b9f7a9.webp",
@@ -3924,7 +4200,9 @@
    "c-4ad3a06b7654.webp",
    "c-be83c7876610.webp"
   ],
-  "species/jack-o-lantern": [],
+  "species/jack-o-lantern": [
+   "c-e0cdc8d45ff4.webp"
+  ],
   "species/jelly-ear": [
    "c-3ab3e031c182.webp"
   ],
@@ -4030,7 +4308,7 @@
    "c-07842cdc7101.webp"
   ],
   "species/ragwort": [
-   "c-ef0e08404085.webp"
+   "c-5c0998508920.webp"
   ],
   "species/raspberry": [
    "c-fc257e22a17c.webp",
@@ -4128,7 +4406,9 @@
    "c-10f01cca80a4.webp"
   ],
   "species/sphagnum": [
-   "c-40f7eba40e31.webp"
+   "c-8db4d01ddc14.webp",
+   "c-469db9db546f.webp",
+   "c-b0cceb69dbe9.webp"
   ],
   "species/spindle": [
    "c-368d0cee4d95.webp",
@@ -4221,7 +4501,8 @@
    "c-2024dc5aea1f.webp"
   ],
   "species/willow": [
-   "c-080235825f2c.webp"
+   "c-2c405c1f40b9.webp",
+   "c-f4e7521607c8.webp"
   ],
   "species/wood-blewit": [
    "c-49df8750bab4.webp",
