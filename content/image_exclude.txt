@@ -93,3 +93,6 @@ Amanita rubescens 12.jpg  # species/the-blusher #3
 2010 07 19400 7206 Wenshan District, Taipei, Zoo, Sus scrofa taivanus, Formosan wild boar, Taiwan (cropped).JPG  # species/wild-boar #1
 Whitewillowtincture.jpg  # species/willow #1
 Columba-palumbus-dist.png  # species/wood-pigeon #1
+Boilingkettle.jpg  # article/settle-strain-boil #1
+Priestley Burning Lens Replica.jpg  # article/magnifier-fire #1
+2016 Busola.JPG  # article/map-compass-basics #1

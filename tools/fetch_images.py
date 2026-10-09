@@ -212,6 +212,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--refresh", action="store_true", help="re-resolve entries already in images.json")
     ap.add_argument("--only", help="comma-separated entry ids")
+    ap.add_argument("--offline", action="store_true",
+                    help="no network: only drop excluded/unreferenced photos and make missing thumbnails")
     ap.add_argument("--photos", type=int, default=3, help="max photos per species (default 3)")
     args = ap.parse_args()
 
@@ -223,6 +225,9 @@ def main() -> int:
         excluded = {ln.split("#", 1)[0].strip().removeprefix("File:") for ln in EXCLUDE.read_text(encoding="utf-8").splitlines()}
         excluded.discard("")
     IMG_DIR.mkdir(parents=True, exist_ok=True)
+    # Forget photos that have since been added to the exclude list (their files are deleted below).
+    for owner, names in manifest["owners"].items():
+        manifest["owners"][owner] = [n for n in names if manifest["files"].get(n, {}).get("commons") not in excluded]
     only = set(split_list(args.only)) if args.only else None
 
     jobs = []
@@ -232,6 +237,8 @@ def main() -> int:
         jobs += [("article", e) for e in parse_entries(path)]
 
     fetched = failed = 0
+    if args.offline:
+        jobs = []
     for kind, e in jobs:
         if not e["meta"].get("wiki") and not e["meta"].get("commons"):
             continue
