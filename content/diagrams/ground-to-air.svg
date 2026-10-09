@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 150" role="img" aria-label="Ground-to-air signals: V requires assistance, X requires medical assistance, N no, Y yes, arrow proceeding in this direction">
+  <style>.s{fill:none;stroke:#c8102e;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}.t{font:600 13px sans-serif;fill:#111;text-anchor:middle}.b{fill:#e9e4d4;stroke:#555;stroke-width:1}</style>
+  <rect class="b" x="5" y="5" width="90" height="90" rx="6"/><path class="s" d="M25 25 50 75 75 25"/>
+  <text class="t" x="50" y="115">V</text><text class="t" x="50" y="132">Need help</text>
+  <rect class="b" x="105" y="5" width="90" height="90" rx="6"/><path class="s" d="M125 25 175 75M175 25 125 75"/>
+  <text class="t" x="150" y="115">X</text><text class="t" x="150" y="132">Need medical help</text>
+  <rect class="b" x="205" y="5" width="90" height="90" rx="6"/><path class="s" d="M225 75V25l50 50V25"/>
+  <text class="t" x="250" y="115">N</text><text class="t" x="250" y="132">No</text>
+  <rect class="b" x="305" y="5" width="90" height="90" rx="6"/><path class="s" d="M325 25 350 50 375 25M350 50v25"/>
+  <text class="t" x="350" y="115">Y</text><text class="t" x="350" y="132">Yes</text>
+  <rect class="b" x="405" y="5" width="90" height="90" rx="6"/><path class="s" d="M450 80V22M430 42 450 22 470 42"/>
+  <text class="t" x="450" y="115">↑</text><text class="t" x="450" y="132">Gone this way</text>
+</svg>

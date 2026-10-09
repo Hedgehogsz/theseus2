@@ -108,7 +108,7 @@ def main() -> int:
         text = p.read_text(encoding="utf-8")
         for m in re.finditer(r'(?:src|href)="([^"#][^"]*)"', text):
             ref = m.group(1)
-            if "${" in ref or ref.startswith(("tel:", "javascript:")):
+            if "${" in ref or "' +" in ref or ref.startswith(("tel:", "javascript:")):
                 continue
             if not (ASSETS / ref).is_file():
                 problems.append(f"{f}: reference to missing file {ref}")

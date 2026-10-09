@@ -769,3 +769,55 @@ wiki: Apium graveolens
 
 ## Cautions
 - The smell is no help: [[s:hemlock-water-dropwort]] also smells of celery or parsley and grows in the same wet places. Do not eat it.
+
+=== honeysuckle
+name: Honeysuckle
+latin: Lonicera periclymenum
+aka: woodbine
+group: plant
+kind: climber
+status: poisonous, info
+season: Flowers Jun–Sep; red berries Aug–Oct; bark all year
+habitat: Woodland, hedgerows and scrub, twining up trees and shrubs
+summary: Twining climber with sweet-scented cream and pink trumpet flowers and clusters of red berries. Berries are mildly poisonous; the papery bark is superb tinder.
+lookalikes: 
+tags: climber, tinder, bark, red berries, woodbine
+wiki: Lonicera periclymenum
+---
+## Identification
+- Woody stems twisting **clockwise** around trees (sometimes deeply grooving them).
+- Oval leaves in opposite pairs.
+- Clusters of long, tubular, cream-yellow flowers flushed pink, strongly scented at dusk.
+- Clusters of glossy red berries in autumn.
+
+## Uses
+- The old stems shed **papery, stringy bark** in strips: shred it between your palms into a fine nest for catching an ember. See [[a:natural-tinders]].
+- Flowers can be sucked for nectar.
+
+## Cautions
+- The berries cause vomiting and diarrhoea if eaten in quantity.
+
+=== clematis
+name: Traveller's joy (old man's beard)
+latin: Clematis vitalba
+group: plant
+kind: climber
+status: poisonous, info
+season: Flowers Jul–Sep; fluffy seed heads Sep–Feb; bark all year
+habitat: Hedgerows, woodland edges and scrub on chalk and limestone, mainly in southern England and Wales
+summary: Woody climber smothering hedges with fluffy grey-white seed heads in autumn and winter. Poisonous sap, but its shaggy bark makes an excellent tinder nest.
+lookalikes: 
+tags: old man's beard, tinder, bark, climber, chalk
+wiki: Clematis vitalba
+---
+## Identification
+- Long, rope-like woody stems hanging from hedges and trees, with **shaggy, stringy bark** peeling in strips.
+- Leaves of 3–5 toothed leaflets that twine around supports.
+- Greenish-white flowers, then masses of feathery, silvery seed heads ("old man's beard") through the winter.
+
+## Uses
+- **Tinder:** strip the dead outer bark from old stems and rub it between your palms into a fluffy nest; it catches an ember readily. The fluffy seed heads flare quickly too. See [[a:natural-tinders]].
+- Long thin stems can be used for rough binding.
+
+## Cautions
+- All parts contain irritant protoanemonin: don't eat it, and the sap can blister skin.

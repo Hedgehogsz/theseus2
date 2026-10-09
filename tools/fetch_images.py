@@ -237,7 +237,8 @@ def main() -> int:
         owner = f"{kind}/{e['id']}"
         if only and e["id"] not in only:
             continue
-        if owner in manifest["owners"] and not args.refresh and not only:
+        # Entries that got no photo last time (rate limits, licence failures) are retried every run.
+        if manifest["owners"].get(owner) and not args.refresh and not only:
             continue
         want = args.photos if kind == "species" else int(e["meta"].get("photos", "1"))
         print(f"{owner}")

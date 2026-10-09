@@ -492,8 +492,13 @@ def main() -> int:
         a = articles[e["id"]]
         owner = f"article {a['id']}"
         body = render_md(e["body"], owner)
-        if 'class="quick"' not in body:
-            err(f"{e['src']}: article {a['id']} has no !quick box")
+        if not body.startswith('<section class="quick"'):
+            err(f"{e['src']}: article {a['id']} must start with a !quick box")
+        else:
+            quick = body[: body.index("</section>")]
+            n_items = quick.count("<li>")
+            if not 2 <= n_items <= 4:
+                err(f"{e['src']}: article {a['id']} quick box has {n_items} steps (want 2-4)")
         if 'id="sources"' not in body:
             err(f"{e['src']}: article {a['id']} has no '## Sources' section")
         for sid in a["compare"]:
