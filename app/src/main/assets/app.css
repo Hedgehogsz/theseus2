@@ -882,3 +882,12 @@ code { font-size: 0.86em; word-break: break-all; }
 .maplibregl-ctrl-bottom-left { bottom: 4px; }
 .map-attr { position: absolute; right: 0; bottom: 0; z-index: 2; display: flex; align-items: flex-end; min-height: 48px; padding: 0 8px 4px 16px; font-size: 0.62rem; color: var(--text-2); text-decoration: none; text-shadow: 0 0 3px var(--bg), 0 0 3px var(--bg); }
 .map-sheet:not([hidden]) ~ .map-attr { display: none; }
+
+/* v1.2.1 map diagnostics */
+.map-diag { position: absolute; inset: 8px; z-index: 6; overflow-y: auto; padding: 12px 14px; border-radius: var(--r-lg); background: var(--bg); border: 1px solid var(--line-2); }
+.map-diag[hidden] { display: none; }
+.map-diag-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.map-diag-row { padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 0.85rem; overflow-wrap: anywhere; }
+.map-diag-row b { display: block; } .map-diag-row span { color: var(--text-2); }
+.map-diag-row.ok b { color: var(--ok, #3fb950); } .map-diag-row.bad b { color: var(--danger, #e5534b); }
+.map-diag .btn { min-height: 48px; margin-top: 10px; }

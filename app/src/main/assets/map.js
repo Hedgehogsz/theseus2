@@ -186,6 +186,31 @@
   }
 
   // ------------------------------------------------------------------ data files
+  // PMTiles reads byte ranges through "?r=start-end" rather than a Range header: Android WebView re-applies a Range
+  // header to intercepted responses (it skips to the start itself), which broke every read past the first 16 KB in
+  // v1.2.0. With the range in the URL, MapFiles.kt returns exactly those bytes and WebView passes them through.
+  function LocalSource(url) { this.url = url; }
+  LocalSource.prototype.getKey = function () { return this.url; };
+  LocalSource.prototype.getBytes = function (offset, length, signal) {
+    var url = this.url;
+    return fetch(url + "?r=" + offset + "-" + (offset + length - 1), { signal: signal, cache: "no-store" }).then(function (r) {
+      if (r.status !== 206) throw new Error("Map file read failed: HTTP " + r.status + " for " + url.split("/").pop() + " @" + offset);
+      return r.arrayBuffer();
+    }).then(function (buf) {
+      if (buf.byteLength > length) buf = buf.slice(0, length);
+      return { data: buf };
+    });
+  };
+  function mapUrl(name) { return location.origin + location.pathname.replace(/[^/]*$/, "") + "maps/" + name; }
+
+  var errors = []; // last 20 map errors, for the diagnostics panel
+  function logError(msg) {
+    msg = String(msg || "unknown error");
+    errors.push(new Date().toTimeString().slice(0, 8) + " " + msg);
+    if (errors.length > 20) errors.shift();
+    console.error("[map] " + msg);
+  }
+
   function mapFiles() {
     var st = A.nativeJson("mapStatus");
     if (st) return Promise.resolve(st);
@@ -263,12 +288,16 @@
         '<button class="mbtn" id="mhdg" aria-label="Heading from compass" aria-pressed="false">' + icon("compass") + "</button>" +
         '<button class="mbtn" id="mgrid" aria-label="OS grid lines" aria-pressed="false">' + icon("grid-3x3") + "</button>" +
         '<button class="mbtn" id="mmeas" aria-label="Measure distance" aria-pressed="false">' + icon("ruler") + "</button>" +
-        '<button class="mbtn" id="mdrop" aria-label="Drop a waypoint" aria-pressed="false">' + icon("flag") + "</button></div>" +
+        '<button class="mbtn" id="mdrop" aria-label="Drop a waypoint" aria-pressed="false">' + icon("flag") + "</button>" +
+        '<button class="mbtn" id="mdiag" aria-label="Map diagnostics">' + icon("stethoscope") + "</button></div>" +
+        '<div class="map-diag" id="mdiagp" hidden></div>' +
         '<div class="map-sheet" id="msheet" hidden></div><div class="map-warn" id="mwarn" hidden></div>' +
         '<a class="map-attr" href="#/credits">© OpenStreetMap' + (hasContours ? " · OS Terrain 50" : "") + "</a></div>";
       A.view.innerHTML = h;
 
       var protocol = new pmtiles.Protocol();
+      protocol.add(new pmtiles.PMTiles(new LocalSource(mapUrl("gb.pmtiles"))));
+      if (hasContours) protocol.add(new pmtiles.PMTiles(new LocalSource(mapUrl("contours.pmtiles"))));
       maplibregl.addProtocol("pmtiles", protocol.tile);
       // Glyphs come from the APK; ranges we don't bundle (other scripts) resolve to an empty set rather than an error.
       maplibregl.addProtocol("glyphs", function (params) {
@@ -281,12 +310,21 @@
 
       var f = T.lastFix(), wpFocus = q.wp ? T.waypoints().filter(function (w) { return w.id === q.wp; })[0] : null;
       var start = wpFocus ? { center: [wpFocus.lon, wpFocus.lat], zoom: 14 } : f && (q.fix || Date.now() - f.time < 6 * 3600000) ? { center: [f.lon, f.lat], zoom: 14 } : A.load("mapView", GB);
+      $("mdiag").onclick = function () { diagnostics(hasContours); };
+      try {
       map = new maplibregl.Map({
         container: "map", style: style(A.settings.theme || "dark", hasContours), center: start.center, zoom: start.zoom,
         minZoom: 4.5, maxZoom: 17.5, maxBounds: BOUNDS, renderWorldCopies: false, fadeDuration: 0, prefetchZoomDelta: 0,
         maxTileCacheSize: 80, pixelRatio: Math.min(window.devicePixelRatio || 1, 2), dragRotate: false, pitchWithRotate: false, maxPitch: 0,
         attributionControl: false, localIdeographFontFamily: "sans-serif"
       });
+      } catch (e) {
+        logError("Map could not start: " + (e && e.message || e));
+        diagnostics(hasContours);
+        return;
+      }
+      map.on("error", function (e) { logError(e && e.error ? e.error.message || e.error : e); });
+      map.on("webglcontextlost", function () { logError("WebGL context lost"); });
       map.touchZoomRotate.disableRotation();
       map.keyboard.disableRotation();
       map.addControl(new maplibregl.ScaleControl({ unit: "metric", maxWidth: 100 }), "bottom-left");
@@ -495,6 +533,76 @@
         maplibregl.removeProtocol("glyphs");
         if (rafRestore) { rafRestore(); rafRestore = null; }
       });
+    });
+  }
+
+  // ------------------------------------------------------------------ diagnostics
+  function diagnostics(hasContours) {
+    var panel = $("mdiagp");
+    if (!panel) return;
+    var rows = [];
+    function esc(t) { return String(t).replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); }
+    function draw(done) {
+      var dbg = A.native("webDebug") === true || A.native("webDebug") === "true";
+      panel.innerHTML = '<div class="map-diag-head"><b>Map diagnostics</b><button class="btn" id="mdclose">Close</button></div>' +
+        rows.map(function (r) { return '<div class="map-diag-row ' + (r.ok === true ? "ok" : r.ok === false ? "bad" : "") + '"><b>' + (r.ok === true ? "✓ " : r.ok === false ? "✗ " : "") + esc(r.k) + "</b><span>" + esc(r.v) + "</span></div>"; }).join("") +
+        (done ? "" : '<p class="small muted">Testing…</p>') +
+        '<div class="map-diag-row"><b>Last map errors</b><span>' + (errors.length ? errors.map(esc).join("<br>") : "none") + "</span></div>" +
+        (window.Android ? '<button class="btn" id="mddbg">Developer: ' + (dbg ? "turn off" : "enable") + " WebView debugging</button>" +
+          '<p class="small muted">' + (dbg ? "On: connect USB, open chrome://inspect on the PC and pick this app. Turn off when done." : "Lets Chrome DevTools on a PC inspect the app over adb.") + "</p>" : "");
+      panel.hidden = false;
+      $("mdclose").onclick = function () { panel.hidden = true; };
+      if ($("mddbg")) $("mddbg").onclick = function () { A.native("setWebDebug", !dbg); draw(done); };
+    }
+    function add(k, v, ok) { rows.push({ k: k, v: v, ok: ok }); draw(false); }
+    function fetchRange(name, how, a, b) {
+      var opt = how === "header" ? { headers: { Range: "bytes=" + a + "-" + b }, cache: "no-store" } : { cache: "no-store" };
+      return fetch(mapUrl(name) + (how === "url" ? "?r=" + a + "-" + b : ""), opt).then(function (r) {
+        return r.arrayBuffer().then(function (buf) {
+          var want = b - a + 1, ok = r.status === 206 && buf.byteLength === want;
+          return { ok: ok, text: "HTTP " + r.status + ", " + buf.byteLength + " bytes (want " + want + "), Content-Length " + r.headers.get("Content-Length") + ", " + (r.headers.get("Content-Range") || "no Content-Range") };
+        });
+      }).catch(function (e) { return { ok: false, text: "failed: " + (e && e.message || e) }; });
+    }
+    var st = A.nativeJson("mapStatus") || {}, files = st.files || {}, size = files["gb.pmtiles"] && files["gb.pmtiles"].size;
+    add("Folder", st.dir || "(desktop test server)", null);
+    ["gb.pmtiles", "contours.pmtiles", "places.tsv"].forEach(function (n) {
+      add(n, files[n] ? files[n].size.toLocaleString() + " bytes" : "not found", n === "gb.pmtiles" ? !!files[n] || !window.Android : null);
+    });
+    var far = size && size > 2000000 ? Math.floor(size / 2) : 1000;
+    var gl = (function () {
+      try {
+        var c = document.createElement("canvas"), g2 = c.getContext("webgl2"), g = g2 || c.getContext("webgl");
+        if (!g) return { ok: false, text: "no WebGL" };
+        var info = g.getExtension("WEBGL_debug_renderer_info");
+        return { ok: true, text: (g2 ? "WebGL2" : "WebGL1 only") + " · " + (info ? g.getParameter(info.UNMASKED_RENDERER_WEBGL) : g.getParameter(g.RENDERER)) };
+      } catch (e) { return { ok: false, text: String(e) }; }
+    })();
+    add("WebGL", gl.text, gl.ok);
+    add("MapLibre", (maplibregl.getVersion ? maplibregl.getVersion() : maplibregl.version) + " · pmtiles " + (pmtiles.PMTiles ? "loaded" : "missing"), true);
+    fetchRange("gb.pmtiles", "header", 0, 126).then(function (r) {
+      add("Range header, bytes 0–126", r.text, r.ok);
+      return fetchRange("gb.pmtiles", "header", far, far + 126);
+    }).then(function (r) {
+      add("Range header, bytes " + far + "–" + (far + 126), r.text, r.ok);
+      return fetchRange("gb.pmtiles", "url", far, far + 126);
+    }).then(function (r) {
+      add("Map read (?r=), bytes " + far + "–" + (far + 126), r.text, r.ok);
+      var p = new pmtiles.PMTiles(new LocalSource(mapUrl("gb.pmtiles")));
+      return p.getHeader().then(function (h) {
+        add("PMTiles header", "v" + h.specVersion + ", zoom " + h.minZoom + "–" + h.maxZoom + ", bounds " + [h.minLon, h.minLat, h.maxLon, h.maxLat].map(function (x) { return x.toFixed(1); }).join(", ") +
+          ", " + h.numAddressedTiles.toLocaleString() + " tiles", true);
+        var c = map ? map.getCenter() : { lng: -1.5, lat: 53 }, z = Math.max(h.minZoom, Math.min(h.maxZoom, Math.floor(map ? map.getZoom() : 6)));
+        var n = Math.pow(2, z), x = Math.floor((c.lng + 180) / 360 * n), lr = c.lat * Math.PI / 180;
+        var y = Math.floor((1 - Math.log(Math.tan(lr) + 1 / Math.cos(lr)) / Math.PI) / 2 * n);
+        return p.getZxy(z, x, y).then(function (t) {
+          add("Tile " + z + "/" + x + "/" + y + " (view centre)", t ? t.data.byteLength.toLocaleString() + " bytes" : "no tile here (sea or outside GB)", t ? true : null);
+        });
+      }, function (e) { add("PMTiles header", "failed: " + (e && e.message || e), false); });
+    }).catch(function (e) { add("Tile", "failed: " + (e && e.message || e), false); }).then(function () {
+      if (map) add("Map", "zoom " + map.getZoom().toFixed(1) + ", loaded " + map.loaded() + ", tiles loaded " + map.areTilesLoaded(), map.areTilesLoaded());
+      draw(true);
+      console.log("[map diagnostics] " + rows.map(function (r) { return r.k + ": " + r.v; }).join(" | "));
     });
   }
 

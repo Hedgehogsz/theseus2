@@ -33,6 +33,11 @@ class Prefs(context: Context) {
         get() = sp.getString("migrated_storage", null)
         set(value) = sp.edit().putString("migrated_storage", value).apply()
 
+    /** Developer switch: lets Chrome DevTools attach to the WebView over adb (chrome://inspect). */
+    var webDebug: Boolean
+        get() = sp.getBoolean("web_debug", false)
+        set(value) = sp.edit().putBoolean("web_debug", value).apply()
+
     /** Last GPS fix, for the sun tool and the map's starting view. */
     var lastFix: String?
         get() = sp.getString("last_fix", null)

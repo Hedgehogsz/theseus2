@@ -10,13 +10,16 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.view.View
+import android.util.Log
 import android.view.WindowManager
+import android.webkit.ConsoleMessage
 import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.webkit.WebChromeClient
 import androidx.webkit.WebViewAssetLoader
 import org.json.JSONObject
 
@@ -65,8 +68,7 @@ class MainActivity : Activity() {
             .addPathHandler("/", WebViewAssetLoader.AssetsPathHandler(this))
             .build()
 
-        val debuggable = (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
-        WebView.setWebContentsDebuggingEnabled(debuggable)
+        WebView.setWebContentsDebuggingEnabled(isDebuggable() || prefs.webDebug)
 
         webView = WebView(this).apply {
             setBackgroundColor(Color.rgb(0x12, 0x11, 0x10))
@@ -91,6 +93,17 @@ class MainActivity : Activity() {
                 javaScriptCanOpenWindowsAutomatically = false
             }
             webViewClient = GuideClient()
+            webChromeClient = object : WebChromeClient() {
+                override fun onConsoleMessage(m: ConsoleMessage): Boolean {
+                    val level = when (m.messageLevel()) {
+                        ConsoleMessage.MessageLevel.ERROR -> Log.ERROR
+                        ConsoleMessage.MessageLevel.WARNING -> Log.WARN
+                        else -> Log.INFO
+                    }
+                    Log.println(level, "SurvivalGuideJS", "${m.message()} (${m.sourceId()?.substringAfterLast('/')}:${m.lineNumber()})")
+                    return true
+                }
+            }
             addJavascriptInterface(WebBridge(this@MainActivity), "Android")
         }
         setContentView(webView)
@@ -231,7 +244,7 @@ class MainActivity : Activity() {
                 val path = url.path ?: "/"
                 if (path.startsWith("/maps/")) {
                     val range = request.requestHeaders.entries.firstOrNull { it.key.equals("Range", true) }?.value
-                    return MapFiles.serve(this@MainActivity, path, range)
+                    return MapFiles.serve(this@MainActivity, path, range, url.getQueryParameter("r"))
                 }
                 return assets.shouldInterceptRequest(url)
                     ?: WebResourceResponse("text/plain", "utf-8", 404, "Not Found", emptyMap(), java.io.ByteArrayInputStream(ByteArray(0)))
@@ -256,6 +269,8 @@ class MainActivity : Activity() {
             return true
         }
     }
+
+    fun isDebuggable() = (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
 
     companion object {
         const val APP_URL = "https://${WebViewAssetLoader.DEFAULT_DOMAIN}/index.html"

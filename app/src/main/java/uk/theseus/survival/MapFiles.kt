@@ -6,6 +6,8 @@ import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
+import java.io.RandomAccessFile
+import java.nio.ByteBuffer
 
 /**
  * Serves the offline map files to the WebView at https://appassets.androidplatform.net/maps/<name>, with HTTP range
@@ -39,7 +41,21 @@ object MapFiles {
             .put("files", files)
     }
 
-    fun serve(context: Context, path: String, range: String?): WebResourceResponse {
+    /**
+     * Serves /maps/<name>. A byte range can come two ways:
+     *
+     * - `?r=start-end` in the URL (what the map uses). The WebView sees no Range header, so it passes our stream
+     *   through untouched.
+     * - A `Range: bytes=start-end` header. Android WebView applies that header to the stream we return a second
+     *   time: it reads [InputStream.available] as the total size, skips `start` bytes itself, then reads to the end
+     *   of the stream. v1.2.0 returned a stream already positioned at `start`, so WebView skipped past the data and
+     *   every read beyond the first 16 KB failed (the map drew nothing). [Window] now behaves like the whole file up
+     *   to `end`, so WebView's skip lands on `start`; if a WebView doesn't skip, the first read jumps there instead.
+     *
+     * Content-Length is left to WebView, which sets it from [InputStream.available]; adding our own would duplicate
+     * the header.
+     */
+    fun serve(context: Context, path: String, rangeHeader: String?, rangeParam: String? = null): WebResourceResponse {
         val name = path.removePrefix("/maps/")
         val file = dir(context)?.let { File(it, name) }
         if (!SAFE.matches(name) || file == null || !file.isFile) return error(404, "Not Found")
@@ -56,11 +72,9 @@ object MapFiles {
             "Access-Control-Expose-Headers" to "Content-Range, Content-Length, ETag",
             "ETag" to "\"${len}-${file.lastModified()}\"",
         )
-        val r = range?.let { Regex("^bytes=(\\d*)-(\\d*)$").find(it.trim()) }
-        if (r == null) {
-            headers["Content-Length"] = len.toString()
-            return WebResourceResponse(mime, null, 200, "OK", headers, FileInputStream(file))
-        }
+        val spec = rangeParam?.let { "bytes=$it" } ?: rangeHeader
+        val r = spec?.let { Regex("^bytes=(\\d*)-(\\d*)$").find(it.trim()) }
+        if (r == null) return WebResourceResponse(mime, null, 200, "OK", headers, FileInputStream(file))
         val (a, b) = r.destructured
         val start: Long
         val end: Long
@@ -74,11 +88,10 @@ object MapFiles {
             headers["Content-Range"] = "bytes */$len"
             return WebResourceResponse(mime, null, 416, "Range Not Satisfiable", headers, ByteArrayInputStreamEmpty)
         }
-        val count = end - start + 1
         headers["Content-Range"] = "bytes $start-$end/$len"
-        headers["Content-Length"] = count.toString()
-        val input = FileInputStream(file).apply { channel.position(start) }
-        return WebResourceResponse(mime, null, 206, "Partial Content", headers, Limited(input, count))
+        // With a Range header WebView skips to `start` itself, so the stream starts at byte 0; with ?r= it doesn't.
+        val origin = if (rangeParam != null) start else 0L
+        return WebResourceResponse(mime, null, 206, "Partial Content", headers, Window(file, start, end, origin))
     }
 
     private fun error(code: Int, reason: String) =
@@ -86,23 +99,37 @@ object MapFiles {
 
     private val ByteArrayInputStreamEmpty: InputStream get() = java.io.ByteArrayInputStream(ByteArray(0))
 
-    /** Reads at most [remaining] bytes from [inner]. */
-    internal class Limited(private val inner: InputStream, private var remaining: Long) : InputStream() {
-        override fun read(): Int {
-            if (remaining <= 0) return -1
-            val v = inner.read()
-            if (v >= 0) remaining--
-            return v
+    /**
+     * Bytes [start]..[end] of [file], seen as a stream that begins at file offset [origin]: [available] counts from
+     * the current position to [end], [skip] moves the position without reading, and the first read never starts
+     * before [start]. Reads use positional FileChannel reads, so nothing is copied but the requested bytes.
+     */
+    internal class Window(file: File, private val start: Long, private val end: Long, origin: Long) : InputStream() {
+        private val channel = RandomAccessFile(file, "r").channel
+        private var pos = origin
+
+        override fun available(): Int = (end + 1 - pos).coerceIn(0, Int.MAX_VALUE.toLong()).toInt()
+
+        override fun skip(n: Long): Long {
+            val k = n.coerceIn(0, (end + 1 - pos).coerceAtLeast(0))
+            pos += k
+            return k
         }
 
         override fun read(b: ByteArray, off: Int, len: Int): Int {
-            if (remaining <= 0) return -1
-            val n = inner.read(b, off, minOf(len.toLong(), remaining).toInt())
-            if (n > 0) remaining -= n
+            if (pos < start) pos = start
+            if (pos > end) return -1
+            if (len == 0) return 0
+            val n = channel.read(ByteBuffer.wrap(b, off, minOf(len.toLong(), end + 1 - pos).toInt()), pos)
+            if (n > 0) pos += n
             return n
         }
 
-        override fun available(): Int = minOf(inner.available().toLong(), remaining).toInt()
-        override fun close() = inner.close()
+        override fun read(): Int {
+            val one = ByteArray(1)
+            return if (read(one, 0, 1) == 1) one[0].toInt() and 0xff else -1
+        }
+
+        override fun close() = channel.close()
     }
 }

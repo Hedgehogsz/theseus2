@@ -177,12 +177,32 @@ class NativeToolsTest {
         val f = File(dir, "gb.pmtiles")
         f.writeBytes(ByteArray(1000) { (it % 251).toByte() })
         try {
+            // What Android WebView does with an intercepted response (components/embedder_support/android/util/
+            // input_stream_reader.cc): total = available(), skip the Range start itself, then read to end of stream.
+            fun webViewRead(r: android.webkit.WebResourceResponse, rangeStart: Long?): ByteArray {
+                val s = r.data
+                val total = s.available()
+                if (rangeStart != null) {
+                    assertTrue("WebView would answer 416: available()=$total", rangeStart < total)
+                    var left = rangeStart
+                    while (left > 0) { val k = s.skip(left); assertTrue(k > 0); left -= k }
+                }
+                return s.readBytes()
+            }
+            fun slice(from: Int, to: Int) = ByteArray(to - from + 1) { ((from + it) % 251).toByte() }
+
             val r = MapFiles.serve(a, "/maps/gb.pmtiles", "bytes=10-19")
             assertEquals(206, r.statusCode)
             assertEquals("bytes 10-19/1000", r.responseHeaders["Content-Range"])
-            val bytes = r.data.readBytes()
-            assertEquals(10, bytes.size)
-            assertEquals(10.toByte(), bytes[0])
+            assertTrue(slice(10, 19).contentEquals(webViewRead(r, 10)))
+            // A WebView that didn't skip would still get the right bytes.
+            assertTrue(slice(500, 899).contentEquals(MapFiles.serve(a, "/maps/gb.pmtiles", "bytes=500-899").data.readBytes()))
+            // The map's own reads: ?r=start-end, no Range header, so WebView passes the stream through.
+            val q = MapFiles.serve(a, "/maps/gb.pmtiles", null, "600-999")
+            assertEquals(206, q.statusCode)
+            assertEquals(400, q.data.available())
+            assertTrue(slice(600, 999).contentEquals(webViewRead(q, null)))
+            assertTrue(slice(900, 999).contentEquals(webViewRead(MapFiles.serve(a, "/maps/gb.pmtiles", "bytes=-100"), 900)))
             assertEquals(404, MapFiles.serve(a, "/maps/../secret", null).statusCode)
             assertEquals(200, MapFiles.serve(a, "/maps/gb.pmtiles", null).statusCode)
             assertEquals(416, MapFiles.serve(a, "/maps/gb.pmtiles", "bytes=5000-").statusCode)

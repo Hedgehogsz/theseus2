@@ -31,7 +31,8 @@ export function serve(port = 8137, opts = {}) {
     fs.stat(file, (err, st) => {
       if (err || !st.isFile()) { res.writeHead(404); return res.end(); }
       const type = TYPES[path.extname(file)] || "application/octet-stream";
-      const m = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range || "");
+      const q = /[?&]r=(\d+-\d+)/.exec(req.url);
+      const m = /^bytes=(\d*)-(\d*)$/.exec(q ? "bytes=" + q[1] : req.headers.range || "");
       if (m) {
         let start = m[1] === "" ? Math.max(0, st.size - Number(m[2])) : Number(m[1]);
         let end = m[1] === "" || m[2] === "" ? st.size - 1 : Math.min(Number(m[2]), st.size - 1);

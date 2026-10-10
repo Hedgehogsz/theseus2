@@ -5,6 +5,7 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.os.BatteryManager
 import android.webkit.JavascriptInterface
+import android.webkit.WebView
 import org.json.JSONObject
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -153,6 +154,15 @@ class WebBridge(private val activity: MainActivity) {
 
     @JavascriptInterface
     fun mapStatus(): String = MapFiles.status(activity).toString()
+
+    @JavascriptInterface
+    fun webDebug(): Boolean = activity.prefs.webDebug
+
+    @JavascriptInterface
+    fun setWebDebug(on: Boolean) {
+        activity.prefs.webDebug = on
+        activity.runOnUiThread { WebView.setWebContentsDebuggingEnabled(on || activity.isDebuggable()) }
+    }
 
     // --- storage migration (v1.1 -> v1.2 origin change) -----------------------------------------------------------
 
