@@ -1,0 +1,92 @@
+name: Build offline map data
+
+# Runs only when a commit message contains [map], or by hand. Publishes gb.pmtiles, contours.pmtiles,
+# places.tsv and SHA256SUMS.txt as a GitHub release (they are far too big for the repo or the APK),
+# and commits small Keswick samples to tools/testdata for the UI tests.
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: map-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  map:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[map]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      OUT: ${{ github.workspace }}/mapdata
+      WORK: ${{ github.workspace }}/../work
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          df -h .
+
+      - name: Install tools (osmium, GDAL, go-pmtiles, tippecanoe)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q osmium-tool gdal-bin libsqlite3-dev zlib1g-dev build-essential
+          gh release download -R protomaps/go-pmtiles --pattern '*Linux_x86_64.tar.gz' -D /tmp/pm
+          tar -xzf /tmp/pm/*.tar.gz -C /tmp/pm && sudo install /tmp/pm/pmtiles /usr/local/bin/pmtiles
+          git clone -q --depth 1 https://github.com/felt/tippecanoe /tmp/tippecanoe
+          make -s -C /tmp/tippecanoe -j4 && sudo make -s -C /tmp/tippecanoe install
+          pmtiles version || true; tippecanoe --version; ogr2ogr --version; osmium --version | head -1
+
+      - name: Base map (OpenStreetMap via Protomaps)
+        run: tools/map/build_map.sh basemap
+
+      - name: Place index for offline search
+        run: tools/map/build_map.sh places
+        continue-on-error: true
+
+      - name: Contours (OS Terrain 50)
+        run: tools/map/build_map.sh contours
+        continue-on-error: true
+
+      - name: Test samples
+        run: DEST=tools/testdata tools/map/build_map.sh sample
+
+      - name: Checksums
+        run: |
+          cd "$OUT"
+          sha256sum gb.pmtiles $(ls contours.pmtiles places.tsv 2>/dev/null) > SHA256SUMS.txt
+          cat SHA256SUMS.txt; ls -l
+
+      - name: Publish release
+        run: |
+          BUILD=$(cat "$OUT/basemap-build.txt")
+          TAG="map-$BUILD-r${{ github.run_number }}"
+          {
+            echo "Offline map data for the Survival Guide app (Great Britain)."
+            echo
+            echo "- Base map: Protomaps basemap build $BUILD, © OpenStreetMap contributors, ODbL."
+            echo "- Contours: derived from OS Terrain 50. Contains OS data © Crown copyright and database right. Open Government Licence v3."
+            echo "- Place index: © OpenStreetMap contributors, ODbL (Geofabrik extract)."
+            echo
+            echo "Copy each file to /sdcard/Android/media/uk.theseus.survival/maps/ (see docs/MAP.md)."
+            echo
+            echo '```'; cat "$OUT/SHA256SUMS.txt"; echo '```'
+          } > notes.md
+          gh release create "$TAG" --target "${{ github.sha }}" --title "Map data $BUILD" --notes-file notes.md \
+            "$OUT/gb.pmtiles" $(cd "$OUT" && ls contours.pmtiles places.tsv 2>/dev/null | sed "s|^|$OUT/|") "$OUT/SHA256SUMS.txt"
+          echo "Published $TAG"
+
+      - name: Commit test samples
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools/testdata
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Map test samples (Keswick) [skip ci]"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
