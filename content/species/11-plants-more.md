@@ -488,6 +488,7 @@ summary: Stiff, branching plant with sky-blue, dandelion-like flowers along the 
 lookalikes: dandelion
 tags: coffee substitute, roots, greens, blue flowers, verge
 wiki: Chicory
+photos: 0
 ---
 ## Identification
 - Young plants: a rosette of rough, hairy, toothed, dandelion-like leaves.

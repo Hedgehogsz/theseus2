@@ -278,7 +278,11 @@ def main() -> int:
                  and not args.refresh and not only)
         if kept and not args.refresh and not only and not topup:
             continue
-        want = args.photos if kind == "species" else int(e["meta"].get("photos", "1"))
+        # "photos: 0" stops the fetcher for an entry whose candidates were all rejected on review, so CI can
+        # never slip an unreviewed photo into the app.
+        want = int(e["meta"].get("photos", args.photos if kind == "species" else 1))
+        if want == 0:
+            continue
         print(f"{owner}")
         try:
             candidates = resolve(e, kind, excluded, want)

@@ -428,6 +428,7 @@ summary: Garden shrub with huge, hanging, scented trumpet flowers in white, yell
 lookalikes: thorn-apple
 tags: brugmansia, datura, trumpet flower, garden plant, tropane, scopolamine, hyoscine, anticholinergic, pupil
 wiki: Brugmansia
+photos: 0
 ---
 !danger Deadly poisonous
 All parts, including the flowers and nectar, contain **scopolamine and atropine**. The amount varies greatly from plant to plant. Poisoning causes long-lasting delirium and can kill.

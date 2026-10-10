@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <!-- Re-apply the phone mode (home screen choice) once at boot. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <!-- "Restore all phone apps": find system apps removed with pm uninstall --user 0. Sideloaded, not on Play. -->
+    <!-- "Restore all phone apps": find system apps removed for this user with pm uninstall. Sideloaded, not on Play. -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
