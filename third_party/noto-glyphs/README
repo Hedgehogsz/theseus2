@@ -1,0 +1,4 @@
+Map label glyphs (signed-distance-field PBF ranges) for Noto Sans Regular / Medium / Italic, from
+https://github.com/protomaps/basemaps-assets (fonts/). Noto Sans is licensed under the SIL Open Font License 1.1
+(OFL.txt). Only the Latin ranges (0-255, 256-511, 7680-7935, 8192-8447) are bundled, in
+app/src/main/assets/map/glyphs/; other scripts fall back to the phone's own fonts or are skipped.

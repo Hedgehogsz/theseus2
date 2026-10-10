@@ -27,7 +27,8 @@ class MainActivityTest {
     @Test
     fun loadsLocalUiWithNetworkBlocked() {
         val (_, webView) = launch()
-        assertEquals("file:///android_asset/index.html", shadowOf(webView).lastLoadedUrl)
+        // First start after the v1.1 -> v1.2 update hands localStorage over from the old file:// origin.
+        assertEquals("file:///android_asset/migrate.html", shadowOf(webView).lastLoadedUrl)
         assertTrue(webView.settings.blockNetworkLoads)
         assertTrue(webView.settings.javaScriptEnabled)
         assertTrue(webView.settings.domStorageEnabled)
@@ -63,7 +64,7 @@ class MainActivityTest {
         val state = JSONObject(WebBridge(activity).getState())
         assertTrue(state.getBoolean("native"))
         assertFalse(state.getBoolean("deviceOwner"))
-        assertTrue(state.getBoolean("kioskEnabled"))
+        assertEquals(PhoneMode.SURVIVAL, state.getString("mode"))
     }
 
     @Test

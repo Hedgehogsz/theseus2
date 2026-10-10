@@ -1,0 +1,38 @@
+# Search synonyms: each line is a group of words that find each other. One word per item.
+mushroom, mushrooms, shroom, shrooms, toadstool, toadstools, fungi, fungus
+bleeding, bleed, haemorrhage, hemorrhage, blood, wound
+hypothermia, cold, freezing, shivering, chilled
+compass, north, direction, bearing, heading
+lost, disoriented, relocate, relocating
+torch, flashlight, light
+fire, campfire, flames
+water, drink, drinking, thirst, thirsty
+shelter, bivouac, bivvy, camp
+injured, injury, hurt, casualty
+broken, fracture, fractured, break
+burn, burns, scald, scalds
+poison, poisoning, poisonous, toxic
+heart, cardiac, cpr, resuscitation
+faint, fainted, unconscious, unresponsive, collapsed
+psychoactive, hallucinogenic, magic, trip, psilocybin, drug, drugs
+snake, adder, viper
+tick, ticks, lyme
+flood, flooding, floods
+storm, gale, wind, hurricane
+snow, blizzard, snowed
+heatwave, heat, hot, sunstroke
+diarrhoea, diarrhea, runs, vomiting, sick
+signal, signalling, sos, rescue, help, mayday
+grid, power, blackout, outage, electricity
+toilet, latrine, poo, sanitation
+morse, sos
+gps, location, position, coordinates
+map, maps, chart
+food, eat, eating, hungry, starving
+berry, berries, fruit
+fish, fishing, angling
+trap, trapping, snare, snaring
+knife, blade
+rope, cord, cordage, string, paracord
+radiation, nuclear, radioactive
+chemical, gas, toxic

@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Updating</title>
+<body style="background:#121110">
+<script>
+  // One-off for v1.2: the guide moved from file:///android_asset to https://appassets.androidplatform.net, which has
+  // its own localStorage. Hand the old origin's saved pages, settings and notes to the app, which passes them on.
+  var data = {};
+  try {
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      data[k] = localStorage.getItem(k);
+    }
+  } catch (e) {}
+  try { window.Android.migrateStorage(JSON.stringify(data)); } catch (e) {}
+</script>
+</body>

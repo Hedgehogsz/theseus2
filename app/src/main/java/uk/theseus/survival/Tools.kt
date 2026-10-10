@@ -37,6 +37,24 @@ object Tools {
         else -> false
     }
 
+    /**
+     * Which of the phone-app tiles can actually open something. Packages were removed from this phone with
+     * `pm uninstall --user 0`, so every tile is checked with the PackageManager and hidden if its app is gone.
+     */
+    fun available(context: Context): org.json.JSONObject {
+        val pm = context.packageManager
+        fun has(pkg: String) = pm.getLaunchIntentForPackage(pkg) != null
+        fun resolves(i: Intent) = i.resolveActivity(pm) != null
+        return org.json.JSONObject()
+            .put("fm", has(FM))
+            .put("camera", has(CAMERA) || resolves(Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)))
+            .put("calculator", has(CALCULATOR) ||
+                resolves(Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_CALCULATOR)))
+            .put("clock", has(CLOCK))
+            .put("battery", resolves(Intent(Intent.ACTION_POWER_USAGE_SUMMARY)) ||
+                resolves(Intent(Settings.ACTION_BATTERY_SAVER_SETTINGS)))
+            .put("settings", resolves(Intent(Settings.ACTION_SETTINGS)))
+    }
 
     private fun openPackage(context: Context, pkg: String): Boolean {
         val intent = context.packageManager.getLaunchIntentForPackage(pkg) ?: return false

@@ -52,8 +52,11 @@ def main() -> int:
         problems.append("index.json and index.js differ (re-run build_content.py)")
 
     arts, spp = index["articles"], index["species"]
-    cats = {c["id"]: c for c in index["categories"]}
-    targets = {"a": arts, "s": spp, "c": cats}
+    cats = index["categories"]
+    flows = index.get("flows_meta", {})
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from build_content import TOOLS  # noqa: E402
+    targets = {"a": arts, "s": spp, "c": cats, "f": flows, "tool": {t: 1 for t in TOOLS}}
     checked_links = 0
 
     def check_img(owner: str, im):
@@ -71,6 +74,13 @@ def main() -> int:
         for aid in c["articles"]:
             if aid not in arts:
                 problems.append(f"category {cid}: unknown article {aid}")
+    for fid in flows:
+        if not (CONTENT / "f" / f"{fid}.js").is_file():
+            problems.append(f"flow {fid}: body file missing")
+    for g in index.get("groups", []):
+        for cid in g["categories"]:
+            if cid not in cats:
+                problems.append(f"group {g['id']}: unknown category {cid}")
     for kind, table in (("a", arts), ("s", spp)):
         for item_id, item in table.items():
             owner = f"{kind}:{item_id}"
@@ -79,7 +89,7 @@ def main() -> int:
                 problems.append(f"{owner}: body file missing")
                 continue
             body = load_body(body_path)
-            for k, target in re.findall(r'href="#/([acs])/([^"?]+)"', body):
+            for k, target in re.findall(r'href="#/([acsf]|tool)/([^"?]+)"', body):
                 checked_links += 1
                 if target not in targets[k]:
                     problems.append(f"{owner}: broken link #/{k}/{target}")
@@ -101,7 +111,7 @@ def main() -> int:
                 problems.append(f"{owner}: unknown category {item['cat']}")
 
     # Web UI shell: every local reference must exist; nothing may point at the network.
-    for f in ["index.html", "app.css", "app.js", "fonts.css", "icons.js"]:
+    for f in ["index.html", "app.css", "app.js", "tools.js", "map.js", "geo.js", "fonts.css", "icons.js"]:
         p = ASSETS / f
         if not p.is_file():
             problems.append(f"{f} missing")
@@ -122,8 +132,11 @@ def main() -> int:
     else:
         m = re.search(r"window\.ICONS=(\{.*\});", icons_js.read_text(encoding="utf-8"), re.S)
         have = set(json.loads(m.group(1))) if m else set()
-        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        js = "\n".join((ASSETS / f).read_text(encoding="utf-8") for f in ("app.js", "tools.js", "map.js") if (ASSETS / f).is_file())
         used = {c["icon"] for c in cats.values() if c.get("icon")} | {a["icon"] for a in arts.values() if a.get("icon")}
+        used |= {g["icon"] for g in index.get("groups", [])} | {u["icon"] for u in index.get("urgent", [])}
+        used |= {f["icon"] for f in flows.values()}
+        used |= {lk["icon"] for g in index.get("groups", []) for lk in g.get("links", [])}
         used |= set(re.findall(r"""\bicon\(\s*["']([a-z0-9-]+)["']""", js))
         used |= set(re.findall(r'href="#i-([a-z0-9-]+)"', (ASSETS / "index.html").read_text(encoding="utf-8")))
         for line in re.findall(r"//\s*icons:(.*)", js):
@@ -134,7 +147,7 @@ def main() -> int:
     # No SIM: nothing in the shell or the native code may dial, call or text.
     no_call = re.compile(r"""tel:|sms:|smsto:|data-dial|ACTION_DIAL|ACTION_CALL|CALL_PHONE|SEND_SMS|\bdial\(|\bcall\s+999\b|emergency\s*sms""", re.I)
     native = list((ROOT / "app" / "src" / "main" / "java").rglob("*.kt")) + [ROOT / "app" / "src" / "main" / "AndroidManifest.xml"]
-    for p in [ASSETS / "index.html", ASSETS / "app.js"] + native:
+    for p in [ASSETS / f for f in ("index.html", "app.js", "tools.js", "map.js") if (ASSETS / f).is_file()] + native:
         for n, line in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
             if no_call.search(line) and not re.search(r"(cannot|can't|can&#39;t)\s+(<b>)?call", line):
                 problems.append(f"{p.relative_to(ROOT)}:{n}: call/SMS reference: {line.strip()[:80]}")

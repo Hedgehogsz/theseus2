@@ -1,0 +1,296 @@
+{
+  "_doc": "The guide's hierarchy: group > category > topic > article. Every article appears in exactly one topic. Entries starting with '@' are cross-references to an article that lives elsewhere (shown with an arrow, not counted as membership). 'start' is pinned as 'Start here' and must be one of the category's own articles. Urgent tiles and links point at a:article, f:flow, c:category or a route (#/...).",
+  "urgent": [
+    {"title": "What to do first", "icon": "list-checks", "to": "a:emergency-priorities", "sub": "Safety, life threats, shelter, then help"},
+    {"title": "Someone is injured", "icon": "heart-pulse", "to": "f:injured", "sub": "Step by step: danger, breathing, bleeding"},
+    {"title": "I'm lost", "icon": "map-pin-off", "to": "f:lost", "sub": "Stop, think, then stay or go"},
+    {"title": "Signal for help", "icon": "megaphone", "to": "a:signalling-rescue", "sub": "6 blasts or flashes a minute · SOS · V · X"},
+    {"title": "Severe weather now", "icon": "cloud-lightning", "to": "a:severe-weather-now", "sub": "Lightning, gales, snow, heat, flood"},
+    {"title": "Fire, flood or smoke", "icon": "flame", "to": "a:fire-flood-smoke-now", "sub": "Get out, stay out, get high"}
+  ],
+  "flows": ["injured", "lost", "water-now", "dark-cold"],
+  "groups": [
+    {
+      "id": "stay-alive", "title": "Stay alive", "icon": "heart-handshake", "color": "amber",
+      "short": "The priorities, in order",
+      "intro": "The basics that keep you alive, in the order they usually matter: deal with injuries, get out of the cold and wet, then water, fire and food. Keep your head throughout.",
+      "categories": [
+        {"id": "first-aid", "title": "First aid", "icon": "heart-pulse", "short": "CPR, bleeding, cold",
+         "intro": "Life threats first: danger, response, breathing, bleeding. Then injuries and illness. Aligned with NHS, St John Ambulance and Resuscitation Council UK guidance.",
+         "start": "primary-survey",
+         "topics": [
+           {"title": "Life threats", "articles": ["primary-survey", "cpr-adult", "cpr-child", "choking", "severe-bleeding", "recovery-position", "shock"]},
+           {"title": "Injuries", "articles": ["head-injury", "fractures-splinting", "sprains-strains", "burns", "wound-care", "eye-injury"]},
+           {"title": "Illness", "articles": ["heart-attack-stroke", "asthma-attack", "seizures", "stings-anaphylaxis", "poisoning", "diarrhoea-ors"]},
+           {"title": "Cold, heat and bites", "articles": ["hypothermia", "cold-injuries", "heat-illness", "adder-bite", "tick-removal-lyme"]},
+           {"title": "Getting help", "articles": ["when-to-get-help", "@location-report", "@medicine-overview"]}
+         ]},
+        {"id": "shelter", "title": "Shelter & warmth", "icon": "tent", "short": "Out of the wind and wet",
+         "intro": "In Britain the cold and wet kill more people than anything else outdoors. Get out of the wind, off the ground and into dry layers before you do anything else.",
+         "start": "shelter-priorities",
+         "topics": [
+           {"title": "First steps", "articles": ["shelter-priorities", "site-selection", "insulation-ground", "staying-warm-night"]},
+           {"title": "Clothing", "articles": ["cold-and-wet", "layering"]},
+           {"title": "Ready-made shelter", "articles": ["bothies"]},
+           {"title": "Build one", "articles": ["@debris-hut", "@tarp-a-frame", "@lean-to", "@sleeping-warm"]}
+         ]},
+        {"id": "water", "title": "Water", "icon": "droplet", "short": "Find and make safe",
+         "intro": "You can last about three days without water, less in heat or hard work. Almost all UK water needs boiling before you drink it.",
+         "start": "settle-strain-boil",
+         "topics": [
+           {"title": "Make it safe", "articles": ["settle-strain-boil", "boiling-steel-bottle-pot", "boiling-limits", "charcoal-taste"]},
+           {"title": "Find it", "articles": ["finding-water-uk", "choosing-water-source", "rain-dew-collection", "solar-still"]},
+           {"title": "How much", "articles": ["water-needs", "dehydration-signs"]},
+           {"title": "Longer term", "articles": ["@sustainable-water", "@home-water-storage"]}
+         ]},
+        {"id": "fire", "title": "Fire", "icon": "flame", "short": "Light it, keep it",
+         "intro": "Fire gives warmth, safe water, cooked food, light, morale and a signal. Get the essentials right first; the techniques are in Skills > Fire craft.",
+         "start": "fire-essentials",
+         "topics": [
+           {"title": "Essentials", "articles": ["fire-essentials", "wet-weather-fire", "firewood-uk"]},
+           {"title": "Keep it going", "articles": ["banking-fire", "fire-reflector", "@carrying-embers", "@permanent-fire"]},
+           {"title": "Safety", "articles": ["fire-safety"]},
+           {"title": "Techniques", "articles": ["@ferro-rod", "@feather-sticks", "@fire-lays"]}
+         ]},
+        {"id": "food", "title": "Food", "icon": "cherry", "short": "Forage safely",
+         "intro": "Food matters less than warmth and water in the first days, and wild food carries real risks. Learn the rules before you eat anything.",
+         "start": "food-priorities",
+         "topics": [
+           {"title": "Read first", "articles": ["food-priorities", "foraging-rules", "edibility-test-myth"]},
+           {"title": "Wild food", "articles": ["insects", "shellfish-shore", "@foraging-calendar"]},
+           {"title": "Longer term", "articles": ["@rationing", "@year-round-food", "@cooking-wild-food"]}
+         ]},
+        {"id": "health", "title": "Health & hygiene", "icon": "shield-plus", "short": "Feet, teeth, gut, illness",
+         "intro": "Small problems become big ones when you can't get help. Clean hands, safe water, dry feet and early care for minor illness keep you going.",
+         "start": "preventing-infection",
+         "topics": [
+           {"title": "Staying well", "articles": ["preventing-infection", "blisters", "dental-care", "when-youre-ill"]},
+           {"title": "Hygiene", "articles": ["@water-hygiene", "@latrines", "@washing"]}
+         ]},
+        {"id": "mindset", "title": "Mindset", "icon": "brain", "short": "Stop, think, keep going",
+         "intro": "What you do in the first minutes, and how you keep your head over hours and days, matters as much as any skill. Start with STOP.",
+         "start": "emergency-priorities",
+         "topics": [
+           {"title": "First minutes", "articles": ["emergency-priorities", "stop-method", "panic-control", "decisions-under-stress"]},
+           {"title": "Keeping going", "articles": ["morale-routines", "loneliness", "groups-children"]}
+         ]}
+      ]
+    },
+    {
+      "id": "situations", "title": "Situations", "icon": "signpost", "color": "blue",
+      "short": "Lost, stranded, flood, storm, grid down",
+      "intro": "What to do in specific emergencies, from being lost on a hill to a power cut at home. Each starts with the most important actions.",
+      "categories": [
+        {"id": "lost", "title": "Lost in the hills or forest", "icon": "map-pin-off", "short": "Stop, get found, or walk out",
+         "intro": "Most lost walkers are found quickly if they stop, stay warm and make themselves easy to see. Start with the first actions below.",
+         "start": "lost-person-actions",
+         "topics": [
+           {"title": "Right now", "articles": ["lost-person-actions", "relocating", "emergency-night-out"]},
+           {"title": "Getting found", "articles": ["signalling-rescue", "be-visible", "whistle-and-sound", "helicopter-rescue"]},
+           {"title": "Reaching help", "articles": ["finding-help", "when-you-reach-help", "location-report"]},
+           {"title": "Walking out", "articles": ["@stay-or-go", "@follow-water-downhill", "@linear-features"]}
+         ]},
+        {"id": "car-snow", "title": "Stranded in a car in snow", "icon": "car", "short": "Stay with the car",
+         "intro": "A car is a shelter, a landmark and easy to find. Leaving it in a snowstorm is how people die.",
+         "start": "car-snow",
+         "topics": [{"title": "What to do", "articles": ["car-snow", "@hypothermia", "@be-visible"]}]},
+        {"id": "injured-alone", "title": "Injured and alone", "icon": "bandage", "short": "Treat, shelter, decide",
+         "intro": "Treat what you can, get warm, then decide whether you can move. Nobody knows you're hurt until you're missed, so plan for a long wait.",
+         "start": "injured-alone",
+         "topics": [{"title": "What to do", "articles": ["injured-alone", "@moving-with-injury", "@severe-bleeding", "@fractures-splinting", "@signalling-rescue"]}]},
+        {"id": "cold-water", "title": "Cold-water immersion", "icon": "waves", "short": "Float to live",
+         "intro": "Sudden cold water makes you gasp and panic. Fight your instinct to swim hard: float for a minute or two until your breathing settles.",
+         "start": "cold-water-immersion",
+         "topics": [{"title": "What to do", "articles": ["cold-water-immersion", "water-rescue", "@hypothermia"]}]},
+        {"id": "coast", "title": "Coast and tidal cut-off", "icon": "anchor", "short": "Tides, cliffs, getting stuck",
+         "intro": "British tides rise fast and big. Know the tide times before you go, and never try to swim round a headland.",
+         "start": "tidal-cutoff",
+         "topics": [{"title": "What to do", "articles": ["tidal-cutoff", "coast-and-tides", "@cold-water-immersion", "@shellfish-shore"]}]},
+        {"id": "flood", "title": "Flood", "icon": "droplets", "short": "Get high, stay out of it",
+         "intro": "Moving water is far stronger than it looks: 15 cm can knock you over and 60 cm can float a car. Get to high ground and stay out of flood water.",
+         "start": "flood-outdoors",
+         "topics": [{"title": "What to do", "articles": ["flood-outdoors", "flood-home", "@river-crossing"]}]},
+        {"id": "storm", "title": "Storms and severe weather", "icon": "cloud-lightning", "short": "Gales, lightning, snow",
+         "intro": "Most storm deaths in the UK come from falling trees, flying debris, flooding and cold. Get to shelter early and stay there.",
+         "start": "severe-weather-now",
+         "topics": [{"title": "What to do", "articles": ["severe-weather-now", "storm-survival", "lightning-safety", "@wind-chill", "@mountain-weather"]}]},
+        {"id": "heatwave", "title": "Heatwave", "icon": "thermometer-sun", "short": "Shade, water, rest",
+         "intro": "UK heatwaves kill thousands, mostly older people indoors. Keep cool, drink, and check on others.",
+         "start": "heatwave",
+         "topics": [{"title": "What to do", "articles": ["heatwave", "heat-and-sun", "@heat-illness"]}]},
+        {"id": "wildfire", "title": "Fire and smoke", "icon": "flame-kindling", "short": "Wildfire, house fire, smoke",
+         "intro": "Moorland and forest fires move fast in wind. Smoke kills more people than flames. Get out early, upwind or downhill, and stay low.",
+         "start": "fire-flood-smoke-now",
+         "topics": [{"title": "What to do", "articles": ["fire-flood-smoke-now", "wildfire", "house-fire"]}]},
+        {"id": "grid-down", "title": "Power or grid down at home", "icon": "zap-off", "short": "Water, warmth, cooking, toilets",
+         "intro": "A long power cut or supply failure at home: keep water, warmth, food and sanitation going, and work with your neighbours.",
+         "start": "grid-down-first",
+         "topics": [
+           {"title": "First hours", "articles": ["grid-down-first", "home-water-storage", "cold-house"]},
+           {"title": "Days and weeks", "articles": ["cooking-without-power", "home-food-storage", "toilets-fail", "home-security", "community"]}
+         ]},
+        {"id": "chem-rad", "title": "Chemical or radiation incident", "icon": "radiation", "short": "Go in, stay in, tune in",
+         "intro": "If there's a chemical, radiation or major smoke release, the UK advice is simple: go in, stay in, tune in. Get inside, close up, and listen to the radio.",
+         "start": "go-in-stay-in",
+         "topics": [{"title": "What to do", "articles": ["go-in-stay-in", "decontamination"]}]},
+        {"id": "urban", "title": "Urban survival", "icon": "building-2", "short": "Water, shelter, safety in towns",
+         "intro": "Towns have more resources and more hazards: water in odd places, shelter everywhere, but crowds, traffic and broken infrastructure.",
+         "start": "urban-survival",
+         "topics": [{"title": "What to do", "articles": ["urban-survival", "urban-water"]}]},
+        {"id": "bug-out", "title": "Leave or shelter in place?", "icon": "door-open", "short": "Bugging out vs staying",
+         "intro": "Staying put is usually safer than leaving. Know what would make you go, where you would go, and what you'd take.",
+         "start": "bug-out-or-stay",
+         "topics": [{"title": "Decide and prepare", "articles": ["bug-out-or-stay", "grab-bag"]}]}
+      ]
+    },
+    {
+      "id": "no-help", "title": "When help isn't coming", "icon": "footprints", "color": "violet",
+      "short": "Self-rescue and long-term survival",
+      "intro": "When nobody knows where you are, or help can't reach you: getting yourself out, getting through days and weeks, living off-grid, and treating injuries yourself.",
+      "categories": [
+        {"id": "self-rescue", "title": "Self-rescue and walking out", "icon": "footprints", "short": "Stay or go, then walk out",
+         "intro": "Deciding whether to stay or go is the biggest decision you'll make. If you go, follow water and linear features downhill, pace yourself, and never take a risk you don't have to.",
+         "start": "stay-or-go",
+         "topics": [
+           {"title": "Decide", "articles": ["stay-or-go"]},
+           {"title": "Walk out", "articles": ["follow-water-downhill", "linear-features", "pacing-yourself", "river-crossing"]},
+           {"title": "With a casualty", "articles": ["moving-with-injury", "carrying-casualty", "leaving-casualty"]}
+         ]},
+        {"id": "days-weeks", "title": "Surviving days to weeks", "icon": "calendar-days", "short": "Routine, rationing, sleep",
+         "intro": "Once you're past the first night, survival is about routine: water, fire, shelter maintenance, food, rest and hygiene, every day.",
+         "start": "daily-routine",
+         "topics": [
+           {"title": "Every day", "articles": ["daily-routine", "rationing", "sleeping-warm", "drying-clothes"]},
+           {"title": "Your camp", "articles": ["long-term-shelter", "@latrines"]},
+           {"title": "Staying healthy", "articles": ["@blisters", "@preventing-infection", "@dental-care", "@when-youre-ill"]}
+         ]},
+        {"id": "off-grid", "title": "Long-term off-grid", "icon": "trees", "short": "Water, fire, food, tools",
+         "intro": "Living for weeks or months without supplies: a sustainable camp, permanent water and fire, food through the seasons, and making what you need.",
+         "start": "off-grid-camp",
+         "topics": [
+           {"title": "Camp", "articles": ["off-grid-camp", "sustainable-water", "permanent-fire"]},
+           {"title": "Food through the year", "articles": ["year-round-food", "@smoking-drying", "@fishing-basics", "@trapping-law", "@foraging-calendar"]},
+           {"title": "Making and mending", "articles": ["@cordage-nettle-bramble", "@containers", "@wood-bone-tools", "@sewing-repairs", "@batteries-electronics"]}
+         ]},
+        {"id": "medicine", "title": "Medicine without help", "icon": "stethoscope", "short": "Wounds, infection, fever, pain",
+         "intro": "When nobody can take over: how to keep wounds clean, splints working, fevers and dehydration under control, and someone who can't be moved alive.",
+         "start": "medicine-overview",
+         "topics": [
+           {"title": "Wounds and injuries", "articles": ["medicine-overview", "wound-closure", "infection-escalation", "long-splinting", "burns-over-days"]},
+           {"title": "Illness and comfort", "articles": ["fever", "rewarming", "pain-without-drugs", "cant-be-moved", "@diarrhoea-ors", "@dehydration-signs"]}
+         ]}
+      ]
+    },
+    {
+      "id": "skills", "title": "Skills", "icon": "wrench", "color": "teal",
+      "short": "Navigation, knots, fire, shelter, food",
+      "intro": "Techniques to practise before you need them.",
+      "categories": [
+        {"id": "navigation", "title": "Navigation", "icon": "compass", "short": "Map, compass, north",
+         "intro": "Map and compass, grid references, finding north without a compass, and using this phone's compass, GPS and map.",
+         "start": "map-compass-basics",
+         "topics": [
+           {"title": "Map and compass", "articles": ["map-compass-basics", "grid-references", "walking-on-bearing", "contours-terrain", "handrails-catching"]},
+           {"title": "Without a compass", "articles": ["finding-north", "night-navigation"]},
+           {"title": "Distance and time", "articles": ["naismith-pacing"]},
+           {"title": "This phone", "articles": ["phone-navigation"]}
+         ]},
+        {"id": "knots", "title": "Knots & cordage", "icon": "knot", "short": "Six knots and cordage",
+         "intro": "Six knots cover almost everything: shelters, loads, joining lines and climbing a rope. Plus making cordage from plants.",
+         "start": "bowline",
+         "topics": [
+           {"title": "Knots", "articles": ["bowline", "clove-hitch", "taut-line-hitch", "truckers-hitch", "sheet-bend", "prusik"]},
+           {"title": "Cordage", "articles": ["cordage-nettle-bramble"]}
+         ]},
+        {"id": "tools", "title": "Tools & repairs", "icon": "hammer", "short": "Knife, containers, repairs",
+         "intro": "Look after your knife, make what you're missing, and repair clothing, kit and electronics.",
+         "start": "knife-safety",
+         "topics": [
+           {"title": "Knife", "articles": ["knife-safety", "knife-sharpening"]},
+           {"title": "Making things", "articles": ["containers", "wood-bone-tools"]},
+           {"title": "Repairs", "articles": ["sewing-repairs", "batteries-electronics"]}
+         ]},
+        {"id": "fire-craft", "title": "Fire craft", "icon": "flame-kindling", "short": "Ferro rod, tinder, fire lays",
+         "intro": "Every way to light a fire with your kit, the best UK tinders, and how to build and carry a fire.",
+         "start": "ferro-rod",
+         "topics": [
+           {"title": "Lighting", "articles": ["ferro-rod", "flint-and-steel", "char-cloth", "magnifier-fire", "arc-lighter"]},
+           {"title": "Tinder and fuel", "articles": ["natural-tinders", "feather-sticks", "fire-lays"]},
+           {"title": "Carrying fire", "articles": ["carrying-embers"]}
+         ]},
+        {"id": "shelter-building", "title": "Shelter building", "icon": "tent-tree", "short": "Debris hut, tarp, lean-to",
+         "intro": "Natural and tarp shelters, step by step, and how to make them stand up to British wind, rain and snow.",
+         "start": "tarp-a-frame",
+         "topics": [
+           {"title": "Tarp", "articles": ["tarp-a-frame", "tarp-rigging"]},
+           {"title": "Natural", "articles": ["debris-hut", "lean-to", "wind-snow-shelter"]}
+         ]},
+        {"id": "trapping-fishing", "title": "Trapping & fishing", "icon": "fish", "short": "What's legal, what works",
+         "intro": "Most trapping is illegal or restricted in the UK, and fishing needs a licence or permission. Here is what the law allows, and what actually works.",
+         "start": "trapping-law",
+         "topics": [{"title": "Law and methods", "articles": ["trapping-law", "fishing-basics", "improvised-fishing"]}]},
+        {"id": "cooking", "title": "Cooking & preserving", "icon": "utensils", "short": "Fire cooking, smoking, drying",
+         "intro": "Cooking safely on a fire, preparing wild food, and preserving food by smoking and drying.",
+         "start": "cooking-on-fire",
+         "topics": [{"title": "Cooking", "articles": ["cooking-on-fire", "cooking-wild-food", "smoking-drying"]}]},
+        {"id": "hygiene", "title": "Hygiene & sanitation", "icon": "hand-heart", "short": "Latrines, washing, clean water",
+         "intro": "Most illness in camps comes from dirty hands and poor sanitation. These habits prevent it.",
+         "start": "latrines",
+         "topics": [{"title": "Camp hygiene", "articles": ["latrines", "washing", "water-hygiene"]}]},
+        {"id": "weather", "title": "Weather reading", "icon": "cloud-sun-rain", "short": "Clouds, fronts, mountains",
+         "intro": "Read UK weather from the sky, the wind and the feel of the air when you have no forecast.",
+         "start": "uk-clouds",
+         "topics": [{"title": "Reading the sky", "articles": ["uk-clouds", "weather-fronts", "weather-lore", "mountain-weather", "wind-chill"]}]}
+      ]
+    },
+    {
+      "id": "nature", "title": "Nature", "icon": "leaf", "color": "green",
+      "short": "Species, seasons, lookalikes",
+      "intro": "UK plants, fungi and animals with photos, what's in season, and side-by-side comparisons of dangerous lookalikes.",
+      "links": [
+        {"title": "Species guide", "icon": "leaf", "to": "#/species", "sub": "Plants, fungi, animals and psychoactive species"},
+        {"title": "In season now", "icon": "calendar-range", "to": "#/season", "sub": "What you can forage this month"}
+      ],
+      "categories": [
+        {"id": "identify", "title": "Identification", "icon": "search", "short": "How to ID safely",
+         "intro": "How to identify plants, fungi, birds and tracks properly, and why a single feature is never enough.",
+         "start": "species-guide-howto",
+         "topics": [
+           {"title": "How to identify", "articles": ["species-guide-howto", "how-to-identify-plants", "fungi-id-basics", "berry-rules", "bird-id-basics", "tracks-signs"]},
+           {"title": "Safety", "articles": ["psychoactive-safety"]}
+         ]},
+        {"id": "seasonal", "title": "Seasonal calendar", "icon": "calendar-range", "short": "Month by month",
+         "intro": "What grows when in the UK, month by month.",
+         "start": "foraging-calendar",
+         "topics": [{"title": "Calendar", "articles": ["foraging-calendar"]}]},
+        {"id": "lookalikes", "title": "Lookalike comparisons", "icon": "scale", "short": "Safe vs deadly, side by side",
+         "intro": "Side-by-side comparisons of edible species and the poisonous ones they are mistaken for.",
+         "start": "compare-cow-parsley",
+         "topics": [
+           {"title": "Plants", "articles": ["compare-cow-parsley", "compare-water-dropwort", "compare-wild-garlic", "compare-elder-dogwood", "compare-sloe-nightshade", "compare-red-berries"]},
+           {"title": "Fungi", "articles": ["compare-field-mushroom", "compare-amanitas", "compare-chanterelle", "compare-liberty-cap"]}
+         ]}
+      ]
+    },
+    {
+      "id": "reference", "title": "Reference", "icon": "book-open", "color": "slate",
+      "short": "Morse, conversions, kit, credits",
+      "intro": "Tables and quick cards to look things up fast.",
+      "links": [
+        {"title": "First-aid quick cards", "icon": "heart-pulse", "to": "#/cards", "sub": "The quick steps of the key first-aid pages"},
+        {"title": "Photo credits", "icon": "images", "to": "#/credits", "sub": "Photographers and licences"}
+      ],
+      "categories": [
+        {"id": "quick-ref", "title": "Quick reference", "icon": "book-open", "short": "Morse, NATO, conversions",
+         "intro": "Codes, signals and conversions.",
+         "start": "distress-signals",
+         "topics": [{"title": "Tables", "articles": ["distress-signals", "morse-code", "nato-alphabet", "conversions"]}]},
+        {"id": "kit", "title": "My kit", "icon": "backpack", "short": "Gear and checklist",
+         "intro": "Your exact kit: how to use and look after each item, and a checklist with tick boxes.",
+         "start": "kit-checklist",
+         "topics": [{"title": "Your kit", "articles": ["kit-checklist", "kit-ferro-rod", "kit-flint-steel", "kit-magnifier", "kit-pot-bottle", "kit-cotton-cloth", "solar-panel", "kit-phone"]}]}
+      ]
+    }
+  ],
+  "cards": ["primary-survey", "cpr-adult", "cpr-child", "choking", "severe-bleeding", "recovery-position", "shock", "hypothermia", "head-injury", "burns", "stings-anaphylaxis", "heart-attack-stroke", "asthma-attack", "seizures", "heat-illness", "adder-bite", "poisoning", "cold-water-immersion"]
+}

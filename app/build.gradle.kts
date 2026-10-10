@@ -17,8 +17,8 @@ android {
         applicationId = "uk.theseus.survival"
         minSdk = 26
         targetSdk = 34
-        versionCode = 2
-        versionName = "1.1.0"
+        versionCode = 3
+        versionName = "1.2.0"
     }
 
     signingConfigs {
@@ -72,6 +72,8 @@ android {
 }
 
 dependencies {
+    // WebViewAssetLoader: serves assets at https://appassets.androidplatform.net (AndroidX, not Google Play services).
+    implementation("androidx.webkit:webkit:1.10.0")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.robolectric:robolectric:4.14.1")
 }

@@ -168,12 +168,12 @@ latin: Atropa belladonna
 aka: belladonna
 group: plant
 kind: herb
-status: deadly
+status: deadly, psychoactive
 season: Flowers Jun–Aug; berries Aug–Oct
 habitat: Woodland edges and clearings, scrub, old quarries and ruins on chalk and limestone (uncommon, mainly south and east England)
 summary: Bushy plant with dull, bell-shaped purple-brown flowers and glossy black, cherry-like berries sitting in a green star. A few berries can kill a child.
 lookalikes: blackthorn, bilberry, elder, black-nightshade, bittersweet
-tags: belladonna, atropine, berries, black berries
+tags: belladonna, atropine, hyoscine, scopolamine, anticholinergic, berries, black berries
 wiki: Atropa belladonna
 ---
 !danger Deadly poisonous
@@ -188,6 +188,29 @@ Contains atropine and related alkaloids: dilated pupils, blurred vision, fast he
 
 ## Lookalikes
 - Sloes from [[s:blackthorn]] have a dusty bloom and grow on a thorny woody shrub. [[s:bilberry]] berries are small, grow on a dwarf shrub on moorland, and have a crown scar. See [[a:compare-sloe-nightshade]].
+
+## Dangers
+- **Anticholinergic poisoning**: "**hot as a hare, blind as a bat, dry as a bone, red as a beet, mad as a hatter**". Delirium can last a day or more.
+- A delirious person can't judge danger: outdoors this leads to falls, wandering off, drowning and exposure.
+- The roots and leaves are as poisonous as the berries. Some people have eaten it on purpose for its effects and been seriously poisoned: the amount of poison varies from plant to plant.
+
+## Law
+- Not a controlled drug under the Misuse of Drugs Act 1971 (atropine is a prescription-only medicine). Supplying any plant for its mind-altering effect is an offence under the **Psychoactive Substances Act 2016**.
+- Uprooting any wild plant without the landowner's permission is illegal (Wildlife and Countryside Act 1981).
+
+## If someone has eaten it
+**Symptoms:** start **30 minutes–2 hours** after eating and can last **24–48 hours** or longer:
+- **Very large pupils**, blurred vision, dazzled by light.
+- Very dry mouth and hot, dry, **flushed** skin; high temperature; can't pass urine.
+- Fast heartbeat, unsteadiness, slurred speech.
+- Agitation, confusion, hallucinations; fits and coma in severe cases.
+
+**First aid:**
+- **Don't** make them vomit. Rinse the mouth; remove any berries still in it.
+- **Keep a sample** (a sprig with berries or flowers) and a photo; note how many berries and when. Even one or two in a child needs hospital.
+- **Stay with them** and keep them safe from water, heights and fire. If overheating, loosen clothing and cool gently with damp cloths, then keep them from chilling.
+- Drowsy or unresponsive: [[a:recovery-position]]; check breathing. Fits: [[a:seizures]]. Not breathing: CPR ([[t:cpr]]).
+- They need **hospital treatment**: get them to medical help, or send someone now. See [[a:poisoning]].
 
 === black-nightshade
 name: Black nightshade

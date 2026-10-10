@@ -59,42 +59,102 @@ name: Fly agaric
 latin: Amanita muscaria
 group: fungus
 kind: mushroom
-status: poisonous
+status: poisonous, psychoactive
 season: Aug–Nov
 habitat: Under birch and pine (sometimes spruce), on heaths and in woods
-summary: The fairy-tale toadstool: scarlet cap with white warty flecks, white gills and a ring. Poisonous and hallucinogenic.
-lookalikes: 
-tags: amanita, red toadstool, muscimol, ibotenic acid
+summary: The fairy-tale toadstool: scarlet cap with white warty flecks, white gills and a ring. Poisonous and hallucinogenic; a close relative of the deadly death cap.
+lookalikes: panther-cap, the-blusher, death-cap
+tags: amanita, red toadstool, muscimol, ibotenic acid, magic mushroom, hallucinogen
 wiki: Amanita muscaria
 ---
-## Identification
-- Cap 8–20 cm, **bright red to orange** with scattered **white warts** (which rain can wash off).
-- Gills white, free. Stem white with a hanging ring and a bulbous base ringed by warty collars.
+!danger An Amanita: same family as the death cap
+The fly agaric is an **Amanita**, the family that includes the deadly [[s:death-cap]] and [[s:destroying-angel]], and the more poisonous [[s:panther-cap]]. Old or rain-washed caps lose their warts and fade to orange or yellow, and young "eggs" look like other Amanitas. **Never eat any Amanita.** See [[a:compare-amanitas]].
+!end
 
-## Cautions
-- Contains ibotenic acid and muscimol: confusion, agitation, hallucinations, drowsiness, vomiting, and seizures in larger doses. Rarely fatal but dangerous, especially for children.
+## Identification
+- Cap 8–20 cm, **bright red to orange** with scattered **white warts** (which rain can wash off); fine grooves at the edge with age.
+- Gills white, free. Spore print white.
+- Stem white with a hanging ring and a bulbous base ringed by **warty collars** (not a loose bag-like volva).
+- Flesh white, yellowish just under the cap skin.
+- Almost always with birch or pine; often in rings around a tree.
+
+## Lookalikes
+- **Deadly:** a faded fly agaric without warts can be confused with other Amanitas; the [[s:death-cap]] has an olive-green to yellowish cap, a skirt-like ring and a **bag-like volva**.
+- [[s:panther-cap]]: brown cap, pure white warts; more toxic.
+- [[s:the-blusher]]: pinkish-brown cap, flesh turns pink when damaged.
+
+## Dangers
+- Contains **ibotenic acid and muscimol**: confusion, agitation, hallucinations, drowsiness, vomiting, muscle twitching, and seizures in larger amounts. Rarely fatal in adults but dangerous, especially for **children and dogs**.
+- The amount of toxin varies widely from mushroom to mushroom.
+- **Impairment outdoors kills**: deep drowsiness alternating with agitation, poor coordination and confusion lead to falls, wandering, drowning and hypothermia.
+
+## Law
+- *Amanita muscaria* is **not** a controlled drug under the Misuse of Drugs Act 1971. However, the **Psychoactive Substances Act 2016** makes it an offence to produce, supply or offer to supply any psychoactive substance for people to consume (up to 7 years in prison). Shops can no longer legally sell it for eating.
+
+## If someone has eaten it
+**Symptoms:** usually start **30 minutes–2 hours** after eating (up to 3 hours) and last **6–24 hours**: dizziness, vomiting, unsteadiness, confusion, alternating **deep sleepiness and agitation**, hallucinations, muscle jerks; fits and coma in severe cases, especially in children.
+
+!danger Think "death cap" if
+Symptoms start **6 hours or more** after eating, with **severe vomiting and watery diarrhoea**: a deadly Amanita may have been eaten by mistake. They need hospital **urgently, even if they seem to recover**.
+!end
+
+**First aid:**
+- **Don't** make them vomit. Sips of water only.
+- **Keep a sample** (with the base) and a photo; note what, how much and when.
+- Keep them **safe**: away from water, edges and fire; stay with them. Keep them **warm**: a drowsy person cools fast ([[a:hypothermia]]).
+- Drowsy or unresponsive: [[a:recovery-position]]; check breathing. Fits: [[a:seizures]]. Not breathing: CPR ([[t:cpr]]).
+- **Get them to medical help**, or send someone. When you reach a phone or a person, ask for an ambulance and say which mushroom. See [[a:poisoning]].
 
 === panther-cap
 name: Panther cap
 latin: Amanita pantherina
 group: fungus
 kind: mushroom
-status: poisonous
+status: poisonous, psychoactive
 season: Jul–Oct
 habitat: Broadleaf woods (beech, oak) and sometimes conifers, especially on chalk and limestone
-summary: Brown cap with pure white warts, white gills and a ring with a gutter-like rim to the volva. More toxic than fly agaric.
-lookalikes: the-blusher
-tags: amanita, brown cap, white warts, muscimol
+summary: Brown cap with pure white warts, white gills and a ring with a gutter-like rim to the volva. More toxic than fly agaric and can kill; a close relative of the death cap.
+lookalikes: the-blusher, death-cap, fly-agaric
+tags: amanita, brown cap, white warts, muscimol, ibotenic acid, hallucinogen
 wiki: Amanita pantherina
 ---
-## Identification
-- Cap 5–12 cm, smoky to olive-brown, with **pure white** warts.
-- Gills white; stem white with a smooth, fragile ring.
-- Bulbous base with a tight volva ending in a distinct **rolled rim ("gutter")**.
-- Flesh does **not** turn pink when cut or bruised (that is the blusher).
+!danger Can kill: an Amanita, like the death cap
+The panther cap has more ibotenic acid and muscimol than the fly agaric and **has caused deaths**. It is an **Amanita**, in the same family as the deadly [[s:death-cap]] and [[s:destroying-angel]], and grows in the same woods. **Never eat any Amanita.** See [[a:compare-amanitas]].
+!end
 
-## Cautions
-- Contains the same toxins as the fly agaric, in larger amounts: severe poisoning, sometimes fatal.
+## Identification
+- Cap 5–12 cm, smoky to olive-brown, with **pure white** warts; the edge has **fine grooves** (striations).
+- Gills white, free. Spore print white.
+- Stem white with a smooth, fragile ring (**no grooves** on its upper side).
+- Bulbous base with a tight volva ending in a distinct **rolled rim ("gutter")**, often with one or two hoop-like rings just above.
+- Flesh white and does **not** turn pink when cut or bruised (that is the blusher).
+
+## Lookalikes
+- **Deadly:** the [[s:death-cap]]: olive-green to yellowish cap, usually without warts, a skirt-like ring and a large **bag-like volva**.
+- [[s:the-blusher]]: pinkish-brown cap with greyish or pinkish warts, **flesh turns pink** where damaged, **grooved ring**, no rolled rim at the base.
+- [[s:fly-agaric]]: red cap.
+
+## Dangers
+- Contains **ibotenic acid and muscimol** in larger amounts than the fly agaric: severe poisoning, coma and sometimes death.
+- **Impairment outdoors kills**: falls, wandering, drowning and hypothermia.
+- Dangerous for **children and dogs**.
+
+## Law
+- Not a controlled drug under the Misuse of Drugs Act 1971. The **Psychoactive Substances Act 2016** makes it an offence to produce, supply or offer to supply any psychoactive substance for people to consume.
+
+## If someone has eaten it
+**Symptoms:** usually start **30 minutes–2 hours** after eating and can last **12–24 hours**: dizziness, vomiting, confusion, alternating **deep sleepiness and agitation**, hallucinations, muscle jerks, fits and coma.
+
+!danger Think "death cap" if
+Symptoms start **6 hours or more** after eating, with **severe vomiting and watery diarrhoea**. They need hospital **urgently, even if they seem to recover**.
+!end
+
+**First aid:**
+- **Don't** make them vomit. Sips of water only.
+- **Keep a sample** (with the base) and a photo; note what, how much and when.
+- **Stay with them**; keep them safe and **warm**.
+- Drowsy or unresponsive: [[a:recovery-position]]; check breathing. Fits: [[a:seizures]]. Not breathing: CPR ([[t:cpr]]).
+- This can be serious: **get them to medical help**, or send someone now. See [[a:poisoning]].
 
 === the-blusher
 name: The blusher

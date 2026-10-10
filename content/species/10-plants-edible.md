@@ -8,6 +8,7 @@ group: plant
 kind: herb
 status: edible, medicinal
 season: Young tops Mar–Jun (and regrowth after cutting); seeds Aug–Oct; fibre stems Aug–Oct
+harvest: young tops 3-6; seeds 8-10; fibre stems 8-10
 habitat: Almost everywhere with rich soil: hedgerows, woodland edges, riverbanks, around farms, ruins and old campsites
 summary: Stinging herb with toothed, heart-shaped leaves in opposite pairs. A top wild green when cooked and the best UK fibre for cordage.
 lookalikes: white-dead-nettle
@@ -36,6 +37,7 @@ group: plant
 kind: herb
 status: edible
 season: Leaves Mar–Jun; flowers Mar–Nov
+harvest: leaves 3-6; flowers 3-11
 habitat: Hedge banks, verges, waste ground, field edges, often growing among stinging nettles
 summary: Nettle-like plant with no sting and white, hooded two-lipped flowers in whorls. Young leaves and flowers are edible.
 lookalikes: nettle
@@ -59,6 +61,7 @@ group: plant
 kind: herb
 status: edible, medicinal
 season: Leaves all year (best Feb–Apr before flowering); flowers Mar–Oct (peak Apr–May); roots Sep–Mar
+harvest: leaves 1-12; flowers 3-10; roots 9-3
 habitat: Lawns, verges, pasture, waste ground: almost everywhere
 summary: Rosette of jagged leaves with a single yellow flower on a hollow, milky stalk. Every part is edible.
 lookalikes: 
@@ -87,6 +90,7 @@ group: plant
 kind: herb
 status: edible
 season: Leaves Feb–May; flowers Apr–Jun; seed pods May–Jun
+harvest: leaves 2-5; flowers 4-6; seed pods 5-6
 habitat: Damp, shady broadleaf woodland, stream banks and hedges, often as dense carpets, especially on chalk and limestone
 summary: Carpets of broad, soft leaves smelling strongly of garlic, with white star-shaped flowers. Deadly lookalikes grow in the same woods.
 lookalikes: lily-of-the-valley, lords-and-ladies, bluebell, daffodil
@@ -113,6 +117,7 @@ group: plant
 kind: herb
 status: edible, invasive
 season: Leaves Nov–May; flowers Mar–Jun
+harvest: leaves 11-5; flowers 3-6
 habitat: Hedge banks, verges and waste ground, especially in the south-west and near the coast
 summary: Garlic-scented plant with a sharply triangular stem and drooping white bell flowers with a green stripe.
 lookalikes: wild-garlic, bluebell
@@ -139,6 +144,7 @@ group: plant
 kind: herb
 status: edible
 season: Leaves Feb–Jun (second-year plants), new rosettes autumn; flowers Apr–Jun
+harvest: leaves 2-6; autumn rosettes 9-11; flowers 4-6
 habitat: Hedgerows, woodland edges, shady verges and walls
 summary: Upright hedgerow plant with heart-shaped, toothed leaves that smell of garlic when crushed and small white four-petalled flowers.
 lookalikes: 
@@ -164,6 +170,7 @@ group: plant
 kind: herb
 status: edible, medicinal
 season: Young shoots Feb–May; seeds (burrs) Jun–Sep
+harvest: young shoots 2-5; seeds 6-9
 habitat: Hedgerows, field edges, gardens, scrambling over other plants
 summary: Straggling plant whose stems, leaves and seeds are covered in tiny hooks, so it sticks to clothes. Young tips are edible cooked.
 lookalikes: 
@@ -190,6 +197,7 @@ group: plant
 kind: herb
 status: edible, medicinal
 season: Leaves Mar–Oct; flower heads Apr–Oct
+harvest: leaves 3-10; flower heads 4-10
 habitat: Grassland, lawns, paths, verges, very common everywhere
 summary: Rosette of narrow, strongly ribbed leaves and short dark flower heads on long stalks. A traditional first-aid plant for stings and minor cuts.
 lookalikes: greater-plantain
@@ -213,6 +221,7 @@ group: plant
 kind: herb
 status: edible, medicinal
 season: Leaves Mar–Oct; seed spikes Jun–Oct
+harvest: leaves 3-10; seed spikes 6-10
 habitat: Trampled ground: paths, gateways, farm tracks, lawns
 summary: Flat rosette of broad oval leaves with parallel veins, thriving on trampled paths. Edible greens and a traditional poultice plant.
 lookalikes: ribwort-plantain
@@ -236,6 +245,7 @@ group: plant
 kind: herb
 status: edible, medicinal, caution
 season: Leaves all year; flowers Jun–Nov
+harvest: leaves 1-12; flowers 6-11
 habitat: Grassland, verges, lawns, dry banks
 summary: Feathery, finely divided aromatic leaves and flat-topped clusters of small white or pink flowers. A traditional wound herb.
 lookalikes: hemlock, fools-parsley
@@ -262,6 +272,7 @@ group: plant
 kind: herb
 status: edible, caution
 season: Leaves Feb–Nov (best in spring)
+harvest: leaves 2-11
 habitat: Meadows, grassy verges, woodland clearings
 summary: Arrow-shaped leaves with a sharp lemony taste and backward-pointing lobes clasping the stem. Edible in moderation.
 lookalikes: lords-and-ladies, wood-sorrel
@@ -287,6 +298,7 @@ group: plant
 kind: herb
 status: edible, caution
 season: Leaves all year; flowers Apr–May
+harvest: leaves 1-12; flowers 4-5
 habitat: Shady, damp woodland floors, mossy banks and tree bases
 summary: Clover-like trefoil leaves that fold up at night and a delicate white flower with lilac veins. Pleasantly sour, eat a little.
 lookalikes: 
@@ -311,6 +323,7 @@ group: plant
 kind: tree or shrub
 status: edible, medicinal
 season: Young leaves Apr–May; flowers May; haws (berries) Sep–Nov
+harvest: young leaves 4-5; flowers 5; haws 9-11
 habitat: Hedgerows everywhere, scrub, woodland edges, upland valleys
 summary: Thorny hedgerow shrub with deeply lobed leaves, white "may" blossom and clusters of dark red haws in autumn.
 lookalikes: blackthorn
@@ -339,6 +352,7 @@ group: plant
 kind: shrub
 status: edible, medicinal
 season: Young shoots Apr–Jun; berries late Jul–Sep (traditionally not after Michaelmas, 29 Sep, when they go mouldy)
+harvest: young shoots 4-6; berries 7-9
 habitat: Hedges, woodland, scrub, waste ground, everywhere
 summary: Arching, prickly stems with leaves of 3–5 toothed leaflets and familiar black berries. Very safe and very common.
 lookalikes: raspberry
@@ -365,6 +379,7 @@ group: plant
 kind: shrub
 status: edible, medicinal
 season: Fruit Jul–Sep
+harvest: fruit 7-9
 habitat: Woodland clearings, heaths, upland scrub, especially in the north and west
 summary: Upright canes with fine bristles, leaves white underneath, and red berries that pull off leaving a hollow cup.
 lookalikes: blackberry
@@ -386,6 +401,7 @@ group: plant
 kind: shrub or small tree
 status: edible, medicinal, caution
 season: Flowers late May–Jun; berries Aug–Oct
+harvest: flowers 5-6; berries 8-10
 habitat: Hedgerows, woodland edges, waste ground, around rabbit warrens and old buildings
 summary: Fast-growing shrub with pinnate leaves, flat creamy flower heads and drooping clusters of tiny black berries. Flowers and cooked berries are edible.
 lookalikes: dogwood, deadly-nightshade, privet
@@ -418,6 +434,7 @@ group: plant
 kind: shrub
 status: edible, medicinal
 season: Flowers Jun–Jul; hips Sep–Dec (sweeter after frost)
+harvest: flowers 6-7; hips 9-12
 habitat: Hedgerows, scrub, woodland edges
 summary: Scrambling rose with hooked prickles, pale pink flowers and bright red oval hips, very rich in vitamin C.
 lookalikes: 
@@ -442,6 +459,7 @@ group: plant
 kind: shrub
 status: edible, caution
 season: Flowers Mar–Apr (before leaves); sloes Sep–Nov (best after frost)
+harvest: sloes 9-11
 habitat: Hedgerows, scrub, woodland edges, coastal cliffs
 summary: Dense, black-barked thorny shrub with white blossom before the leaves, and blue-black, bloom-covered sloes.
 lookalikes: deadly-nightshade, hawthorn, bilberry
@@ -469,6 +487,7 @@ group: plant
 kind: dwarf shrub
 status: edible
 season: Fruit Jul–Sep
+harvest: fruit 7-9
 habitat: Acid heaths, moorland, upland and pine/oak woods
 summary: Low, bright-green shrub on moorland with small oval leaves and blue-black berries with a flat crown. Excellent food.
 lookalikes: deadly-nightshade, blackthorn
@@ -493,6 +512,7 @@ group: plant
 kind: herb
 status: edible
 season: Fruit Jun–Aug
+harvest: fruit 6-8
 habitat: Woodland edges, banks, dry grassland, railway cuttings, on chalk especially
 summary: Tiny strawberries on a low plant with three-toothed leaflets and white five-petalled flowers.
 lookalikes: 
@@ -517,6 +537,7 @@ group: plant
 kind: tree
 status: edible, caution
 season: Fruit Sep–Nov
+harvest: fruit 9-11
 habitat: Woodland, hedgerows, scrub
 summary: Small tree with apple blossom and small, very sour yellow-green apples. Cook them; they are full of pectin.
 lookalikes: 
@@ -542,6 +563,7 @@ group: plant
 kind: tree
 status: edible, caution
 season: Fruit Jun–Jul
+harvest: fruit 6-7
 habitat: Woodland edges, hedgerows, hillsides
 summary: Tall tree with shiny red-brown bark peeling in horizontal bands and small dark red cherries.
 lookalikes: cherry-laurel
@@ -567,6 +589,7 @@ group: plant
 kind: shrub or small tree
 status: edible
 season: Catkins Jan–Mar; nuts Aug–Oct
+harvest: nuts 8-10
 habitat: Woodland understorey (often coppiced), hedgerows, scrub
 summary: Multi-stemmed shrub with round, soft, toothed leaves, yellow "lamb's tail" catkins and edible nuts in frilly husks.
 lookalikes: 
@@ -589,6 +612,7 @@ group: plant
 kind: tree
 status: edible
 season: Nuts Oct–Nov
+harvest: nuts 10-11
 habitat: Woods and parks, especially on sandy soils in southern England
 summary: Large tree with long, glossy, saw-toothed leaves and very spiny cases holding brown chestnuts. Roast them; do not confuse with poisonous conkers.
 lookalikes: horse-chestnut
@@ -613,6 +637,7 @@ group: plant
 kind: tree
 status: edible, caution
 season: Young leaves Apr–May; beechmast (nuts) Sep–Oct, heavy crops only some years
+harvest: young leaves 4-5; beechmast 9-10
 habitat: Woods on chalk and limestone, plantations, parks
 summary: Smooth grey-barked tree with oval wavy-edged leaves and small triangular nuts in bristly husks.
 lookalikes: 
@@ -639,6 +664,7 @@ group: plant
 kind: tree
 status: edible, medicinal
 season: Sap rises Mar (2–3 weeks before leaves open); bark all year
+harvest: sap 3
 habitat: Heaths, open woods, upland, waste ground; a pioneer tree everywhere
 summary: White papery bark with dark diamond marks, and drooping twigs. Bark is the best natural UK tinder and the sap is drinkable.
 lookalikes: 
@@ -662,6 +688,7 @@ group: plant
 kind: tree
 status: edible, medicinal
 season: Needles all year; resin all year
+harvest: needles 1-12; resin 1-12
 habitat: Native in the Scottish Highlands, planted widely across the UK on heaths and sandy soils
 summary: Tall pine with orange-red flaky upper bark and paired blue-green needles. Resin-soaked "fatwood" is excellent fire starter.
 lookalikes: yew
@@ -688,6 +715,7 @@ group: plant
 kind: tree
 status: edible, medicinal
 season: Young tips Apr–Jun; needles all year
+harvest: young tips 4-6; needles 1-12
 habitat: Conifer plantations throughout the UK
 summary: The Christmas tree: single, four-sided sharp needles on small pegs, and long hanging cones. Fresh green tips are edible.
 lookalikes: yew
@@ -711,6 +739,7 @@ group: plant
 kind: herb
 status: edible, medicinal, caution
 season: Roots of first-year plants Sep–Mar; young stems May–Jun
+harvest: roots 9-3; young stems 5-6
 habitat: Woodland edges, waste ground, verges, field margins
 summary: Huge rhubarb-like leaves, woolly underneath, and purple thistle-like flowers that become hooked burrs. Roots are edible cooked.
 lookalikes: foxglove
@@ -736,6 +765,7 @@ group: plant
 kind: herb
 status: edible
 season: All year in mild weather
+harvest: leaves 1-12
 habitat: Gardens, field edges, disturbed ground, farmyards
 summary: Sprawling, mat-forming plant with small oval leaves, tiny white star flowers and a single line of hairs down the stem.
 lookalikes: scarlet-pimpernel
@@ -760,6 +790,7 @@ group: plant
 kind: herb
 status: edible, medicinal
 season: Leaves Apr–Oct; flowers Jun–Oct
+harvest: leaves 4-10; flowers 6-10
 habitat: Verges, waste ground, field edges, coastal banks
 summary: Bushy plant with round, shallowly lobed leaves and pink-purple flowers striped with darker veins. Leaves and seed "cheeses" are edible.
 lookalikes: 
@@ -782,6 +813,7 @@ group: plant
 kind: herb
 status: edible, medicinal
 season: Flowers May–Sep
+harvest: flowers 5-9
 habitat: Meadows, pasture, verges
 summary: Familiar clover with three oval leaflets, each with a pale crescent, and round pinkish-purple flower heads.
 lookalikes: wood-sorrel
@@ -805,6 +837,7 @@ group: plant
 kind: herb
 status: edible
 season: Leaves most of the year (best Jan–May)
+harvest: leaves 1-5
 habitat: Gardens, paths, walls, bare ground
 summary: Small rosette of round-leafleted leaves with a peppery cress taste and tiny white four-petalled flowers.
 lookalikes: 
@@ -825,6 +858,7 @@ group: plant
 kind: herb
 status: edible, caution
 season: Best Oct–May
+harvest: leaves 10-5
 habitat: Shallow, clear, flowing streams and ditches, especially on chalk
 summary: Floating and creeping aquatic plant with pinnate leaves of rounded leaflets and a hot, peppery taste. Wild plants must be cooked.
 lookalikes: fools-watercress, hemlock-water-dropwort
@@ -852,6 +886,7 @@ group: plant
 kind: herb
 status: edible
 season: Leaves all year
+harvest: leaves 1-12
 habitat: Coastal shingle, sea walls, cliffs and saltmarsh edges
 summary: The wild ancestor of beetroot and chard: glossy, thick, dark green leaves on the shore. An excellent wild spinach.
 lookalikes: 
@@ -873,6 +908,7 @@ group: plant
 kind: herb
 status: edible, caution
 season: Jun–Sep
+harvest: shoots 6-9
 habitat: Muddy saltmarshes and estuaries
 summary: Small, jointed, succulent green stems like tiny cacti, growing in tidal mud. Salty and crunchy.
 lookalikes: 
@@ -895,6 +931,7 @@ group: plant
 kind: herb
 status: edible, medicinal
 season: Leaves Apr–Oct; flowers Jul–Oct
+harvest: leaves 4-10; flowers 7-10
 habitat: Wet ground beside rivers, ponds, marshes and ditches
 summary: Strongly mint-scented plant of wet places with hairy, toothed leaves and round lilac flower heads.
 lookalikes: hemlock-water-dropwort
@@ -919,6 +956,7 @@ group: plant
 kind: herb
 status: medicinal, caution
 season: Flowers Jun–Sep
+harvest: flowers 6-9
 habitat: Damp meadows, ditches, riverbanks, wet woodland
 summary: Tall plant of wet places with frothy cream flower clusters smelling of almond and honey. A traditional source of salicylates.
 lookalikes: hemlock-water-dropwort
@@ -942,6 +980,7 @@ group: plant
 kind: tree
 status: edible, medicinal
 season: Young leaves Apr–May; flowers Jun–Jul
+harvest: young leaves 4-5; flowers 6-7
 habitat: Parks, avenues, old woodland
 summary: Large tree with heart-shaped, lopsided leaves that are a pleasant salad green when young, and fragrant flowers for tea.
 lookalikes: 
@@ -964,6 +1003,7 @@ group: plant
 kind: tree
 status: edible, caution
 season: Acorns Sep–Nov
+harvest: acorns 9-11
 habitat: Woodland, hedgerows and parkland throughout the UK
 summary: Broad, long-lived tree with lobed leaves and acorns. Acorns are a big calorie source, but only after leaching out the bitter tannins.
 lookalikes: 
@@ -989,6 +1029,7 @@ group: plant
 kind: tree or shrub
 status: medicinal, caution
 season: Bark best in spring; all year
+harvest: bark 1-12
 habitat: Riverbanks, wet ground, fens and lakesides
 summary: Trees of wet places with long narrow leaves (or oval in goat willow) and catkins. Flexible rods for weaving; the bark contains salicin.
 lookalikes: 
@@ -1013,6 +1054,7 @@ group: plant
 kind: tree
 status: edible, caution
 season: Berries Aug–Nov
+harvest: berries 8-11
 habitat: Uplands, moorland edges, rocky ground, also widely planted in streets
 summary: Small tree with feather-like leaves of toothed leaflets and heavy clusters of orange-red berries. Berries must be cooked.
 lookalikes: elder
@@ -1087,6 +1129,7 @@ group: plant
 kind: herb
 status: medicinal, caution
 season: Leaves Apr–Oct; flowers May–Jul
+harvest: leaves 4-10
 habitat: Riverbanks, ditches, damp verges, field edges
 summary: Big, bristly-hairy leaves and drooping clusters of bell flowers. Known as "knitbone": for external use only.
 lookalikes: foxglove
@@ -1115,6 +1158,7 @@ group: plant
 kind: moss
 status: medicinal, info
 season: All year
+harvest: moss 1-12
 habitat: Bogs, wet moorland, wet heath, wet hollows in upland woods
 summary: Soft, very absorbent bog moss in green, red or golden cushions. Used as a wound dressing in WW1; also marks dangerous bog.
 lookalikes: 
@@ -1140,6 +1184,7 @@ group: plant
 kind: herb
 status: edible, caution
 season: Shoots Apr–Jun; green flower spikes Jun; pollen Jun–Jul; down Oct–Mar; rhizomes autumn–winter
+harvest: shoots 4-6; green flower spikes 6; pollen 6-7; rhizomes 9-2
 habitat: Shallow water at the edges of ponds, lakes, canals and ditches
 summary: Tall waterside plant with strap-like leaves and the iconic brown "sausage" seed head. A food source, and its fluffy down is excellent tinder.
 lookalikes: yellow-iris
@@ -1166,6 +1211,7 @@ group: plant
 kind: shrub
 status: edible, caution
 season: Flowers all year, peaking Mar–May
+harvest: flowers 1-12
 habitat: Heaths, rough grassland, cliffs, moorland edges
 summary: Dense, very spiny evergreen shrub with coconut-scented yellow pea flowers. Dead gorse burns ferociously.
 lookalikes: 
@@ -1191,6 +1237,7 @@ group: plant
 kind: dwarf shrub
 status: edible, info
 season: Flowers Jul–Sep; all year as bedding and fuel
+harvest: flowering tops 7-9
 habitat: Moorland and heath on acid soils; vast areas in the uplands
 summary: Low woody shrub with tiny scale-like leaves and pink-purple flower spikes covering moorland. Useful bedding, fuel and tea.
 lookalikes: 
@@ -1214,6 +1261,7 @@ group: plant
 kind: herb
 status: edible, info
 season: Young stems May–Jul; down Jul–Oct
+harvest: young stems 5-7
 habitat: Pasture, verges, waste ground
 summary: Spiny-leaved thistle with purple flower heads. The peeled stems are edible, and the dry down helps catch a flame.
 lookalikes: 
@@ -1235,6 +1283,7 @@ group: plant
 kind: herb
 status: edible, medicinal
 season: Leaves Apr–Oct; flowers Jun–Oct
+harvest: leaves 4-10; flowers 6-10
 habitat: Lawns, grassland, woodland rides
 summary: Low creeping plant with square stems and dense purple flower heads. Edible and traditionally applied to small wounds.
 lookalikes: 
@@ -1256,6 +1305,7 @@ group: plant
 kind: herb
 status: edible, caution
 season: Young leaves Mar–May
+harvest: young leaves 3-5
 habitat: Gardens, shady verges, woodland edges near habitation
 summary: Invasive carpeting plant whose leaves are divided into three groups of three. Young leaves are edible, but it is a carrot-family plant, so identify with extreme care.
 lookalikes: hemlock, hemlock-water-dropwort, cow-parsley
@@ -1308,6 +1358,7 @@ group: plant
 kind: herb
 status: caution, edible
 season: Young shoots Mar–May; flowers May–Oct
+harvest: young shoots 3-5
 habitat: Verges, hedgerows, meadows, woodland edges
 summary: Large, coarse umbellifer with broad, hairy, lobed leaves and big flat white umbels. Its sap can burn skin in sunlight.
 lookalikes: giant-hogweed, cow-parsley, hemlock

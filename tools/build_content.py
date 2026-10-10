@@ -34,7 +34,13 @@ ASSETS = ROOT / "app" / "src" / "main" / "assets"
 OUT = ASSETS / "content"
 IMG_DIR = ASSETS / "img"
 
-STATUSES = ["deadly", "poisonous", "venomous", "caution", "invasive", "edible", "medicinal", "protected", "info"]
+STATUSES = ["deadly", "poisonous", "venomous", "psychoactive", "caution", "invasive", "edible", "medicinal", "protected",
+            "info"]
+LEVELS = ["easy", "moderate", "hard"]
+# Tool screens articles may link to with [[t:id]] (kept in step with TOOLS in app.js).
+TOOLS = {"compass", "gps", "map", "sun", "signal", "morse", "level", "pace", "cpr", "casualty", "boil", "calc",
+         "notebook", "battery", "torch", "phone-mode"}
+MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
 GROUPS = {"plant", "fungus", "animal"}
 
 errors: list[str] = []
@@ -119,6 +125,8 @@ class Ctx:
 
     articles: dict = {}
     species: dict = {}
+    flows: dict = {}
+    categories: dict = {}
     links: list = []  # (from, kind, id) for the link checker
 
 
@@ -129,7 +137,7 @@ def slug(text: str) -> str:
 
 def link_target(href: str, owner: str) -> tuple[str, str | None]:
     """Returns (href for the app, label if it can be derived)."""
-    for prefix, kind in (("a:", "a"), ("s:", "s"), ("c:", "c")):
+    for prefix, kind in (("a:", "a"), ("s:", "s"), ("c:", "c"), ("f:", "f"), ("t:", "t")):
         if href.startswith(prefix):
             target = href[len(prefix):]
             Ctx.links.append((owner, kind, target))
@@ -138,7 +146,11 @@ def link_target(href: str, owner: str) -> tuple[str, str | None]:
                 label = Ctx.articles[target]["title"]
             elif kind == "s" and target in Ctx.species:
                 label = Ctx.species[target]["name"]
-            return f"#/{kind}/{target}", label
+            elif kind == "f" and target in Ctx.flows:
+                label = Ctx.flows[target]["title"]
+            elif kind == "c" and target in Ctx.categories:
+                label = Ctx.categories[target]["title"]
+            return f"#/{'tool' if kind == 't' else kind}/{target}", label
     if href.startswith("tel:") or href.startswith("#/"):
         return href, None
     return "", None  # external URLs are shown as text; the app never goes online
@@ -152,7 +164,7 @@ def inline(text: str, owner: str) -> str:
         shown = m.group(2) or label or m.group(1)
         return f'<a href="{href}">{shown}</a>'
 
-    out = re.sub(r"\[\[([acs]:[a-z0-9-]+)(?:\|([^\]]+))?\]\]", wiki_link, out)
+    out = re.sub(r"\[\[([acsft]:[a-z0-9-]+)(?:\|([^\]]+))?\]\]", wiki_link, out)
 
     def md_link(m: re.Match) -> str:
         label, href = m.group(1), m.group(2)
@@ -417,22 +429,163 @@ def load_images() -> tuple[dict, dict]:
     return by_owner, credits
 
 
+FLOW_NODE_RE = re.compile(r"^@\s+([a-z0-9-]+)\s*$")
+FLOW_OPT_RE = re.compile(r"^\+\s+(.+?):\s*([a-z0-9-]+)\s*$")
+
+
+def parse_flow(e: dict) -> dict:
+    """A decision flow is a set of nodes:
+
+        @ node-id
+        Text lines (Markdown inline, may be lists).
+        ? The question (optional)
+        + Option label: target-node-id
+        > [[a:article]]           (links shown as buttons)
+
+    A node with no options is an end point. The first node is the start.
+    """
+    nodes: dict[str, dict] = {}
+    order: list[str] = []
+    cur = None
+    owner = f"flow {e['id']}"
+    for raw in e["body"]:
+        line = raw.rstrip()
+        m = FLOW_NODE_RE.match(line)
+        if m:
+            cur = {"id": m.group(1), "text": [], "q": "", "opts": [], "links": []}
+            if cur["id"] in nodes:
+                err(f"{e['src']}: flow {e['id']} has duplicate node {cur['id']}")
+            nodes[cur["id"]] = cur
+            order.append(cur["id"])
+            continue
+        if not line.strip():
+            continue
+        if cur is None:
+            err(f"{e['src']}: flow {e['id']}: text before the first '@ node' line")
+            continue
+        if line.startswith("? "):
+            cur["q"] = inline(line[2:].strip(), owner)
+        elif FLOW_OPT_RE.match(line):
+            lab, tgt = FLOW_OPT_RE.match(line).groups()
+            cur["opts"].append([inline(lab, owner), tgt])
+        elif line.startswith("> "):
+            for href in re.findall(r"\[\[([acsft]:[a-z0-9-]+)", line):
+                cur["links"].append(link_target(href, owner)[0])
+        else:
+            cur["text"].append(line)
+    out = {}
+    for nid in order:
+        n = nodes[nid]
+        for _, tgt in n["opts"]:
+            if tgt not in nodes:
+                err(f"{e['src']}: flow {e['id']} node {nid} points to missing node {tgt}")
+        out[nid] = {"html": render_md(n["text"], owner), "q": n["q"], "opts": n["opts"], "links": n["links"]}
+    reachable, todo = set(), [order[0]] if order else []
+    while todo:
+        nid = todo.pop()
+        if nid in reachable or nid not in nodes:
+            continue
+        reachable.add(nid)
+        todo.extend(t for _, t in nodes[nid]["opts"])
+    for nid in order:
+        if nid not in reachable:
+            err(f"{e['src']}: flow {e['id']} node {nid} can't be reached")
+    return {"start": order[0] if order else "", "nodes": out}
+
+
+def parse_harvest(value: str, owner: str) -> list:
+    """'leaves 2-5; flowers 5-6; berries 8-10' -> [["leaves", 2, 5], ...] (months 1-12, may wrap)."""
+    out = []
+    for part in split_list(value, ";"):
+        m = re.match(r"^(.*?)\s*(\d{1,2})\s*[-–]\s*(\d{1,2})$", part) or re.match(r"^(.*?)\s*(\d{1,2})()$", part)
+        if not m:
+            err(f"{owner}: bad harvest entry '{part}' (want e.g. 'leaves 3-5')")
+            continue
+        what, a, b = m.group(1).strip() or "harvest", int(m.group(2)), int(m.group(3) or m.group(2))
+        if not (1 <= a <= 12 and 1 <= b <= 12):
+            err(f"{owner}: harvest months must be 1-12 in '{part}'")
+            continue
+        out.append([what, a, b])
+    return out
+
+
+def load_structure(articles: dict, flows: dict) -> tuple[dict, dict]:
+    st = json.loads((SRC / "structure.json").read_text(encoding="utf-8"))
+    cats: dict[str, dict] = {}
+    member: dict[str, str] = {}
+    groups = []
+    for g in st["groups"]:
+        gcats = []
+        for c in g["categories"]:
+            if c["id"] in cats:
+                err(f"structure.json: duplicate category {c['id']}")
+            topics = []
+            own = []
+            for t in c["topics"]:
+                items = []
+                for ref in t["articles"]:
+                    cross = ref.startswith("@")
+                    aid = ref.lstrip("@")
+                    if aid not in articles:
+                        err(f"structure.json: {c['id']} / {t['title']}: unknown article {aid}")
+                        continue
+                    if not cross:
+                        if aid in member:
+                            err(f"structure.json: article {aid} is in both {member[aid]} and {c['id']} (use @ for a cross-reference)")
+                        member[aid] = c["id"]
+                        own.append(aid)
+                    items.append(ref)
+                topics.append({"title": t["title"], "items": items})
+            if c.get("start") not in own:
+                err(f"structure.json: category {c['id']} start '{c.get('start')}' must be one of its own articles")
+            cats[c["id"]] = {"id": c["id"], "group": g["id"], "title": c["title"], "icon": c["icon"],
+                             "short": c["short"], "intro": c["intro"], "start": c.get("start"), "topics": topics,
+                             "articles": own}
+            gcats.append(c["id"])
+        groups.append({"id": g["id"], "title": g["title"], "icon": g["icon"], "color": g["color"],
+                       "short": g["short"], "intro": g["intro"], "categories": gcats, "links": g.get("links", [])})
+    for aid in articles:
+        if aid not in member:
+            err(f"structure.json: article {aid} is not in any category (orphan)")
+        else:
+            articles[aid]["cat"] = member[aid]
+    for u in st["urgent"]:
+        kind, _, target = u["to"].partition(":")
+        table = {"a": articles, "f": flows, "c": cats}.get(kind)
+        if table is None or target not in table:
+            err(f"structure.json: urgent tile '{u['title']}' points to unknown {u['to']}")
+    for fid in st["flows"]:
+        if fid not in flows:
+            err(f"structure.json: unknown flow {fid}")
+    for aid in st["cards"]:
+        if aid not in articles:
+            err(f"structure.json: unknown card article {aid}")
+    return {"groups": groups, "urgent": st["urgent"], "flows": st["flows"], "cards": st["cards"]}, cats
+
+
+def load_synonyms() -> list[list[str]]:
+    groups = []
+    path = SRC / "synonyms.txt"
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            line = line.split("#", 1)[0].strip()
+            if line:
+                groups.append([w.strip().lower() for w in line.split(",") if w.strip()])
+    return groups
+
+
 def main() -> int:
-    categories = json.loads((SRC / "categories.json").read_text(encoding="utf-8"))
-    cat_ids = [c["id"] for c in categories]
+    kit = json.loads((SRC / "kit.json").read_text(encoding="utf-8"))
 
     raw_articles = []
     for path in sorted((SRC / "articles").glob("*.md")):
-        cat = re.sub(r"^\d+-", "", path.stem)
-        if cat not in cat_ids:
-            err(f"{path.name}: category '{cat}' not in categories.json")
-        for e in parse_entries(path):
-            e["cat"] = cat
-            raw_articles.append(e)
-
+        raw_articles.extend(parse_entries(path))
     raw_species = []
     for path in sorted((SRC / "species").glob("*.md")):
         raw_species.extend(parse_entries(path))
+    raw_flows = []
+    for path in sorted((SRC / "flows").glob("*.md")) if (SRC / "flows").exists() else []:
+        raw_flows.extend(parse_entries(path))
 
     # First pass: metadata, so links can be resolved while rendering.
     articles: dict[str, dict] = {}
@@ -442,16 +595,32 @@ def main() -> int:
             err(f"{e['src']}: duplicate article id {e['id']}")
         if "title" not in m or "summary" not in m:
             err(f"{e['src']}: article {e['id']} needs title and summary")
+        level = m.get("level", "").lower()
+        if level and level not in LEVELS:
+            err(f"{e['src']}: article {e['id']} level must be one of {LEVELS}")
         articles[e["id"]] = {
             "id": e["id"],
-            "cat": e["cat"],
             "title": m.get("title", e["id"]),
             "summary": m.get("summary", ""),
             "tags": split_list(m.get("tags")),
             "compare": split_list(m.get("compare")),
             "icon": m.get("icon", ""),
+            "time": m.get("time", ""),
+            "level": level,
+            "needs": split_list(m.get("needs")),
+            "related": split_list(m.get("related")),
             "wiki": split_list(m.get("wiki"), "|"),
         }
+    flows: dict[str, dict] = {}
+    for e in raw_flows:
+        m = e["meta"]
+        if e["id"] in flows:
+            err(f"{e['src']}: duplicate flow id {e['id']}")
+        for req in ("title", "summary", "icon"):
+            if not m.get(req):
+                err(f"{e['src']}: flow {e['id']} missing '{req}'")
+        flows[e["id"]] = {"id": e["id"], "title": m.get("title", e["id"]), "summary": m.get("summary", ""),
+                          "icon": m.get("icon", "")}
     species: dict[str, dict] = {}
     for e in raw_species:
         m = e["meta"]
@@ -462,13 +631,16 @@ def main() -> int:
         bad = [s for s in st if s not in STATUSES]
         if bad or not st:
             err(f"{e['src']}: species {sid} has bad/missing status {bad or st}")
-        st.sort(key=STATUSES.index)
+        st = [s for s in STATUSES if s in st]
         group = m.get("group", "")
         if group not in GROUPS:
             err(f"{e['src']}: species {sid} group must be one of {sorted(GROUPS)}")
         for req in ("name", "latin", "summary", "season", "habitat"):
             if not m.get(req):
                 err(f"{e['src']}: species {sid} missing '{req}'")
+        harvest = parse_harvest(m.get("harvest", ""), f"{e['src']}: species {sid}")
+        if harvest and not ({"edible", "medicinal"} & set(st)):
+            err(f"{e['src']}: species {sid} has harvest months but is not edible/medicinal")
         species[sid] = {
             "id": sid,
             "name": m.get("name", sid),
@@ -484,19 +656,22 @@ def main() -> int:
             "lookalikes": split_list(m.get("lookalikes")),
             "wiki": split_list(m.get("wiki"), "|"),
         }
-    Ctx.articles, Ctx.species = articles, species
+        if harvest:
+            species[sid]["harvest"] = harvest
+        if "psychoactive" in st:
+            for need in ("## Identification", "## Law", "## If someone has eaten it"):
+                if not any(line.strip().startswith(need) for line in e["body"]):
+                    err(f"{e['src']}: psychoactive species {sid} needs a '{need}' section")
+    structure, cats = load_structure(articles, flows)
+    Ctx.articles, Ctx.species, Ctx.flows, Ctx.categories = articles, species, flows, cats
 
     images, credits = load_images()
 
-    # Category membership keeps file order.
-    for c in categories:
-        c["articles"] = [a["id"] for a in articles.values() if a["cat"] == c["id"]]
-
     if OUT.exists():
-        for old in list(OUT.glob("a/*.js")) + list(OUT.glob("s/*.js")):
+        for old in list(OUT.glob("a/*.js")) + list(OUT.glob("s/*.js")) + list(OUT.glob("f/*.js")):
             old.unlink()
-    (OUT / "a").mkdir(parents=True, exist_ok=True)
-    (OUT / "s").mkdir(parents=True, exist_ok=True)
+    for d in ("a", "s", "f"):
+        (OUT / d).mkdir(parents=True, exist_ok=True)
 
     docs = []
     for e in raw_articles:
@@ -520,13 +695,43 @@ def main() -> int:
             err(f"{e['src']}: article {a['id']} has no '## Sources' section")
         for sid in a["compare"]:
             Ctx.links.append((owner, "s", sid))
+        # "You'll need": kit items become links, anything else is shown as plain text.
+        needs = []
+        for n in a["needs"]:
+            k = kit.get(n)
+            if k:
+                needs.append([k["name"], k.get("a", "")])
+                if k.get("a"):
+                    Ctx.links.append((f"kit.json {n}", "a", k["a"]))
+            elif re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)+", n):
+                err(f"{e['src']}: article {a['id']} needs unknown kit item '{n}' (add it to content/kit.json)")
+            else:
+                needs.append([n, ""])
+        a["needs"] = needs
+        # Related: explicit first, then siblings from the same topic, up to four.
+        for r in a["related"]:
+            Ctx.links.append((owner, "a", r))
         a["images"] = images.get(f"article/{a['id']}", [])
+        words = len(strip_tags(body).split())
+        a["read"] = max(1, round(words / 200))
         write_body(OUT / "a" / f"{a['id']}.js", f"a/{a['id']}", body)
         heads = " ".join(re.findall(r"<h[2-4][^>]*>(.*?)</h[2-4]>", body))
         docs.append({
             "key": f"a:{a['id']}", "title": a["title"], "tags": " ".join(a["tags"]),
             "summary": a["summary"], "heads": strip_tags(heads), "body": strip_tags(body),
         })
+    for a in articles.values():
+        if "cat" not in a:
+            continue
+        rel = [r for r in a["related"] if r in articles and r != a["id"]]
+        for t in cats[a["cat"]]["topics"]:
+            if a["id"] in t["items"]:
+                rel += [x.lstrip("@") for x in t["items"] if x.lstrip("@") != a["id"]]
+        seen = []
+        for r in rel:
+            if r not in seen and r in articles:
+                seen.append(r)
+        a["related"] = seen[:4]
     for e in raw_species:
         s = species[e["id"]]
         owner = f"species {s['id']}"
@@ -544,9 +749,21 @@ def main() -> int:
             "summary": s["summary"] + " " + s["habitat"] + " " + s["season"],
             "body": strip_tags(body),
         })
+    for e in raw_flows:
+        f = flows[e["id"]]
+        flow = parse_flow(e)
+        for pat in SMS_PATTERNS + CALL_PATTERNS:
+            if re.search(pat, "\n".join(e["body"]), re.I):
+                err(f"{e['src']}: flow {f['id']} tells the reader to call/text from this device ({pat})")
+        path = OUT / "f" / f"{f['id']}.js"
+        path.write_text(f"__body({json.dumps('f/' + f['id'])},{json.dumps(flow, ensure_ascii=False)});\n", encoding="utf-8")
+        docs.append({"key": f"f:{f['id']}", "title": f["title"], "summary": f["summary"],
+                     "tags": "step by step guided decision flow",
+                     "body": " ".join(strip_tags(n["html"] + " " + n["q"]) for n in flow["nodes"].values())})
 
     for owner, kind, target in Ctx.links:
-        table = {"a": articles, "s": species, "c": {c["id"]: c for c in categories}}[kind]
+        table = {"a": articles, "s": species, "c": cats, "f": flows,
+                 "t": {t: 1 for t in TOOLS}}[kind]
         if target not in table:
             err(f"{owner}: broken link to {kind}:{target}")
 
@@ -560,17 +777,18 @@ def main() -> int:
 
     for a in articles.values():
         del a["wiki"]
-        if not a["compare"]:
-            del a["compare"]
-        if not a["images"]:
-            del a["images"]
+        for k in ("compare", "images", "needs", "related", "time", "level"):
+            if not a[k]:
+                del a[k]
     for s in species.values():
         del s["wiki"]
 
     index = {
         "built": date.today().isoformat(),
         "counts": {"articles": len(articles), "species": len(species), "photos": len(credits)},
-        "categories": categories,
+        **structure,
+        "categories": cats,
+        "flows_meta": flows,
         "articles": articles,
         "species": species,
     }
@@ -578,7 +796,9 @@ def main() -> int:
     index_json = json.dumps(index, ensure_ascii=False, separators=(",", ":"))
     (OUT / "index.json").write_text(index_json, encoding="utf-8")
     (OUT / "index.js").write_text(f"window.GUIDE_INDEX={index_json};\n", encoding="utf-8")
-    search = json.dumps(build_search(docs), ensure_ascii=False, separators=(",", ":"))
+    search_idx = build_search(docs)
+    search_idx["syn"] = [[stem(w) for w in tokens(" ".join(g))] for g in load_synonyms()]
+    search = json.dumps(search_idx, ensure_ascii=False, separators=(",", ":"))
     (OUT / "search.js").write_text(f"window.GUIDE_SEARCH={search};\n", encoding="utf-8")
     cred = json.dumps(credits, ensure_ascii=False, separators=(",", ":"))
     (OUT / "credits.js").write_text(f"window.GUIDE_CREDITS={cred};\n", encoding="utf-8")
@@ -587,8 +807,8 @@ def main() -> int:
         print("warning:", w, file=sys.stderr)
     for e in errors:
         print("ERROR:", e, file=sys.stderr)
-    print(f"{len(articles)} articles, {len(species)} species, {len(credits)} photos, "
-          f"{len(build_search(docs)['terms'])} search terms")
+    print(f"{len(articles)} articles, {len(flows)} flows, {len(species)} species, {len(credits)} photos, "
+          f"{len(search_idx['terms'])} search terms")
     return 1 if errors else 0
 
 

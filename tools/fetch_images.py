@@ -173,6 +173,15 @@ def make_thumbnails(manifest: dict) -> None:
         im.save(dst, "WEBP", quality=72, method=6)
 
 
+def category_files(latin: str) -> list[str]:
+    """Photos filed directly in the species' Commons category (e.g. Category:Urtica dioica)."""
+    data = get(COMMONS_API, {"action": "query", "list": "categorymembers", "cmtitle": f"Category:{latin}",
+                             "cmtype": "file", "cmlimit": "60", "format": "json"})
+    if not data:
+        return []
+    return [m["title"].removeprefix("File:") for m in data.get("query", {}).get("categorymembers", [])]
+
+
 def name_matches(fname: str, words: list[str]) -> bool:
     f = re.sub(r"[_\-]+", " ", fname.lower())
     return any(w and w in f for w in words)
@@ -209,6 +218,18 @@ def resolve(entry: dict, kind: str, excluded: set[str], want: int) -> list[str]:
                 continue
             if name_matches(name, words):
                 picks.append(name)
+    if kind == "species" and len(picks) < want + 1 and words:
+        # Top up from the species' own Commons category, so most species get 2-3 angles
+        # (cap, gills and stem; leaf, flower and fruit). Still exact-binomial only, no drawings.
+        latin_name = " ".join(entry["meta"].get("latin", "").split()[:2])
+        if len(latin_name.split()) == 2 and not latin_name.endswith((".", "agg")):
+            for name in category_files(latin_name[0].upper() + latin_name[1:]):
+                if len(picks) >= want + 3:
+                    break
+                if name in excluded or name in picks or BAD_NAME.search(name.replace("_", " ")):
+                    continue
+                if re.search(r"\.(jpe?g|webp)$", name, re.I):
+                    picks.append(name)
     return picks
 
 
@@ -243,6 +264,7 @@ def main() -> int:
     fetched = failed = 0
     if args.offline:
         jobs = []
+    topped = set(manifest.setdefault("topped", []))
     for kind, e in jobs:
         if not e["meta"].get("wiki") and not e["meta"].get("commons"):
             continue
@@ -252,7 +274,9 @@ def main() -> int:
         # Entries that got no photo last time (rate limits, licence failures) are retried every run.
         kept = [n for n in manifest["owners"].get(owner, [])
                 if manifest["files"].get(n, {}).get("commons") not in excluded]
-        if kept and not args.refresh and not only:
+        topup = (kind == "species" and kept and len(kept) < args.photos and owner not in topped
+                 and not args.refresh and not only)
+        if kept and not args.refresh and not only and not topup:
             continue
         want = args.photos if kind == "species" else int(e["meta"].get("photos", "1"))
         print(f"{owner}")
@@ -262,7 +286,12 @@ def main() -> int:
             print(f"  ! lookup failed: {ex}")
             failed += 1
             continue
-        names: list[str] = []
+        names: list[str] = list(kept) if topup else []
+        if topup:
+            topped.add(owner)
+            manifest["topped"] = sorted(topped)
+            have = {manifest["files"][n]["commons"] for n in kept if n in manifest["files"]}
+            candidates = [c for c in candidates if c not in have]
         for cname in candidates:
             if len(names) >= want:
                 break

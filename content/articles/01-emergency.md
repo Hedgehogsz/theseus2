@@ -376,33 +376,95 @@ icon: life-buoy
 - Mountain Rescue England and Wales: Helicopter safety
 
 === river-crossing
-title: Rivers and floods: don't cross
-summary: Why flood water and swollen rivers are deadly, and what to do if you end up in the water.
-tags: river, flood, crossing, drowning, spate, stream, float to live
+title: Crossing rivers safely (or not)
+summary: The default is don't cross: go upstream, wait for the level to drop, or find a bridge. How to judge a river, cross if you must, and survive being swept away.
+tags: river, ford, crossing, wading, flood, spate, stream, burn, beck, swept away, drowning, float to live, bridge
 icon: waves
+time: 10–30 min (or wait hours)
+level: hard
+needs: "stout pole", waterproofs
+related: cold-water-immersion, follow-water-downhill, stay-or-go, flood-outdoors
 ---
 !quick
-1. **Don't cross** a river in spate. Wait (often only hours) or find a bridge, even miles away.
-2. Never walk through **flood water**: 15 cm of moving water can knock you over.
-3. If swept in: **float on your back, feet first downstream**, and steer towards the bank.
+1. **Default: don't cross.** Go **upstream** where it is smaller, find a **bridge** (even kilometres away), or **wait**: upland rivers often drop within hours of the rain stopping.
+2. **Above your knees, fast, brown, noisy or carrying debris? Don't.**
+3. If you must: **wide, shallow, slow** section; **hip belt and chest strap undone**; **face upstream**; a **pole** as a third leg; **boots on**.
+4. Swept away: **on your back, feet first downstream**, float to get your breath, then swim at an angle to the **inside bank**.
 !end
 
-## Why it matters
-Drowning is one of the most common causes of death outdoors in the UK. Upland streams rise very fast after heavy rain and fall again within hours.
+## The default answer is no
+Rivers are one of the biggest killers of hillwalkers in Britain. A river that was a paddle in the morning can be a torrent by afternoon after heavy rain on the hills above.
 
-## Cold water: Float to live
-Fight the urge to swim hard in the first minute of cold-water shock. Lean back, spread your arms and legs, and float until your breathing settles. Then swim or work your way to safety.
+Before you think about how to cross, go through the alternatives:
+1. **Go upstream.** Above each side stream the river carries less water. A couple of kilometres up, it may be a step across. Use the [[t:map]] to see where it splits.
+2. **Find a bridge.** Footbridges, farm bridges and road bridges are marked on OS maps. A detour of hours is better than a crossing that might kill you.
+3. **Wait.** Upland rivers in Britain are **spate rivers**: they rise fast and often **fall within hours** of the rain stopping. Bigger rivers lower down may take a day or more. Make a shelter on the safe bank and look again in the morning ([[a:emergency-night-out]]). Mark a stick at the water's edge to see if it is falling.
+4. **Change the plan.** Do you need to be on the other side at all? Is there another way out on this side ([[a:follow-water-downhill]], [[a:linear-features]])?
 
-## If a crossing is unavoidable (last resort)
-- Choose a wide, shallow, slow section with a gentle exit, never above rapids, falls or a weir.
-- Unclip the rucksack hip belt and chest strap. Keep boots on.
-- Face upstream, move one foot at a time, and use a stout pole as a third leg. Groups link arms.
-- Turn back if water reaches above the knees.
+## How to judge a river
+Stand on the bank and watch it for a few minutes. **Don't cross** if any of these are true:
+- **Depth above the knee.** Moving water above knee height pushes hard enough to sweep most adults off their feet. Even shallow fast water is dangerous: the Environment Agency warns that **15 cm of fast-flowing water** can knock you over.
+- **Speed:** faster than a slow walking pace. Throw a stick in and walk beside it.
+- **Colour and noise:** **brown, peaty or milky water**, standing waves, and a roar mean it is in spate. **Knocking or rumbling** means boulders are rolling along the bed.
+- **Debris:** branches, foam and floating vegetation mean the water is rising.
+- **What's downstream:** a waterfall, gorge, weir, fallen trees or rapids within 100 m or so of where you'd cross. If you fall, you go there.
+- **Cold:** British rivers are cold all year, and snowmelt in spring is near freezing. Cold water numbs feet in minutes and causes **cold water shock** if you fall in ([[a:cold-water-immersion]]).
+- **You are tired, cold, alone or at dusk.**
+
+!danger Flood water
+Never walk or drive through flood water on roads or fields. It hides holes, open drains and fast currents, and is often polluted ([[a:flood-outdoors]]).
+!end
+
+## If you really must cross
+Only when the alternatives are worse: for example, rising water is cutting you off, or someone's life depends on getting help from the far side.
+
+### Choose the place
+- A **wide, shallow, slow** stretch, where the river is spread out. **Braided** sections, where it splits into several channels round gravel banks, are often best: you cross several small streams instead of one big one.
+- The **outside of bends** is deep and fast; the **inside** is shallow. Straight, even stretches at the tail of a pool, just before it speeds up, are often shallowest.
+- An easy **exit** on the far bank, and **nothing dangerous downstream**.
+- **Not** on wet, slimy or wobbly stepping stones or logs, and never jump between them.
+
+### Get ready
+- **Undo the rucksack hip belt and chest strap** so you can shed the pack if you fall. Pack spare clothes in a dry bag or rubbish bag inside it.
+- **Keep your boots on** to protect your feet and grip the bed. Take your socks off and keep them dry if you like, to put back on after.
+- Find a **stout pole** about shoulder height, or use a walking pole.
+
+### Crossing alone
+1. **Face upstream** and lean slightly into the current.
+2. Put the **pole upstream** of you, planted firmly. It and your two feet make a tripod.
+3. **Shuffle sideways**, moving **one point at a time**: pole, foot, foot. Never cross your legs. Keep feet wide apart.
+4. Feel for each foothold; slide your feet along the bed rather than lifting them.
+5. Angle slightly **downstream** across the current; fighting straight across or upstream wears you out.
+6. If the water rises **above your knees**, or you feel your feet start to lift, **go back the way you came**.
+
+### Group methods
+Crossing together is far more stable than crossing alone.
+- **Line in the current** (line astern): stand one behind another in a line **pointing upstream**, each holding the waist or pack straps of the person in front. The strongest and heaviest stands **at the upstream end**, with a pole, breaking the current for the others. Move across sideways together, in step, with the leader calling each move.
+- **Line abreast with a pole:** everyone side by side, facing across or upstream, all gripping a long pole held horizontally at chest height. Move one person at a time.
+- **Huddle:** three or four people facing inwards, arms locked over each other's shoulders or gripping packs. Turn slowly across the river, **only one person moving a foot at a time**. Very stable; good for a weaker or smaller member in the middle.
+
+!danger Never tie in
+**Never tie yourself to a rope** that crosses the river, and never tie a rope round anyone in moving water. If they fall, the current pulls the rope tight and holds them **under water**. Rope techniques in rivers need training and special kit.
+!end
+
+## If you are swept away
+1. **Don't fight the first shock.** Cold water makes you gasp. Lean back and **float**: arms and legs spread, head back, for about a minute until your breathing settles. This is the RNLI's **Float to Live** advice ([[a:cold-water-immersion]]).
+2. **Get on your back, feet first downstream**, toes at the surface. Your feet take the impact of rocks, not your head.
+3. **Never try to stand up in fast water** deeper than your knees. Your foot can jam between rocks and the current pushes you under.
+4. **Shed the rucksack** if it is dragging you down; keep it if it is helping you float.
+5. **Swim at an angle** across the current, head pointing towards the bank, letting the current carry you. Aim for the **inside of a bend**, where the water is slower and shallower, or a gravel bank or eddy behind a big rock.
+6. **Avoid fallen trees and branches** ("strainers"): water flows through them, but you don't. Steer well away early.
+7. Once out, get **warm and dry** fast. Everyone who has been in the water needs checking for [[a:hypothermia]].
+
+## Helping someone in the water
+**Don't go in after them.** Shout to them to float, run downstream ahead of them, and reach or throw from the bank ([[a:water-rescue]]).
 
 ## Sources
-- RNLI: Float to Live (rnli.org)
-- Environment Agency: Flood safety advice (gov.uk)
-- Mountain Rescue England and Wales: River crossing advice
+- RNLI: Float to Live; River safety (rnli.org)
+- Mountain Training: River crossing guidance (mountain-training.org)
+- Mountaineering Scotland: River crossing safety (mountaineering.scot)
+- Scottish Mountain Rescue: Safety advice: rivers in spate (scottishmountainrescue.org)
+- Environment Agency: What to do in a flood (gov.uk)
 
 === coast-and-tides
 title: Coast, cliffs and tides

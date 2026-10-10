@@ -2,8 +2,8 @@
 """Build the offline UI assets: the icon set (icons.js) and the bundled font (fonts.css).
 
 Icons
-  Every icon the app needs is collected from content/categories.json, the `icon:` field of each
-  article, and `icon("name")` calls plus `// icons:` comment lines in app/src/main/assets/app.js.
+  Every icon the app needs is collected from content/structure.json, the `icon:` field of each
+  article and flow, and `icon("name")` calls plus `// icons:` comment lines in app.js, tools.js and map.js.
   SVGs come from third_party/lucide/icons (Lucide, ISC licence) and third_party/icons-custom.
   To use a new Lucide icon, add it to the vendored set first:
       python3 tools/build_ui_assets.py --lucide /path/to/lucide-static/icons
@@ -36,10 +36,14 @@ FONTS = ROOT / "third_party" / "atkinson-hyperlegible"
 
 
 def wanted_icons() -> set[str]:
-    names = {c["icon"] for c in json.loads((ROOT / "content" / "categories.json").read_text(encoding="utf-8"))}
-    for p in (ROOT / "content" / "articles").glob("*.md"):
+    st = json.loads((ROOT / "content" / "structure.json").read_text(encoding="utf-8"))
+    names = {u["icon"] for u in st["urgent"]}
+    for g in st["groups"]:
+        names.add(g["icon"])
+        names |= {c["icon"] for c in g["categories"]} | {lk["icon"] for lk in g.get("links", [])}
+    for p in list((ROOT / "content" / "articles").glob("*.md")) + list((ROOT / "content" / "flows").glob("*.md")):
         names |= set(re.findall(r"^icon:\s*([a-z0-9-]+)\s*$", p.read_text(encoding="utf-8"), re.M))
-    js = (ASSETS / "app.js").read_text(encoding="utf-8")
+    js = "\n".join((ASSETS / f).read_text(encoding="utf-8") for f in ("app.js", "tools.js", "map.js") if (ASSETS / f).exists())
     names |= set(re.findall(r"""\bicon\(\s*["']([a-z0-9-]+)["']""", js))
     for line in re.findall(r"//\s*icons:(.*)", js):
         names |= set(line.split())

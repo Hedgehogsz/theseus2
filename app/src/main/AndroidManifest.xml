@@ -3,6 +3,21 @@
 
     <!-- No INTERNET permission: the app cannot reach the network even if the radio were on. -->
 
+    <!-- GPS (LocationManager.GPS_PROVIDER only; no Google Play services). Granted by the app itself as device owner. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Hardware step counter for the pace tool. -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <!-- Re-apply the phone mode (home screen choice) once at boot. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- "Restore all phone apps": find system apps removed with pm uninstall --user 0. Sideloaded, not on Play. -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
+    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.compass" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.stepcounter" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+
     <queries>
         <package android:name="com.sec.android.app.fm" />
         <package android:name="com.sec.android.app.camera" />
@@ -10,6 +25,7 @@
         <package android:name="com.sec.android.app.clockpackage" />
         <package android:name="com.android.settings" />
         <package android:name="com.samsung.android.lool" />
+        <package android:name="com.sec.android.app.launcher" />
         <intent>
             <action android:name="android.media.action.STILL_IMAGE_CAMERA" />
         </intent>
@@ -18,6 +34,13 @@
         </intent>
         <intent>
             <action android:name="android.settings.SETTINGS" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.HOME" />
         </intent>
     </queries>
 
@@ -62,6 +85,14 @@
                 android:resource="@xml/device_admin" />
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
     </application>
