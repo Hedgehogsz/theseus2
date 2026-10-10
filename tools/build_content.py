@@ -38,6 +38,14 @@ STATUSES = ["deadly", "poisonous", "venomous", "caution", "invasive", "edible", 
 GROUPS = {"plant", "fungus", "animal"}
 
 errors: list[str] = []
+DIAGRAMS_USED: set[str] = set()
+
+# This device has no SIM card and cannot make calls or send texts. Content may explain calling 999
+# from *another* phone only in these articles; everything else must not tell the reader to call/text.
+CALL_OK = {"when-you-reach-help", "finding-help", "when-to-get-help", "kit-phone", "coast-and-tides"}
+CALL_PATTERNS = [r"\bcall(ing)?\s+(\*\*)?(999|112)\b", r"\bdial(ling)?\s+(\*\*)?(999|112)", r"\bspeaker on\b",
+                 r"\bNHS 111\b", r"\bcall\s+(\*\*)?111\b"]
+SMS_PATTERNS = [r"emergency\s*sms", r"\btext(ing)?\s+(to\s+)?(\*\*)?999", r"\bsms\b", r"\btel:"]
 warnings: list[str] = []
 
 
@@ -257,9 +265,11 @@ def render_md(lines: list[str], owner: str) -> str:
             name = s[5:].strip()
             svg_path = SRC / "diagrams" / f"{name}.svg"
             if svg_path.exists():
-                svg = svg_path.read_text(encoding="utf-8")
-                svg = re.sub(r"<\?xml[^>]*>\s*", "", svg)
-                out.append(f'<figure class="diagram">{svg}</figure>')
+                # Shipped as a file (not inline) so a tap can open it in the zoom viewer.
+                DIAGRAMS_USED.add(name)
+                label = re.search(r'aria-label="([^"]*)"', svg_path.read_text(encoding="utf-8"))
+                alt = html.escape(label.group(1) if label else name)
+                out.append(f'<figure class="diagram"><img src="diagrams/{name}.svg" alt="{alt}" data-zoom></figure>')
             else:
                 err(f"{owner}: missing diagram {svg_path.name}")
             i += 1
@@ -439,6 +449,7 @@ def main() -> int:
             "summary": m.get("summary", ""),
             "tags": split_list(m.get("tags")),
             "compare": split_list(m.get("compare")),
+            "icon": m.get("icon", ""),
             "wiki": split_list(m.get("wiki"), "|"),
         }
     species: dict[str, dict] = {}
@@ -492,6 +503,12 @@ def main() -> int:
         a = articles[e["id"]]
         owner = f"article {a['id']}"
         body = render_md(e["body"], owner)
+        if not a["icon"]:
+            err(f"{e['src']}: article {a['id']} needs an icon: (a Lucide icon name)")
+        lint_text = "\n".join(e["body"]) + " " + a["title"] + " " + a["summary"]
+        for pat in SMS_PATTERNS + ([] if a["id"] in CALL_OK else CALL_PATTERNS):
+            if re.search(pat, lint_text, re.I):
+                err(f"{e['src']}: article {a['id']} tells the reader to call/text from this device ({pat})")
         if not body.startswith('<section class="quick"'):
             err(f"{e['src']}: article {a['id']} must start with a !quick box")
         else:
@@ -517,6 +534,9 @@ def main() -> int:
         for lid in s["lookalikes"]:
             Ctx.links.append((owner, "s", lid))
         s["images"] = images.get(f"species/{s['id']}", [])
+        for pat in SMS_PATTERNS + CALL_PATTERNS:
+            if re.search(pat, "\n".join(e["body"]), re.I):
+                err(f"{e['src']}: species {s['id']} tells the reader to call/text from this device ({pat})")
         write_body(OUT / "s" / f"{s['id']}.js", f"s/{s['id']}", body)
         docs.append({
             "key": f"s:{s['id']}", "title": s["name"], "alt": " ".join([s["latin"]] + s["aka"]),
@@ -529,6 +549,14 @@ def main() -> int:
         table = {"a": articles, "s": species, "c": {c["id"]: c for c in categories}}[kind]
         if target not in table:
             err(f"{owner}: broken link to {kind}:{target}")
+
+    ddir = ASSETS / "diagrams"
+    ddir.mkdir(parents=True, exist_ok=True)
+    for old in ddir.glob("*.svg"):
+        if old.stem not in DIAGRAMS_USED:
+            old.unlink()
+    for name in DIAGRAMS_USED:
+        (ddir / f"{name}.svg").write_text((SRC / "diagrams" / f"{name}.svg").read_text(encoding="utf-8"), encoding="utf-8")
 
     for a in articles.values():
         del a["wiki"]

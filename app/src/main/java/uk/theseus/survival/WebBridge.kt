@@ -68,9 +68,6 @@ class WebBridge(private val activity: MainActivity) {
     fun launchTool(name: String): Boolean = onUi { Tools.launch(activity, name) } ?: false
 
     @JavascriptInterface
-    fun dial(number: String): Boolean = onUi { Tools.dial(activity, number) } ?: false
-
-    @JavascriptInterface
     fun setTorch(on: Boolean): Boolean = Torch.set(activity, on)
 
     @JavascriptInterface

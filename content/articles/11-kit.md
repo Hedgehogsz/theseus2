@@ -4,6 +4,7 @@
 title: Kit checklist
 summary: Your exact survival kit, with tick boxes to check before you go, and suggested additions.
 tags: kit, checklist, gear, packing list, equipment
+icon: list-checks
 ---
 !quick
 1. Tick every item below before you leave. The ticks are saved.
@@ -22,7 +23,7 @@ tags: kit, checklist, gear, packing list, equipment
 - Single-walled stainless steel bottle: [[a:kit-pot-bottle]]
 - Cotton cloth for straining water: [[a:kit-cotton-cloth]]
 - 20 W USB solar panel and cable: [[a:solar-panel]]
-- This phone, charged, in a sealed bag, **with a SIM card**: [[a:kit-phone]]
+- This phone (the guide), charged, in a sealed bag: [[a:kit-phone]]
 !end
 
 !checklist Strongly recommended additions
@@ -50,6 +51,7 @@ tags: kit, checklist, gear, packing list, equipment
 title: Your ferro rod: use and care
 summary: Care and handling for your ½″ × 6″ ferrocerium rod, the most reliable fire starter in your kit.
 tags: ferro rod, ferrocerium, care, maintenance, kit
+icon: sparkles
 ---
 !quick
 1. Technique: [[a:ferro-rod]]. Hold the striker still and **pull the rod back**.
@@ -68,6 +70,7 @@ A ½″ × 6″ rod is good for thousands of fires. It works wet: shake it off a
 title: Your flint and steel: use and care
 summary: Look after your high-carbon striker, find good flint, and keep char cloth dry.
 tags: flint, steel, striker, char cloth, care, kit
+icon: sparkle
 ---
 !quick
 1. Technique: [[a:flint-and-steel]]. Sparks only land well on **char cloth** or similar.
@@ -87,6 +90,7 @@ tags: flint, steel, striker, char cloth, care, kit
 title: Your magnifier: use and care
 summary: Fuel-free fire on sunny days, plus close-up identification of plants and fungi.
 tags: magnifier, lens, sun fire, identification, care, kit
+icon: zoom-in
 ---
 !quick
 1. Sun fire: [[a:magnifier-fire]]. Clear sun, still hands, dark tinder.
@@ -102,6 +106,7 @@ tags: magnifier, lens, sun fire, identification, care, kit
 title: Your steel pot and bottle: use and care
 summary: Your water purification system: boiling safely, cleaning, and avoiding damage.
 tags: pot, bottle, stainless steel, boil, care, kit
+icon: cooking-pot
 ---
 !quick
 1. **Boil water:** [[a:settle-strain-boil]] and [[a:boiling-steel-bottle-pot]].
@@ -122,6 +127,7 @@ tags: pot, bottle, stainless steel, boil, care, kit
 title: Your cotton cloth: use and care
 summary: Strain water, make char cloth from spares, and keep the straining cloth clean.
 tags: cotton, cloth, strain, filter, char cloth, kit
+icon: filter
 ---
 !quick
 1. **Strain** water through 2–4 folded layers before boiling ([[a:settle-strain-boil]]).
@@ -140,6 +146,7 @@ tags: cotton, cloth, strain, filter, char cloth, kit
 title: Your 20 W solar panel
 summary: Get the most from a 20 W USB panel in British light: angle, direct sun, heat, and what to charge.
 tags: solar panel, solar charging, USB, 20W, sun, power, charge phone
+icon: solar-panel
 ---
 !quick
 1. Needs **direct sun**. Point the panel **square to the sun**; re-angle every hour.
@@ -162,22 +169,29 @@ tags: solar panel, solar charging, USB, 20W, sun, power, charge phone
 - Battery University: Charging at high temperature
 
 === kit-phone
-title: This phone: care and emergency use
-summary: How to keep the survival phone ready: SIM card, charge, waterproofing, and calling 999.
-tags: phone, SIM, 999, battery, waterproof, kit, Samsung, airplane mode
+title: This phone: care and limits
+summary: Keep the guide phone charged, dry and ready, and know what it can't do: it has no SIM and cannot call for help.
+tags: phone, battery, waterproof, kit, Samsung, torch, radio, no SIM
+icon: smartphone
 ---
 !quick
-1. **Keep a SIM card in the phone.** UK 999/112 calls don't connect without one. Pay-as-you-go with no credit is fine.
+1. **It cannot call 999 or 112.** It has no SIM card, and UK networks don't connect SIM-less emergency calls. Use [[a:signalling-rescue|signals]] and [[a:finding-help|people]] instead.
 2. Keep it charged (top up monthly), **off** between uses, and in a **sealed waterproof bag**.
-3. To call 999: just dial. The phone should switch airplane mode off; check if it doesn't. [[a:calling-999]]
-4. Tools screen: torch, FM radio (needs wired headphones as an aerial), camera, calculator.
+3. Use its **torch** for night signalling (six flashes a minute) and its screen or case as a signal mirror.
+4. Tools screen: torch, FM radio (needs wired headphones as an aerial), camera, calculator, clock.
 !end
 
-## Notes
-- The guide works completely offline and never uses data.
+## What it is good for
+- The whole guide works offline, with no network and no SIM.
+- **Location report:** fill it in and show the screen to whoever goes for help or reaches you ([[a:location-report]]).
+- **FM radio:** BBC local radio and national stations carry weather warnings and news of major incidents.
+- **Camera:** photograph a plant or fungus to compare with the guide, or photograph your map to save handling it in the rain.
+
+## Care
+- The A21s is **not waterproof**: keep it bagged outdoors, and dry it fully before charging if it gets wet.
+- Cold drains the battery fast; keep it in an inside pocket ([[a:batteries-electronics]]).
 - Kiosk mode: to leave the guide, long-press the title for 5 seconds (hidden menu).
-- The camera can photograph plants and fungi to compare against the guide, and take a photo of your map to save handling.
 
 ## Sources
-- Ofcom: Calling 999 from a mobile
+- Ofcom: Calling 999 from a mobile (SIM requirement)
 - Samsung UK: Galaxy A21s user manual

@@ -1,27 +1,36 @@
-# Emergency procedures. Format: see README.md ("Adding articles").
+# Emergency procedures for a device that CANNOT call: this phone has no SIM card, and in the UK a
+# phone without a SIM cannot reach 999/112. Getting help means signalling, being found, or reaching
+# a working phone or a person.
 
 === emergency-priorities
-title: What to do first: emergency priorities
-summary: A calm checklist for the first minutes of any emergency: safety, casualties, call for help, shelter, signal, water.
+title: What to do first
+summary: The first minutes of any emergency: safety, life threats, shelter, then signal for help or send for it.
 tags: priorities, checklist, panic, first steps, rule of threes, STOP
+icon: list-checks
 ---
 !quick
-1. **Stop.** Breathe slowly for a few breaths. Panic kills more people than any single injury.
-2. **Danger:** make the scene safe for yourself first (traffic, water, rockfall, fire, cliff edges).
-3. **Life threats:** unresponsive, not breathing, or severe bleeding? Call **999 / 112** and start [[a:primary-survey]].
-4. **Then:** shelter from wind and wet → let people know where you are → water → (much later) food.
+1. **Stop and breathe.** Make the scene safe for yourself first (traffic, water, rockfall, fire, edges).
+2. **Life threats:** unresponsive, not breathing, or bleeding heavily? Act now: [[a:primary-survey]], [[a:severe-bleeding]].
+3. **Shelter:** get everyone out of the wind and wet, off the cold ground, with every layer on.
+4. **Get help:** [[a:signalling-rescue|signal for help]], or send two people to a phone or people with a written [[a:location-report|location report]].
+!end
+
+!note This phone cannot call for help
+It has **no SIM card**, and in the UK a phone without a SIM cannot reach 999 or 112. Help comes from signalling, from being found, or from reaching a working phone or another person. See [[a:finding-help]].
 !end
 
 ## The order that keeps people alive
-In the UK the usual killers outdoors are **injury, cold and wet (hypothermia), and drowning**, not thirst or hunger. Work through this list in order and don't skip ahead.
+In the UK the usual killers outdoors are **injury, cold and wet (hypothermia), and drowning**, not thirst or hunger. Work through this in order.
 
 1. **Your own safety.** You can't help anyone if you become a casualty.
-2. **Immediate threats to life** (the primary survey): catastrophic bleeding, airway, breathing, circulation. See [[a:primary-survey]], [[a:severe-bleeding]], [[a:cpr-adult]].
-3. **Call for help early.** 999 or 112, and ask for **Police, then Mountain Rescue** inland, or **Coastguard** at the coast. Have your location ready: [[a:location-report]]. Don't wait to see if things improve.
-4. **Protection from the weather.** Get out of the wind, get off the cold ground, and put on dry layers, a hat and a waterproof. See [[a:shelter-priorities]] and [[a:hypothermia]].
-5. **Be found.** Stay put if you have called for help, unless you are in danger. Make yourself visible and audible: [[a:signalling-rescue]].
-6. **Water.** Drink regularly; boil water from wild sources: [[a:settle-strain-boil]].
-7. **Food** comes last. Healthy adults can go weeks without it. Don't take risks foraging.
+2. **Immediate threats to life:** catastrophic bleeding, airway, breathing, circulation. See [[a:primary-survey]] and [[a:cpr-adult]].
+3. **Protection from the weather.** Out of the wind, off the cold ground, dry layers, hat, waterproof. See [[a:shelter-priorities]] and [[a:hypothermia]].
+4. **Raise the alarm:**
+   - With others: **two people go together** for help with a written report, while the rest stay with the casualty ([[a:finding-help]]).
+   - Alone or stuck: **signal** ([[a:signalling-rescue]]) and **make yourself visible** ([[a:be-visible]]).
+   - Decide whether to stay put or walk out: [[a:stay-or-go]].
+5. **Water:** drink regularly; boil water from wild sources ([[a:settle-strain-boil]]).
+6. **Food** comes last. Healthy adults can go weeks without it.
 
 ## Rule of threes (rough guide)
 | Without | You may survive about |
@@ -33,127 +42,251 @@ In the UK the usual killers outdoors are **injury, cold and wet (hypothermia), a
 
 ## Look after the group
 - Give everyone a job. Keep the injured warm and talk to them.
-- Count heads. Keep the group together.
-- Write down the time and what has happened: rescuers and doctors will want to know.
+- Write down the time and what happened. Whoever reaches a phone, and the rescuers, will need it.
 
 ## Sources
 - NHS: First aid (nhs.uk)
 - St John Ambulance: Primary survey (sja.org.uk)
-- Mountain Rescue England and Wales: Calling for help (mountain.rescue.org.uk)
+- Mountain Rescue England and Wales: What to do in an emergency (mountain.rescue.org.uk)
 - Scottish Mountain Rescue: Safety advice (scottishmountainrescue.org)
 
-=== calling-999
-title: Calling 999 or 112
-summary: How to call for emergency help from this phone, what you will be asked, and why the phone must have a SIM card in the UK.
-tags: 999, 112, emergency call, SIM, no signal, mountain rescue, coastguard, AML, airplane mode
+=== signalling-rescue
+title: Signal for help
+summary: The international distress signal (6 whistle blasts or torch flashes a minute), SOS, ground-to-air V and X, and body signals.
+tags: signal, whistle, torch, SOS, distress, six blasts, ground-to-air, V, X, rescue, helicopter, mirror, flash
+icon: megaphone
 ---
 !quick
-1. Dial **999** or **112** (same service, free). Airplane mode: the phone should switch it off for the call; if not, turn it off yourself.
-2. Say which service: **Police** (they call Mountain, Cave and Lowland Rescue), **Ambulance**, **Fire**, or **Coastguard**.
-3. Give your **location** first, then what happened, then how many are hurt: [[a:location-report]].
-4. Do not hang up until told to. Then **keep the phone on and warm** for call-backs, and save the battery.
+1. **Six** whistle blasts or torch flashes **spread over one minute**, then **one minute** of silence. Repeat. This is the international mountain distress signal; the reply is **three**.
+2. Lay out a huge **SOS**, **V** (need assistance) or **X** (need medical help) on open ground, 3 m or more, in contrasting material.
+3. To an aircraft: stand with **both arms raised in a Y** ("yes, we need help").
+4. Keep going at intervals, and **every time** you hear or see searchers, a vehicle or a walker.
 !end
 
-!danger This phone needs a SIM card to call 999
-In the UK, 999/112 calls from a phone with **no SIM card are not connected** (blocked since 2009 because of hoax calls). Keep a SIM in this phone. A pay-as-you-go SIM with **no credit** is fine. Emergency calls are free, and the phone will use **any** available network if yours has no signal.
-!end
+## Sound: the whistle
+- A whistle carries far further than a voice and costs almost no energy. Six long blasts, evenly spaced over a minute, then rest a minute.
+- No whistle: bang the steel pot with a stone, or shout in short bursts of six. Save your voice.
+- Searchers often reply with **three** blasts or flashes. Keep signalling until they reach you, so they can home in.
 
-## Before you call
-- Note your location (grid reference if you can: [[a:grid-references]]). **what3words does not work offline** on this phone; give a grid reference, a named feature, or a description.
-- Check signal: try higher ground, away from steep valley sides. Even one bar may connect an emergency call.
+## Light: torch or phone torch
+- At night use the same pattern: **six flashes a minute**, then a minute's pause. The phone's torch is under [Tools](#/tools).
+- **SOS** in light (··· ––– ···) is understood everywhere: three short, three long, three short.
+- Point the light at anyone you see, and at aircraft. Never use a laser at an aircraft.
+- Save battery: signal in bursts (for example every 10–15 minutes), and whenever you hear or see something.
 
-## On the call
-- The operator asks: *"Emergency, which service?"* Inland, for anyone lost or injured in the hills, ask for **Police** and then say **"Mountain Rescue"**. At sea, on the shore or on cliffs, ask for **Coastguard**.
-- Stay calm and answer the questions. Give a **call-back number** if you know it.
-- **Advanced Mobile Location (AML)**: Android phones automatically send their location to the 999 service when you call, if they can get a fix. Don't rely on it: still give your location.
-- If you can't speak, stay on the line. After a short message, press **55** when prompted (Silent Solution) so the operator knows it is a real emergency.
+## Ground-to-air signals
+!svg ground-to-air
+- Use rocks, logs, branches, dug turf, clothing, a tarp, or tramped lines in snow.
+- Make it **big** (each line 3 m or more), **straight-edged**, and **contrasting** with the ground. Open ground is visible; under trees isn't.
+- **V** = we need assistance. **X** = we need medical help. **SOS** = distress. An **arrow** shows the direction you have gone if you move on.
 
-## After the call
-- **Stay where you are** unless told otherwise or you are in danger. Rescuers will go to where you said you were.
-- Keep the phone switched on, warm (inside your clothes) and off other uses. Rescue teams may call or text back.
-- Prepare to signal: [[a:signalling-rescue]].
+## Body signals to a helicopter
+| Signal | Meaning |
+|---|---|
+| Both arms raised in a **Y** | **Yes**: we need help |
+| One arm up, one arm down | **No**: we don't need help |
 
-## No signal at all?
-- Move to higher ground or a ridge, or try at intervals. Text may get through when a call won't: see [[a:emergency-sms]].
-- If you are in a group, two people can go for help **together**, carrying the written location report, while others stay with the casualty.
-- Use the whistle or torch distress signal: six blasts or flashes, then a minute's pause.
+## Sunlight: mirror flash
+- Any shiny surface works: the phone screen, the steel pot or its lid, a foil wrapper.
+- Hold out your other hand with two fingers in a V around the target, and tilt the mirror so the spot of light falls between your fingers. Flash slowly across the target.
+- A flash can be seen for kilometres in sunshine, by aircraft, walkers on the opposite hillside, or drivers.
+
+## Smoke and fire
+- By day, green leaves or damp moss on a fire make white smoke; by night, a bright fire is visible a long way.
+- Only where it is safe and legal; never start a wildfire on moorland or peat ([[a:fire-safety]]).
 
 ## Sources
-- Ofcom: Calling emergency services (ofcom.org.uk)
-- BT 999: How to call 999 (bt.com)
-- Police UK: Silent Solution, 55 (police.uk)
+- Mountain Rescue England and Wales: International distress signal (six blasts)
+- HM Coastguard / UK SAR: Signalling to helicopters
+- ICAO Annex 12: Ground-to-air visual signal code
+- British Mountaineering Council: Emergency procedures
+
+=== be-visible
+title: Making yourself visible
+summary: Help searchers find you: open ground, bright colours, movement, contrast, signs of your route and a fire by night.
+tags: visible, found, search, bright colours, contrast, rescue, searchers, cairn, note
+icon: eye
+---
+!quick
+1. Get to **open ground** near your shelter: a clearing, ridge shoulder, path or riverbank that can be seen from above and from a distance.
+2. **Spread bright or contrasting** kit flat on the ground: tarp, jacket, survival bag. Don't hide it under trees.
+3. **Move** when you see or hear searchers. Wave something large in slow sweeping arcs.
+4. If you move on, **leave a sign**: an arrow of stones and a note saying where you have gone and when.
+!end
+
+## What searchers look for
+- Searchers on foot check paths, path junctions, streams, walls, bothies and obvious features first. Helicopters and drones scan open ground.
+- Colour and straight lines stand out in a natural landscape. Orange, red and bright yellow are best; blue and white are good on dark ground, and dark things on snow.
+- At night, a light or fire is visible for a very long way.
+
+## Practical tips
+- Stay close to your shelter but in sight of open ground; check you can see your markers from where you sit.
+- Tie bright cloth high in a tree or on a pole at a path junction, with an arrow pointing to your shelter.
+- Keep a torch and whistle in your hand or pocket, not packed away.
+- If you hear a helicopter, go to open ground at once and signal ([[a:signalling-rescue]]); secure loose kit ([[a:helicopter-rescue]]).
+
+## Leaving a trail
+- If you decide to walk out ([[a:stay-or-go]]), leave a note in a visible place (shelter, cairn, car, bothy logbook): **who, when, route and destination**.
+- Build stone or stick arrows at turns. Break and bend branches at junctions.
+
+## Sources
+- Mountain Rescue England and Wales: Hill safety; What happens in a search
+- Lowland Rescue: How searches work (lowlandrescue.org)
+- HM Coastguard: Being seen by search and rescue aircraft
+
+=== stay-or-go
+title: Stay put or walk out?
+summary: How to decide between waiting to be found and walking out, and how to walk out safely by following paths, tracks and streams downhill to roads.
+tags: decision, walk out, wait for rescue, stay put, follow stream, path, downhill, roads, group
+icon: route
+---
+!quick
+1. **Stay put** if someone knows your route and will raise the alarm, if anyone is injured, or in darkness, fog, storms or deep snow.
+2. **Walk out** if no one will come looking, you are fit, the weather allows, and you can follow a clear line down to a road or houses.
+3. **Going down:** follow **paths and tracks** first; then walls, fences and streams **downhill**, which lead to valleys, farms and roads.
+4. **Never** follow a stream into a gorge or over a waterfall: climb out and descend beside it on open ground.
+!end
+
+## Stay put when
+- Someone expects you back and knows your route: rescue will come, and moving makes you harder to find.
+- Anyone is injured, very cold or exhausted, or it is dark, foggy or stormy. Most accidents happen while trying to get down.
+- Then: shelter, signal ([[a:signalling-rescue]]), be visible ([[a:be-visible]]).
+
+## Walk out when
+- No one knows where you are, or will notice you missing for days.
+- You are fit enough, the weather is reasonable, and you have daylight. Start early.
+- Your shelter, water or position is unsafe (rising water, no shelter possible).
+
+## How to walk out in Britain
+- **Paths and tracks** lead to car parks, farms and roads. Follow them downhill when in doubt.
+- **Walls and fences** usually lead down to farmland. **Power lines** lead to roads and houses.
+- **Streams lead downhill to valleys**, and valleys in Britain almost always have a road, a farm or houses within a few kilometres. Walk beside the stream, not in it.
+- Leave a note and arrows if you leave a shelter or vehicle ([[a:be-visible]]).
+- Use your map and compass if you have them ([[a:map-compass-basics]]); otherwise aim for the lowest ground you can see.
+
+## Dangers on the way down
+- **Gorges, waterfalls and crags** on streams: climb away from the stream and descend on the open slope beside it. Never down-climb wet rock.
+- **Darkness:** stop and shelter before it gets dark ([[a:emergency-night-out]]).
+- **Rivers in spate:** don't cross ([[a:river-crossing]]).
+- **Bogs and saltmarsh:** go round; test ground with a stick.
+
+## Splitting a group
+- Never send anyone alone. Two people go together, with a written [[a:location-report|location report]], while the others stay with the casualty, sheltered and visible.
+
+## Sources
+- Mountain Rescue England and Wales: Hill safety and emergencies
+- British Mountaineering Council: Emergency procedures (thebmc.co.uk)
+- Ordnance Survey: Navigation skills
+
+=== finding-help
+title: Finding a phone or people
+summary: Where to find someone who can call 999 for you: paths, roads, farms, houses, campsites, payphones and visitor centres.
+tags: find help, phone, people, farm, road, payphone, phone box, defibrillator, AED, walkers, campsite
+icon: users
+---
+!quick
+1. **Head for people:** a busy path, a road, a farm, a village, a campsite, a pub, or a visitor centre or car park.
+2. **Ask anyone with a phone** to call 999 for you. Hand them your written [[a:location-report|location report]].
+3. **Roads:** stand well off the road and wave vehicles down in a safe spot with a long view.
+4. **Payphones** still exist in some villages and remote spots: **999 calls from them are free**.
+!end
+
+## Where people are
+- **Paths:** popular routes, summits and path junctions have walkers, especially at weekends and in summer.
+- **Farms:** follow farm tracks; farmhouses are usually near the valley floor. Knock, explain clearly, and ask them to call 999.
+- **Roads:** even minor roads carry traffic within an hour or two. Wait at a lay-by, junction or gateway where drivers can see you and stop safely.
+- **Settlements:** villages, pubs, shops, churches, campsites, youth hostels, outdoor centres, reservoirs and dams (often staffed), and forestry offices.
+- **Bothies** usually have no phone, but other people may arrive; leave a note in the bothy book either way.
+
+## Payphones and old phone boxes
+- Some public payphones remain in rural areas, and **emergency calls from payphones are free**.
+- Many old red phone boxes now hold a **public defibrillator (AED)** instead of a phone. Some cabinets are unlocked; locked ones are opened with a code that the 999 operator gives the caller.
+
+## What to say
+When you reach someone, give them the facts in order. See [[a:when-you-reach-help]] for what to ask for.
+
+## Sources
+- Mountain Rescue England and Wales: Calling for help
+- Ofcom: Public call boxes and free emergency calls (ofcom.org.uk)
+- Community Heartbeat Trust: Defibrillators in phone kiosks (communityheartbeat.org.uk)
+
+=== when-you-reach-help
+title: When you reach a phone or a person
+summary: What to ask for and what to say once you reach someone who can call: 999 or 112, Police for Mountain Rescue, Coastguard for the coast.
+tags: 999, 112, mountain rescue, coastguard, police, ambulance, report, grid reference
+icon: phone
+---
+!quick
+1. On any working phone, call **999** or **112** (same service, free).
+2. **Inland, lost or injured in the hills:** ask for **Police**, then **Mountain Rescue**. **At the coast or on cliffs:** ask for **Coastguard**. Otherwise **Ambulance** or **Fire**.
+3. Read out the [[a:location-report|location report]]: **where**, **what happened**, **how many** people, their condition.
+4. Stay with that phone and person until the operator says you can go. Rescuers may call back.
+!end
+
+## What the operator needs
+1. **Where:** a grid reference, plus a description of the place and the route ([[a:grid-references]]).
+2. **What:** what happened and when; injuries; whether people are conscious and breathing.
+3. **Who:** how many in the party, and where they are now.
+4. **Kit and signals:** shelter, light, food, and how the casualty site can be spotted (tarp colour, whistle).
+
+## Tips
+- Show or hand over this phone with the report screen open (Tools → Location report). It works without any signal or SIM.
+- This phone has no what3words app; a grid reference works with any map and is easy to read out.
+- If you can't speak on a call, stay on the line; after a short message press **55** when asked, so the operator knows it is a real emergency.
+
+## Sources
+- Ofcom and BT 999: Calling the emergency services
 - Mountain Rescue England and Wales: How to call Mountain Rescue
-
-=== emergency-sms
-title: Emergency SMS (text 999)
-summary: Texting 999 works where a call won't, but only if you registered the phone number beforehand.
-tags: sms, text, 999, register, no signal, emergencysms
----
-!quick
-1. **Register beforehand** (while you have signal): text **register** to **999** and follow the replies.
-2. In an emergency, text **999** with: service needed (Police/Ambulance/Fire/Coastguard), **what** happened, **where** (grid reference), **how many**.
-3. Wait for a reply. It may take a couple of minutes. Do not assume it arrived until you get one.
-!end
-
-## How it works
-The emergencySMS service relays your text to the 999 operator. It was designed for people who are deaf, hard of hearing or speech-impaired. Rescue organisations point out that a text can sometimes get through on a signal too weak for a voice call.
-
-- **It only works for numbers registered in advance.** Unregistered texts to 999 are not handled.
-- You need mobile signal: airplane mode must be **off**.
-- Keep messages short and factual. Use the [[a:location-report]] fields.
-
-## Example
-> POLICE MOUNTAIN RESCUE. Walker fallen, broken ankle, can't walk. Grid NN 166 712, 300 m N of the bothy on main path. 2 people, 1 injured, cold. Orange tarp, whistle.
-
-## Sources
-- emergencySMS service (relayuk.bt.com / emergencysms.net)
-- Mountain Rescue England and Wales: Register for emergency SMS
+- HM Coastguard (gov.uk)
+- Police UK: Silent Solution (55)
 
 === location-report
-title: Reporting your location (grid reference template)
-summary: Exactly what to tell 999 so rescuers can find you, with a fill-in template.
-tags: location, grid reference, report, rescue, what3words, template
+title: Location report (grid reference template)
+summary: Write down exactly where you are and what happened, so a messenger, a passer-by or rescuers can act on it.
+tags: location, grid reference, report, rescue, what3words, template, note
+icon: map-pin
 ---
 !quick
-1. Give a **grid reference** (2 letters + 6 digits) if you can: [[a:grid-references]].
-2. Add a **named feature**: summit, path, river, building, and your distance and direction from it.
-3. Say what you can **see** and what you are **wearing** or will use to **signal**.
-4. Use the in-app form: Tools → **Location report**.
+1. Work out a **grid reference** (2 letters + 6 digits) if you can: [[a:grid-references]].
+2. Add a **named feature** (summit, path, stream junction, building) and your distance and direction from it.
+3. Note what happened, who is hurt, what kit you have, and how you will **signal**.
+4. Fill in Tools → **Location report**, or write it on paper for whoever goes for help.
 !end
 
 ## The template
-Write it down (or use the [Location report](#/report) screen) and read it out slowly:
+Use the [Location report](#/report) screen, which works with no signal, or copy this onto paper:
 
 | Item | Example |
 |---|---|
 | What happened | Walker fell, suspected broken lower leg, conscious |
-| Grid reference | **NY 215 072** (repeat it letter by letter) |
+| Grid reference | **NY 215 072** |
 | Nearest feature | 200 m south-east of Esk Hause shelter, on the path to Angle Tarn |
 | Ground and weather | Steep grass, low cloud, strong wind |
 | People | 3 in group, 1 injured (male, 60s), all cold |
-| Equipment | Group shelter, stove, 2 headtorches, phone 35% |
+| Equipment | Tarp, stove, 2 torches |
 | How we'll signal | Orange tarp, whistle, torch flashes |
-| Contact | Name; this phone's number if known |
+| Time written | 14:20, Saturday |
 
-## Tips
-- **what3words does not work offline** and is easy to mishear. Give an OS grid reference.
-- If you can't work out a grid reference, describe the route you took, the last place you were sure of, and how long you've walked since.
-- Don't move after giving your position, unless you have to.
+## How it is used
+- **Messengers** carry it to a phone or a person ([[a:finding-help]]) and read it to the 999 operator ([[a:when-you-reach-help]]).
+- **Rescuers** can read it straight off the screen when they arrive.
+- If you can't work out a grid reference, describe the route you took, the last place you were sure of, and how long you have walked since.
 
 ## Sources
-- Mountain Rescue England and Wales: Calling for help
+- Mountain Rescue England and Wales: Giving your location
 - Ordnance Survey: Using grid references (ordnancesurvey.co.uk)
 
 === lost-person-actions
 title: If you are lost
 summary: What to do when you don't know where you are: STOP, think, use the map, retrace, and when to stay put.
 tags: lost, STOP, navigation, stay put, missing, search
+icon: compass
 ---
 !quick
 1. **S**top. **T**hink. **O**bserve. **P**lan. Don't keep walking hopefully.
 2. Go back to the last place you were sure of, if that is safe and obvious.
-3. If it is getting dark, foggy or someone is hurt: **stay put**, get warm and sheltered, and call for help.
-4. Make yourself easy to find: bright colours, whistle (6 blasts), torch flashes.
+3. Dark, foggy, or someone hurt: **stay put**, shelter, and signal for help.
+4. Make yourself easy to find: bright colours, whistle (6 blasts a minute), torch flashes.
 !end
 
 ## STOP
@@ -163,19 +296,16 @@ tags: lost, STOP, navigation, stay put, missing, search
 - **Plan**: choose one sensible option and stick to it.
 
 ## Options, in order
-1. **Relocate** using the map: find a feature you can identify for certain, like a stream junction or summit.
+1. **Relocate** using the map: find a feature you can identify for certain.
 2. **Retrace** your steps to the last known point.
-3. **Head for a catching feature**: a long, unmissable line like a road, river, wall or forest edge that you can't cross without noticing ([[a:handrails-catching]]). Walk on a compass bearing towards it.
-4. **Stay put** and call for help. It is the best option at night, in fog, near cliffs, in deep snow, or when injured or exhausted.
+3. **Head for a catching feature**: a long, unmissable line like a road, river, wall or forest edge ([[a:handrails-catching]]).
+4. **Stay put** and signal: the best option at night, in fog, near cliffs, in deep snow, or when injured or exhausted ([[a:stay-or-go]]).
 
 ## Staying put
 - Shelter immediately: out of the wind, off the ground ([[a:insulation-ground]]).
-- Keep the group together. Keep the phone warm and off between check-ins.
-- Signal at intervals ([[a:signalling-rescue]]). Listen for searchers, who may shout or whistle.
-- Searchers look on paths, streams and obvious features first: stay near one and be visible.
+- Keep the group together. Signal at intervals ([[a:signalling-rescue]]) and make yourself visible ([[a:be-visible]]).
 
 ## Avoid
-- Following streams downhill in the hills: they lead to waterfalls, gorges and crags.
 - Splitting up (except two people going together to get help).
 - Pushing on into darkness on unknown ground.
 
@@ -184,91 +314,62 @@ tags: lost, STOP, navigation, stay put, missing, search
 - Ordnance Survey: Navigation skills (getoutside.ordnancesurvey.co.uk)
 - Scottish Mountain Rescue: Plan ahead and know what to do
 
-=== stay-or-go
-title: Stay put or go for help?
-summary: How to decide whether to wait for rescue, walk out, or send someone, and how to do it safely.
-tags: decision, walk out, wait for rescue, group, injured
----
-!quick
-1. **Help has been called and knows where you are:** stay put.
-2. **No contact possible:** stay with the casualty; send two people with a written location report if you can.
-3. **Alone and injured, no contact:** stay sheltered and signal; move only if your position is untenable (rising water, no shelter, no one will look there).
-!end
-
-## Reasons to stay
-- Rescue has your location. Moving makes you harder to find.
-- Darkness, fog, high winds or snow. Most accidents happen while trying to get down.
-- An injury that walking would make worse, especially to the head, spine or a leg.
-
-## Reasons to move
-- Immediate danger: rising water, rockfall, fire, an exposed spot with no shelter possible.
-- No one knows where you are and no one will look, and you are fit and know the way to help.
-- A short, easy route to a road, house or signal.
-
-## If someone goes for help
-- Two people go **together**, with a written note: location, casualty details, time ([[a:location-report]]).
-- They walk out by the safest route, not the quickest, and call 999 as soon as they get signal.
-- The rest of the group stays put with the casualty, sheltered and visible.
-
-## Sources
-- Mountain Rescue England and Wales: Hill safety and what to do in an emergency
-- British Mountaineering Council: Emergency procedures (thebmc.co.uk)
-
 === emergency-night-out
 title: An unplanned night out
 summary: How to get through an unexpected night outdoors in UK weather with whatever you have.
 tags: bivouac, night, benighted, cold, shelter, survive the night
+icon: moon
 ---
 !quick
 1. Stop **before dark**. Choose a spot out of the wind, off the wet ground, safe from falls and floods.
 2. **Insulate underneath** (rucksack, bracken, heather, leaves) and put **every layer on**, hat first.
-3. Huddle together, eat and drink, and keep the phone warm.
-4. Signal at intervals if you have called for help; otherwise walk out in daylight.
+3. Huddle together, eat and drink, and signal with a torch if you see lights.
+4. Move on, or go for help, in daylight.
 !end
 
 ## Priorities
 - **Wind and wet** are what kill. Get into the lee of a wall, boulder, bank or dense trees, and under a tarp or survival bag if you have one.
-- **Ground insulation** matters more than a top layer: sit on your rucksack, a pile of dry bracken or heather, or spruce boughs ([[a:insulation-ground]]).
+- **Ground insulation** matters more than a top layer ([[a:insulation-ground]]).
 - Put on dry layers *before* you get cold, and change out of wet base layers if you have spares.
 
 ## Through the night
-- Huddle back to back or in a group, with the coldest person in the middle.
-- Eat and drink something warm or sugary if you have it. Exercise gently (clench and relax muscles) when you start shivering.
-- Keep watch on each other for signs of [[a:hypothermia]]: stumbling, slurred speech, confusion, apathy.
-- A fire helps morale and warmth, but only if it is legal, safe and you can keep it going ([[a:fire-safety]]). Never take a fire, stove or charcoal into an enclosed shelter (carbon monoxide).
+- Huddle back to back, with the coldest person in the middle.
+- Eat and drink something warm or sugary if you have it. Clench and relax muscles when shivering starts.
+- Watch each other for [[a:hypothermia]]: stumbling, slurred speech, confusion, apathy.
+- A fire helps warmth and morale, and is a beacon for searchers, but only if legal and safe ([[a:fire-safety]]). Never take a fire, stove or charcoal into an enclosed shelter (carbon monoxide).
+- If you see lights or hear searchers, signal: six flashes or blasts a minute ([[a:signalling-rescue]]).
 
 ## Sources
 - Mountain Rescue England and Wales: Hill safety
 - NHS: Hypothermia
-- Mountain Training: Hill and Moorland Leader handbook (shelter and emergency procedures)
+- Mountain Training: Hill and Moorland Leader handbook
 
 === helicopter-rescue
 title: Helicopter rescue: what to expect
-summary: How to help a coastguard search and rescue helicopter find you and land safely.
+summary: How to help a search and rescue helicopter find you and land safely.
 tags: helicopter, rescue, coastguard, search and rescue, downdraught, signal
+icon: life-buoy
 ---
 !quick
-1. Make yourself visible: wave bright clothing; at night, flash a torch **at** the helicopter, never a laser.
-2. Signal **YES/need help**: both arms raised in a **Y**. One arm up, one down means **no help needed**.
+1. Get to open ground. By day wave bright clothing; at night flash a torch **at** the helicopter.
+2. Signal **yes, we need help**: both arms raised in a **Y**.
 3. Secure loose kit (tarp, bags, hats) before it arrives: the downdraught is violent.
-4. Crouch, keep still, and do what the crew tells you. Don't approach until signalled.
+4. Crouch, keep still, and do exactly what the crew tells you.
 !end
 
 ## Before it arrives
-- UK search and rescue helicopters are tasked by HM Coastguard, including inland. They may also be guided by your phone's location.
+- UK search and rescue helicopters are tasked by HM Coastguard, inland as well as at sea. They often search at night with thermal cameras: a warm body on open ground stands out.
 - Pack everything away or weigh it down. A flying tarp can bring down a helicopter.
-- Choose a clear, flat spot without overhead wires if you can.
 
 ## When it is overhead
-- Protect your eyes from flying debris; kneel or crouch with your back to the wind.
-- Don't touch the winch cable or a stretcher until it has touched the ground (it may carry a static charge), unless told otherwise.
-- Follow the winchman's instructions exactly.
+- Protect your eyes from flying debris; kneel with your back to the wind.
+- Don't touch the winch cable or stretcher until it has touched the ground, unless told otherwise.
 
 ## Body signals
 | Signal | Meaning |
 |---|---|
 | Both arms raised (Y shape) | **Yes**: we need help |
-| One arm up, one arm down (N-ish) | **No**: we do not need help |
+| One arm up, one arm down | **No**: we do not need help |
 
 ## Sources
 - HM Coastguard: Search and rescue helicopters (gov.uk)
@@ -276,25 +377,26 @@ tags: helicopter, rescue, coastguard, search and rescue, downdraught, signal
 
 === river-crossing
 title: Rivers and floods: don't cross
-summary: Why flood water and swollen rivers are deadly, and the rare cases when crossing might be considered.
-tags: river, flood, crossing, drowning, spate, stream
+summary: Why flood water and swollen rivers are deadly, and what to do if you end up in the water.
+tags: river, flood, crossing, drowning, spate, stream, float to live
+icon: waves
 ---
 !quick
-1. **Don't cross** a river in spate. Wait (often only hours), or find a bridge, even miles away.
-2. Never walk or drive through **flood water**: 15 cm of moving water can knock you over.
-3. If swept in: float on your back, **feet first downstream**, and steer towards the bank. Don't stand up in fast water.
+1. **Don't cross** a river in spate. Wait (often only hours) or find a bridge, even miles away.
+2. Never walk through **flood water**: 15 cm of moving water can knock you over.
+3. If swept in: **float on your back, feet first downstream**, and steer towards the bank.
 !end
 
 ## Why it matters
-Drowning is one of the most common causes of death outdoors in the UK. Upland streams rise very fast after heavy rain and fall again within hours. The safest choice is almost always to wait or to go round.
+Drowning is one of the most common causes of death outdoors in the UK. Upland streams rise very fast after heavy rain and fall again within hours.
 
-## If you are cold-water immersed
-- **Float to live:** fight the urge to swim hard for the first minute or so of cold-water shock. Lean back, spread your arms and legs and float until your breathing settles, then signal or swim to safety.
+## Cold water: Float to live
+Fight the urge to swim hard in the first minute of cold-water shock. Lean back, spread your arms and legs, and float until your breathing settles. Then swim or work your way to safety.
 
 ## If a crossing is unavoidable (last resort)
 - Choose a wide, shallow, slow section with a gentle exit, never above rapids, falls or a weir.
-- Unclip the rucksack hip belt and chest strap so you can shed it.
-- Keep boots on. Face upstream, move one foot at a time, and use a stout pole as a third leg. Groups link arms and cross in a line, parallel to the current.
+- Unclip the rucksack hip belt and chest strap. Keep boots on.
+- Face upstream, move one foot at a time, and use a stout pole as a third leg. Groups link arms.
 - Turn back if water reaches above the knees.
 
 ## Sources
@@ -304,23 +406,25 @@ Drowning is one of the most common causes of death outdoors in the UK. Upland st
 
 === coast-and-tides
 title: Coast, cliffs and tides
-summary: Staying safe on UK coasts: tides, cut-off, cliffs, mud and calling the Coastguard.
+summary: Staying safe on UK coasts: tides, getting cut off, cliffs, mud, and raising the alarm at the coast.
 tags: coast, tide, coastguard, cliffs, mud, sea, cut off
+icon: anchor
 ---
 !quick
-1. In trouble at the coast: call **999 / 112** and ask for the **Coastguard**.
-2. Know the tide. It rises fastest in the middle hours and can cut you off in bays and on sandbanks.
-3. Keep away from cliff edges and bases. Rockfalls and collapses happen without warning, especially after rain or frost.
-4. Stuck in mud: don't struggle. Spread your weight, lie back, and call 999.
+1. Know the tide: it rises fastest in the middle hours and can cut you off in bays and on sandbanks.
+2. **Cut off:** don't try to swim or wade round. Go to the highest safe point and **signal** (six blasts or flashes, waving).
+3. Keep away from cliff edges and bases: rockfalls happen without warning.
+4. Stuck in mud: don't struggle. Spread your weight, lie back, and signal for help.
 !end
 
 ## Tides
 - Two high and two low tides roughly every 24 hours 50 minutes. High tide is about 50 minutes later each day.
-- The **rule of twelfths**: in the 6 hours from low to high, the water rises about 1/12, 2/12, 3/12, 3/12, 2/12, 1/12 of its range each hour. It comes in fastest in hours 3 and 4.
-- Always know your route off a beach before the tide turns.
+- **Rule of twelfths:** from low to high, the water rises about 1/12, 2/12, 3/12, 3/12, 2/12, 1/12 of its range in successive hours.
+- Know your way off the beach before the tide turns.
 
-## Cut off by the tide
-- Don't try to swim or wade round a headland. Go to the highest safe point, call the Coastguard, and signal.
+## Raising the alarm at the coast
+- Coasts are busy: wave and whistle to walkers, boats, anglers and anyone on the cliff path. Ask them to call **999 and ask for the Coastguard** ([[a:when-you-reach-help]]).
+- RNLI lifeboats and Coastguard helicopters answer these calls day and night.
 
 ## Sources
 - RNLI: Coastal safety, tides (rnli.org)

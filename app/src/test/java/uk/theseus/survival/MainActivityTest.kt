@@ -52,7 +52,7 @@ class MainActivityTest {
     @Test
     fun bundledUiAndContentArePresent() {
         val (activity, _) = launch()
-        for (path in listOf("index.html", "app.js", "app.css", "content/index.json", "content/index.js")) {
+        for (path in listOf("index.html", "app.js", "app.css", "icons.js", "fonts.css", "content/index.json", "content/index.js")) {
             activity.assets.open(path).use { assertTrue("$path is empty", it.read() >= 0) }
         }
     }
@@ -64,6 +64,15 @@ class MainActivityTest {
         assertTrue(state.getBoolean("native"))
         assertFalse(state.getBoolean("deviceOwner"))
         assertTrue(state.getBoolean("kioskEnabled"))
+    }
+
+    @Test
+    fun cannotCallOrText() {
+        // The phone has no SIM: nothing in the bridge may dial, call or text.
+        val names = WebBridge::class.java.methods.map { it.name.lowercase() }
+        assertFalse(names.toString(), names.any { "dial" in it || "call" in it || "sms" in it })
+        val (activity, _) = launch()
+        assertFalse(Tools.launch(activity, "dialer"))
     }
 
     @Test

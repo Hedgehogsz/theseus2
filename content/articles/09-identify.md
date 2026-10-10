@@ -5,6 +5,7 @@ title: Wild garlic vs lily of the valley vs lords-and-ladies
 summary: Side-by-side comparison of wild garlic and the poisonous leaves that grow among it.
 tags: wild garlic, ramsons, lily of the valley, lords and ladies, arum, lookalike, comparison, leaves
 compare: wild-garlic, lily-of-the-valley, lords-and-ladies, bluebell
+icon: leafy-green
 ---
 !quick
 1. **Smell every leaf** (crush it): wild garlic smells strongly of garlic. No smell = don't eat. Once your hands smell of garlic, check leaf shape instead.
@@ -37,6 +38,7 @@ title: Cow parsley vs hemlock vs hogweed (and other white umbellifers)
 summary: How to tell the common white umbrella-flowered plants apart, and why beginners should eat none of them.
 tags: cow parsley, hemlock, hogweed, giant hogweed, umbellifer, apiaceae, carrot family, comparison, lookalike
 compare: cow-parsley, hemlock, common-hogweed, giant-hogweed, hemlock-water-dropwort, fools-parsley
+icon: flower-2
 ---
 !quick
 1. **Don't eat any white-umbrella (carrot family) plant** unless you are an expert. This family contains the UK's deadliest plants.
@@ -71,6 +73,7 @@ title: Field mushroom vs death cap and destroying angel
 summary: The deadly white Amanitas compared with edible Agaricus mushrooms. Gill colour, volva and ring.
 tags: field mushroom, death cap, destroying angel, amanita, agaricus, yellow stainer, comparison, lookalike, white mushroom
 compare: field-mushroom, death-cap, destroying-angel, yellow-stainer, horse-mushroom
+icon: mushroom
 ---
 !quick
 1. **Dig up the whole base.** A **bag-like sac (volva)** = Amanita = **never eat**.
@@ -105,6 +108,7 @@ title: Chanterelle vs false chanterelle vs jack o'lantern
 summary: Tell the edible chanterelle from its orange lookalikes by its blunt ridges, white flesh and apricot smell.
 tags: chanterelle, girolle, false chanterelle, jack o lantern, omphalotus, comparison, lookalike, orange mushroom
 compare: chanterelle, false-chanterelle, jack-o-lantern, deadly-webcap
+icon: mushroom
 ---
 !quick
 1. **Underside:** chanterelle has **blunt, shallow, forked ridges** running down the stem, not thin, sharp, crowded gills.
@@ -136,6 +140,7 @@ title: Elder vs dogwood (and privet)
 summary: Tell elderberries from bitter dogwood and poisonous privet berries by leaves, berry clusters and twigs.
 tags: elder, elderberry, dogwood, privet, buckthorn, black berries, comparison, lookalike
 compare: elder, dogwood, privet, buckthorn
+icon: grape
 ---
 !quick
 1. **Elder leaves are divided** into 5–7 toothed leaflets. Dogwood and privet have **single, whole leaves**.
@@ -161,6 +166,7 @@ title: Sloes vs deadly nightshade berries (and other black berries)
 summary: How to tell blackthorn sloes and bilberries from deadly nightshade's glossy black berries.
 tags: sloe, blackthorn, deadly nightshade, belladonna, bilberry, black berries, comparison, lookalike
 compare: blackthorn, deadly-nightshade, bilberry, black-nightshade
+icon: cherry
 ---
 !quick
 1. **Deadly nightshade:** single, **glossy**, cherry-sized black berries **sitting in a green 5-pointed star**, on a soft, leafy, non-woody plant. **Deadly.**
@@ -193,6 +199,7 @@ title: Red berries: which are safe?
 summary: Most red berries in UK hedgerows are poisonous or need cooking. A guide to the common ones.
 tags: red berries, holly, yew, rowan, hawthorn, rosehip, bittersweet, bryony, honeysuckle, comparison
 compare: hawthorn, dog-rose, rowan, yew, holly, bittersweet, black-bryony, guelder-rose
+icon: cherry
 ---
 !quick
 1. **Hawthorn haws** (flesh only) and **rosehips** (strained, seeds removed) are edible.
@@ -226,6 +233,7 @@ compare: hawthorn, dog-rose, rowan, yew, holly, bittersweet, black-bryony, gueld
 title: How to identify a plant properly
 summary: A step-by-step method for identifying UK plants using leaves, stems, flowers, smell, habitat and season.
 tags: identification, plants, botany, leaves, flowers, method, key
+icon: sprout
 ---
 !quick
 1. Look at the **whole plant**: size, growth form (tree, shrub, herb, climber), habitat.
@@ -254,6 +262,7 @@ tags: identification, plants, botany, leaves, flowers, method, key
 title: Fungi identification basics (spore prints and safety)
 summary: The features experts use to identify mushrooms, how to take a spore print, and the absolute safety rules.
 tags: fungi, mushrooms, spore print, gills, volva, identification, safety
+icon: mushroom
 ---
 !quick
 1. **Never eat a wild fungus** unless an expert has checked it in person. Delayed-symptom species kill.
@@ -282,6 +291,7 @@ tags: fungi, mushrooms, spore print, gills, volva, identification, safety
 title: Berry safety rules for the UK
 summary: Simple, conservative rules for wild berries, including the beginner-safe "aggregate" berries.
 tags: berries, rules, aggregate berries, blackberry, raspberry, safety
+icon: grape
 ---
 !quick
 1. **Aggregate berries** made of many small round parts ([[s:blackberry]], [[s:raspberry]]) have no poisonous UK lookalikes.
@@ -298,6 +308,7 @@ tags: berries, rules, aggregate berries, blackberry, raspberry, safety
 title: UK bird identification basics
 summary: Recognise common British birds by size, shape, behaviour, habitat and call. Useful for reading the land and the weather.
 tags: birds, identification, crow, buzzard, robin, blackbird, gull, call, habitat
+icon: bird
 ---
 !quick
 1. **Size and shape first:** compare with known birds (sparrow, blackbird, pigeon, crow).
@@ -331,6 +342,7 @@ tags: birds, identification, crow, buzzard, robin, blackbird, gull, call, habita
 title: Animal tracks and signs
 summary: Read the footprints, droppings, paths and feeding signs of common UK mammals.
 tags: tracks, footprints, prints, droppings, scat, signs, deer, fox, badger, rabbit, tracking
+icon: paw-print
 ---
 !quick
 1. **Deer:** two pointed "slots" (cloven hoof). Roe ~4.5 cm, red deer up to 9 cm.
@@ -357,6 +369,7 @@ tags: tracks, footprints, prints, droppings, scat, signs, deer, fox, badger, rab
 title: How to use the species guide
 summary: What the status badges mean, how lookalikes are shown, and how photos and filters work.
 tags: help, badges, species guide, status, filters, photos
+icon: info
 ---
 !quick
 1. Every species has **status badges**: ☠ DEADLY, Poisonous, Venomous, Caution, Edible, Medicinal, Protected, Invasive, Info.

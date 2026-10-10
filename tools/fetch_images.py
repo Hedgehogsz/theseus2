@@ -50,8 +50,8 @@ COMMONS_API = "https://commons.wikimedia.org/w/api.php"
 
 MAX_EDGE = 1000
 QUALITY = 75
-THUMB_WIDTH = 1280
-THUMB_EDGE = 192  # square list thumbnails  # a standard Wikimedia thumbnail step; we downscale locally
+THUMB_WIDTH = 1280  # a standard Wikimedia thumbnail step; we downscale locally
+THUMB_EDGE = 360  # square thumbnails for lists and the photo grid (~180 dp at 2x)
 OK_LICENSE = re.compile(r"^(cc0|cc[- ]by|pd|public domain|cc-pd)", re.I)
 BAD_NAME = re.compile(
     r"(?<![a-z])(map|maps|distribution|range|logo|icon|symbol|flag|coat of arms|stamp|diagram|chart|"
@@ -159,14 +159,18 @@ def make_thumbnails(manifest: dict) -> None:
     tdir.mkdir(parents=True, exist_ok=True)
     for name in manifest["files"]:
         src, dst = IMG_DIR / name, tdir / name
-        if dst.exists() or not src.exists():
+        if not src.exists():
             continue
+        if dst.exists():
+            with Image.open(dst) as existing:
+                if existing.size == (THUMB_EDGE, THUMB_EDGE):
+                    continue
         im = Image.open(src)
         w, h = im.size
         side = min(w, h)  # centre-crop to a square, then shrink
         im = im.crop(((w - side) // 2, (h - side) // 2, (w - side) // 2 + side, (h - side) // 2 + side))
         im = im.resize((THUMB_EDGE, THUMB_EDGE), Image.LANCZOS)
-        im.save(dst, "WEBP", quality=70, method=6)
+        im.save(dst, "WEBP", quality=72, method=6)
 
 
 def name_matches(fname: str, words: list[str]) -> bool:

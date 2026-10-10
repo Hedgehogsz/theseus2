@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 200" role="img" aria-label="Shadow stick: mark the shadow tip, wait 15 to 20 minutes, mark again. The line from the first mark to the second points roughly east.">
+  <style>.t{font:700 16px sans-serif;fill:#111}.g{fill:#d8d0b8}</style>
+  <rect class="g" x="0" y="120" width="420" height="80"/>
+  <line x1="210" y1="40" x2="210" y2="150" stroke="#5a3b1a" stroke-width="7"/>
+  <line x1="210" y1="150" x2="95" y2="185" stroke="#333" stroke-width="5" opacity=".55"/>
+  <line x1="210" y1="150" x2="140" y2="192" stroke="#333" stroke-width="5" opacity=".35"/>
+  <circle cx="95" cy="185" r="7" fill="#c8102e"/><circle cx="140" cy="192" r="7" fill="#0b5fa5"/>
+  <line x1="95" y1="185" x2="300" y2="185" stroke="#111" stroke-width="2" stroke-dasharray="6 5"/>
+  <path d="M300 185l-12-7v14z" fill="#111"/>
+  <text class="t" x="8" y="172">1st mark (W)</text><text class="t" x="150" y="174" fill="#0b5fa5">2nd mark</text>
+  <text class="t" x="290" y="176">East</text>
+  <text class="t" x="10" y="22">Mark tip → wait 15–20 min → mark again.</text>
+  <text class="t" x="10" y="44">1st → 2nd mark runs west → east.</text>
+  <text class="t" x="10" y="66">1st mark on your left = facing north.</text>
+</svg>

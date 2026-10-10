@@ -5,6 +5,7 @@ title: Reading UK clouds
 summary: Recognise the clouds that bring rain, showers, storms and fair weather in Britain.
 tags: clouds, cumulus, cumulonimbus, cirrus, stratus, nimbostratus, lenticular, forecast
 wiki: Cumulonimbus cloud
+icon: cloud
 ---
 !quick
 1. **Cirrus** (high, wispy "mares' tails") thickening into a milky sheet → a **warm front** and rain likely within **12–24 hours**.
@@ -34,6 +35,7 @@ wiki: Cumulonimbus cloud
 title: Signs of an incoming front
 summary: Read the sky, wind and pressure for the classic UK sequence of warm front rain followed by cold front showers.
 tags: front, warm front, cold front, pressure, wind backing, veering, rain, forecast
+icon: cloud-rain-wind
 ---
 !quick
 1. **Warm front coming:** cirrus → halo → thickening grey cloud → wind **backs** (turns anticlockwise, e.g. W → S) and strengthens → long steady rain.
@@ -55,6 +57,7 @@ tags: front, warm front, cold front, pressure, wind backing, veering, rain, fore
 title: Mountain weather in Britain
 summary: Why hills are colder, windier and wetter than the forecast for the valleys, and how fast it changes.
 tags: mountain weather, hills, wind, temperature, lapse rate, hill fog, summit
+icon: mountain-snow
 ---
 !quick
 1. Temperature drops roughly **1 °C for every 150 m** you climb (more in dry air).
@@ -75,6 +78,7 @@ tags: mountain weather, hills, wind, temperature, lapse rate, hill fog, summit
 title: Wind chill
 summary: How wind makes cold air feel much colder and speeds up hypothermia and frostbite.
 tags: wind chill, feels like, cold, wind, temperature, exposure
+icon: wind
 ---
 !quick
 1. Wind strips away the warm air layer around you: **windproof** layers matter as much as warm ones.
@@ -99,6 +103,7 @@ Values are approximate (Met Office "feels like" style), and wet skin and clothin
 title: Lightning safety
 summary: When to take cover from thunderstorms, where not to be, and what to do if caught in the open.
 tags: lightning, thunder, storm, thunderstorm, 30 30 rule, safety
+icon: cloud-lightning
 ---
 !quick
 1. **Hear thunder? You're in range.** Count from flash to thunder: under **30 seconds** (about 10 km) → take shelter.
@@ -113,7 +118,7 @@ tags: lightning, thunder, storm, thunderstorm, 30 30 rule, safety
 - Put down trekking poles and anything metal.
 
 ## If someone is struck
-- They don't hold a charge: it is safe to touch them. Check breathing and start CPR if needed ([[a:cpr-adult]]). Call 999.
+- They don't hold a charge: it is safe to touch them. Check breathing and start CPR if needed ([[a:cpr-adult]]). Send for help.
 
 ## Sources
 - Met Office: Lightning safety (metoffice.gov.uk)
@@ -124,6 +129,7 @@ tags: lightning, thunder, storm, thunderstorm, 30 30 rule, safety
 title: Cold and wet: the real UK killer
 summary: Why hypothermia happens in mild British weather, and the habits that prevent it.
 tags: cold, wet, rain, wind, hypothermia, cotton, clothing, exposure
+icon: umbrella
 ---
 !quick
 1. **Stay dry** inside: vent before you sweat; put the waterproof on **before** you get wet.
@@ -151,6 +157,7 @@ tags: cold, wet, rain, wind, hypothermia, cotton, clothing, exposure
 title: Dressing in layers
 summary: The base, mid and shell layer system: stay warm and dry by adding and removing layers as you work and rest.
 tags: layers, clothing, base layer, fleece, waterproof, insulation, cotton
+icon: shirt
 ---
 !quick
 1. **Base layer:** wool or synthetic next to the skin, never cotton.
@@ -172,6 +179,7 @@ tags: layers, clothing, base layer, fleece, waterproof, insulation, cotton
 title: Heat and sun in the UK
 summary: Sunburn, heat illness and dehydration happen in Britain too, especially in late spring and summer.
 tags: sun, heat, UV, sunburn, summer, hot weather
+icon: sun-medium
 ---
 !quick
 1. UV is strongest **11:00–15:00** from **March to October**, even when cloudy.
@@ -191,6 +199,7 @@ tags: sun, heat, UV, sunburn, summer, hot weather
 title: Weather signs without a forecast
 summary: Natural signs that help predict the next few hours of weather when you have no forecast.
 tags: weather lore, red sky, signs, forecast, birds, dew, smoke
+icon: sunset
 ---
 !quick
 1. **Clear night with heavy dew or frost** → fine morning; rain is unlikely that night.

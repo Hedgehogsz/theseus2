@@ -3,7 +3,8 @@
 
 Checks that every article/species/category link resolves, every body file exists, every image
 referenced by the index exists on disk and has a credits entry, the web UI only references local
-files, and nothing in the UI points at the network. Exit code 1 on any problem.
+files, every icon the UI uses is in icons.js, nothing in the UI points at the network, and nothing in
+the app or UI tries to call or text (the phone has no SIM). Exit code 1 on any problem.
 
   python3 tools/check_links.py            # check
   python3 tools/check_links.py --min 120  # also require at least 120 articles and 120 species
@@ -100,7 +101,7 @@ def main() -> int:
                 problems.append(f"{owner}: unknown category {item['cat']}")
 
     # Web UI shell: every local reference must exist; nothing may point at the network.
-    for f in ["index.html", "app.css", "app.js"]:
+    for f in ["index.html", "app.css", "app.js", "fonts.css", "icons.js"]:
         p = ASSETS / f
         if not p.is_file():
             problems.append(f"{f} missing")
@@ -114,6 +115,30 @@ def main() -> int:
                 problems.append(f"{f}: reference to missing file {ref}")
         if re.search(r"""(?:src|href)\s*=\s*["']https?:|url\(\s*["']?https?:|@import|fetch\(\s*["']https?:""", text):
             problems.append(f"{f}: references a network URL")
+    # Icons: every name the UI asks for must be in the generated sprite.
+    icons_js = ASSETS / "icons.js"
+    if not icons_js.is_file():
+        problems.append("icons.js missing (run tools/build_ui_assets.py)")
+    else:
+        m = re.search(r"window\.ICONS=(\{.*\});", icons_js.read_text(encoding="utf-8"), re.S)
+        have = set(json.loads(m.group(1))) if m else set()
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        used = {c["icon"] for c in cats.values() if c.get("icon")} | {a["icon"] for a in arts.values() if a.get("icon")}
+        used |= set(re.findall(r"""\bicon\(\s*["']([a-z0-9-]+)["']""", js))
+        used |= set(re.findall(r'href="#i-([a-z0-9-]+)"', (ASSETS / "index.html").read_text(encoding="utf-8")))
+        for line in re.findall(r"//\s*icons:(.*)", js):
+            used |= set(line.split())
+        for name in sorted(used - have):
+            problems.append(f"icon {name!r} is used but not in icons.js")
+
+    # No SIM: nothing in the shell or the native code may dial, call or text.
+    no_call = re.compile(r"""tel:|sms:|smsto:|data-dial|ACTION_DIAL|ACTION_CALL|CALL_PHONE|SEND_SMS|\bdial\(|\bcall\s+999\b|emergency\s*sms""", re.I)
+    native = list((ROOT / "app" / "src" / "main" / "java").rglob("*.kt")) + [ROOT / "app" / "src" / "main" / "AndroidManifest.xml"]
+    for p in [ASSETS / "index.html", ASSETS / "app.js"] + native:
+        for n, line in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
+            if no_call.search(line) and not re.search(r"(cannot|can't|can&#39;t)\s+(<b>)?call", line):
+                problems.append(f"{p.relative_to(ROOT)}:{n}: call/SMS reference: {line.strip()[:80]}")
+
     for p in sorted((ASSETS / "img").glob("*.webp")) if (ASSETS / "img").exists() else []:
         if p.name not in credits:
             problems.append(f"img/{p.name} is bundled but unused/uncredited")

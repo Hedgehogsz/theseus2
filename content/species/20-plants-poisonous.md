@@ -15,7 +15,7 @@ tags: carrot family, umbellifer, coniine, socrates, purple spots
 wiki: Conium maculatum
 ---
 !danger Deadly poisonous
-All parts contain coniine, which paralyses the muscles, including those used for breathing. Even small amounts of leaf or root can kill. Wash your hands after touching it. Never use the hollow stems as drinking straws or whistles. If anyone may have eaten it, call **999** at once: see [[a:poisoning]].
+All parts contain coniine, which paralyses the muscles, including those used for breathing. Even small amounts of leaf or root can kill. Wash your hands after touching it. Never use the hollow stems as drinking straws or whistles. If anyone may have eaten it, get emergency help at once: see [[a:poisoning]].
 !end
 
 ## Identification
@@ -44,7 +44,7 @@ tags: carrot family, umbellifer, dead man's fingers, wetland, oenanthotoxin, roo
 wiki: Oenanthe crocata
 ---
 !danger Deadly poisonous
-The roots ("dead man's fingers") contain oenanthotoxin, which causes violent seizures and kills within hours. A piece of root can be fatal. Leaves and stems are also very toxic. Do not eat **any** carrot-family plant that grows by water. Call **999** for any suspected ingestion.
+The roots ("dead man's fingers") contain oenanthotoxin, which causes violent seizures and kills within hours. A piece of root can be fatal. Leaves and stems are also very toxic. Do not eat **any** carrot-family plant that grows by water. Get emergency help for any suspected ingestion.
 !end
 
 ## Identification
@@ -151,7 +151,7 @@ tags: digitalis, heart, glycosides, bells
 wiki: Digitalis purpurea
 ---
 !danger Deadly poisonous
-All parts contain cardiac glycosides (digitoxin), which cause vomiting, a slow and irregular heartbeat, visual disturbance (yellow vision), and cardiac arrest. Call **999** for any ingestion.
+All parts contain cardiac glycosides (digitoxin), which cause vomiting, a slow and irregular heartbeat, visual disturbance (yellow vision), and cardiac arrest. Get emergency help for any ingestion.
 !end
 
 ## Identification
@@ -177,7 +177,7 @@ tags: belladonna, atropine, berries, black berries
 wiki: Atropa belladonna
 ---
 !danger Deadly poisonous
-Contains atropine and related alkaloids: dilated pupils, blurred vision, fast heart, dry hot flushed skin, confusion, hallucinations, seizures. The berries taste sweet, and a few can kill a child. Call **999**: see [[a:poisoning]].
+Contains atropine and related alkaloids: dilated pupils, blurred vision, fast heart, dry hot flushed skin, confusion, hallucinations, seizures. The berries taste sweet, and a few can kill a child. Get emergency help: see [[a:poisoning]].
 !end
 
 ## Identification
@@ -275,7 +275,7 @@ tags: cardiac glycosides, bells, wild garlic lookalike
 wiki: Convallaria majalis
 ---
 !danger Deadly poisonous
-Contains cardiac glycosides (like [[s:foxglove]]): vomiting, slow or irregular heartbeat, collapse. Call **999** for any ingestion.
+Contains cardiac glycosides (like [[s:foxglove]]): vomiting, slow or irregular heartbeat, collapse. Get emergency help for any ingestion.
 !end
 
 ## Identification
@@ -301,7 +301,7 @@ tags: conifer, taxine, red berries, churchyard, bow wood
 wiki: Taxus baccata
 ---
 !danger Deadly poisonous
-Leaves, bark, wood, sawdust and the seed contain taxine alkaloids. These can stop the heart, sometimes with no warning symptoms. A handful of needles can kill an adult. Never use yew needles for "pine needle tea", or yew twigs as skewers or spoons. Call **999** for any ingestion.
+Leaves, bark, wood, sawdust and the seed contain taxine alkaloids. These can stop the heart, sometimes with no warning symptoms. A handful of needles can kill an adult. Never use yew needles for "pine needle tea", or yew twigs as skewers or spoons. Get emergency help for any ingestion.
 !end
 
 ## Identification
@@ -411,7 +411,7 @@ tags: aconite, wolfsbane, blue flowers, aconitine
 wiki: Aconitum napellus
 ---
 !danger Deadly poisonous
-Contains aconitine: tingling and numbness of the mouth and skin, vomiting, and dangerous heart rhythms. It can be absorbed through skin (wear gloves). Even small amounts of root have killed people. Call **999**.
+Contains aconitine: tingling and numbness of the mouth and skin, vomiting, and dangerous heart rhythms. It can be absorbed through skin (wear gloves). Even small amounts of root have killed people. Get emergency help.
 !end
 
 ## Identification

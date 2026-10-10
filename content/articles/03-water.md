@@ -5,6 +5,7 @@ title: Settle, strain, boil: making water safe
 summary: Your water method step by step. Settle, strain through cotton, a 1-minute rolling boil, then store clean. Kills germs; does not remove chemicals.
 tags: boil, rolling boil, purify, disinfect, strain, cloth, settle, CDC, safe water
 wiki: Boiling
+icon: cooking-pot
 ---
 !quick
 1. **Settle:** let cloudy water stand in the pot or bottle for 30+ minutes; pour off the clearer top water.
@@ -41,6 +42,7 @@ Fuel, pesticides, fertilisers (nitrates), heavy metals, salt and **blue-green al
 title: Boiling in your steel bottle and pot
 summary: How to boil safely in single-walled stainless steel, why never to boil a sealed or insulated bottle, and handling hot metal.
 tags: stainless steel, bottle, pot, boil, sealed, lid, burn, flask, kit
+icon: milk
 ---
 !quick
 1. **Remove the lid** or cap before heating. **Never heat a sealed bottle**: steam pressure can make it burst or blow the cap off.
@@ -72,6 +74,7 @@ A sealed bottle of **hot (not boiling)** water wrapped in a sock or cloth warms 
 title: Finding water in the UK
 summary: Where to look for water in British landscapes, from upland streams to springs, rain and dew.
 tags: find water, stream, spring, source, river, lake, hills, upland
+icon: droplets
 ---
 !quick
 1. **Upland streams** fed by springs, above farms and roads, are the best natural sources.
@@ -100,6 +103,7 @@ Water is rarely the problem in Britain. Shelter from wind and rain usually matte
 title: Choosing a safe water source
 summary: How to pick the cleanest water: what to avoid upstream, blue-green algae, and why chemicals matter more than germs.
 tags: water source, pollution, farm, sewage, algae, blue-green algae, cyanobacteria, runoff, pesticides
+icon: waves
 ---
 !quick
 1. **Go upstream** of farms, roads, villages, campsites and sewage outfalls.
@@ -137,6 +141,7 @@ tags: water source, pollution, farm, sewage, algae, blue-green algae, cyanobacte
 title: Collecting rain and dew
 summary: Use a tarp, bin bag or clothing to collect the UK's most abundant clean water source.
 tags: rain, rainwater, tarp, dew, collect, catchment
+icon: cloud-rain
 ---
 !quick
 1. Rig a **tarp or bag sloping to one low corner** with a pot or bottle under it.
@@ -162,6 +167,7 @@ tags: rain, rainwater, tarp, dew, collect, catchment
 title: Solar stills and transpiration bags (and their limits)
 summary: How the classic solar still works, why it rarely helps in the UK, and the transpiration bag alternative.
 tags: solar still, transpiration bag, condensation, water, sun
+icon: sun
 ---
 !quick
 1. In the UK a solar still **rarely gives more than a cupful a day**, and digging it costs more sweat than it makes. Look for a stream or collect rain instead.
@@ -185,6 +191,7 @@ Tie a clear plastic bag over a leafy, sunlit branch of a **non-poisonous** tree 
 title: Improvised charcoal filter (taste, not safety)
 summary: Use charcoal from your fire to improve the taste and smell of water. It does not disinfect: always boil.
 tags: charcoal, filter, taste, smell, activated carbon, sand
+icon: filter
 ---
 !quick
 1. Take **hardwood charcoal** (not ash) from a cooled fire. Crush it to rice-sized pieces and rinse it in water.
@@ -212,6 +219,7 @@ A home-made charcoal filter can reduce bad tastes, smells and cloudiness. It doe
 title: Dehydration: signs and how much to drink
 summary: Recognise dehydration early and know how much water you need in UK conditions.
 tags: dehydration, thirst, urine colour, how much water, fluids
+icon: glass-water
 ---
 !quick
 1. Watch **urine colour**: pale straw is fine; dark yellow or brown means drink more.
@@ -237,6 +245,7 @@ tags: dehydration, thirst, urine colour, how much water, fluids
 title: What boiling does NOT remove
 summary: Boiling kills germs but leaves chemicals, metals, salt and algal toxins. Some get more concentrated.
 tags: boiling, chemicals, pesticides, nitrates, heavy metals, salt, seawater, algae toxins, fuel
+icon: flask-conical
 ---
 !quick
 1. Boiling makes water **free of germs**, not free of **chemicals**.
@@ -260,6 +269,7 @@ tags: boiling, chemicals, pesticides, nitrates, heavy metals, salt, seawater, al
 title: Water and camp hygiene
 summary: Stop sickness spreading in camp: separate dirty and clean water, wash hands, and site the toilet well.
 tags: hygiene, hands, toilet, latrine, washing up, gastro
+icon: hand
 ---
 !quick
 1. Keep **dirty** (untreated) and **clean** (boiled) containers separate and labelled.
@@ -281,6 +291,7 @@ tags: hygiene, hands, toilet, latrine, washing up, gastro
 title: How much water you need
 summary: Daily water needs in UK conditions, saving water, and planning your boiling.
 tags: water needs, litres, ration, sweat, planning
+icon: droplet
 ---
 !quick
 1. Resting in cool weather: about **2 litres** a day. Walking or working: **3–4 litres** or more.

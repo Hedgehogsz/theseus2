@@ -5,6 +5,7 @@ title: Bowline
 summary: A fixed loop at the end of a rope that won't slip or jam, and unties easily, for tying round a tree, a person or a post.
 tags: bowline, knot, loop, fixed loop, rescue, rope
 wiki: Bowline
+icon: knot
 ---
 !quick
 1. Make a small **overhand loop** (the "rabbit hole") in the standing part, with the working end lying **on top**.
@@ -28,6 +29,7 @@ title: Clove hitch
 summary: A quick, adjustable hitch for tying a rope to a pole or post, and the starting knot for lashings.
 tags: clove hitch, hitch, knot, pole, lashing, ridgeline
 wiki: Clove hitch
+icon: knot
 ---
 !quick
 1. Pass the working end **round the pole**.
@@ -50,6 +52,7 @@ title: Taut-line hitch
 summary: An adjustable loop for guy lines and tarp tie-outs: slide it to tension, and it holds under load.
 tags: taut-line hitch, tautline, adjustable, guy line, tarp, tent, tension, rolling hitch
 wiki: Taut-line hitch
+icon: knot
 ---
 !quick
 1. Pass the rope round the peg or tree, bringing the working end back alongside the standing part.
@@ -71,6 +74,7 @@ title: Trucker's hitch
 summary: A pulley-like knot with roughly 3:1 mechanical advantage for drum-tight ridgelines and lashings.
 tags: trucker's hitch, truckers hitch, ridgeline, tension, mechanical advantage, tarp
 wiki: Trucker's hitch
+icon: knot
 ---
 !quick
 1. Tie the rope to the first tree. Partway along the line, make a **fixed loop** (a slipped overhand or an alpine butterfly).
@@ -93,6 +97,7 @@ title: Sheet bend
 summary: Join two ropes, even of different thickness or stiffness, with a secure knot that's easy to untie.
 tags: sheet bend, bend, join ropes, different thickness, knot
 wiki: Sheet bend
+icon: knot
 ---
 !quick
 1. Make a **bight** (U-shaped bend) in the **thicker** rope.
@@ -115,6 +120,7 @@ title: Prusik knot
 summary: A friction hitch that grips a rope when loaded and slides when not. Used for tarp tensioning and climbing a rope.
 tags: prusik, friction hitch, loop, ridgeline, tarp, climbing, rescue
 wiki: Prusik
+icon: knot
 ---
 !quick
 1. Use a **loop of thinner cord** (tie the ends with a double fisherman's knot) on a thicker rope.
@@ -136,6 +142,7 @@ wiki: Prusik
 title: Cordage from nettle and bramble
 summary: Make strong string from nettle stems and bramble bark by stripping the fibres and reverse-wrapping them.
 tags: cordage, string, rope, nettle, bramble, fibre, reverse wrap, twist, lime bast, willow
+icon: spool
 ---
 !quick
 1. **Nettle:** cut tall autumn stems, strip off the leaves (gloves), crush the stem flat, split it open and peel the outer fibre from the woody core. Dry it.
@@ -167,6 +174,7 @@ Lashings, fishing line, snare-free tasks such as hanging food, sewing repairs, b
 title: Sharpening a blade
 summary: Keep a knife sharp with stones, a strop or improvised river stones: holding a consistent angle is everything.
 tags: sharpening, knife, whetstone, strop, edge, burr, angle, honing
+icon: pocket-knife
 ---
 !quick
 1. Hold a **consistent angle** (about **20°** each side for a general knife: roughly a coin's thickness under the spine of a small blade).
@@ -193,6 +201,7 @@ tags: sharpening, knife, whetstone, strop, edge, burr, angle, honing
 title: Knife safety and the law
 summary: Safe cutting technique for bushcraft, and UK knife law: what you can carry and when.
 tags: knife, safety, law, carrying, blood circle, cutting, folding knife
+icon: shield-check
 ---
 !quick
 1. **Blood circle:** before cutting, check no one is within arm's reach plus a knife's length.
@@ -219,6 +228,7 @@ tags: knife, safety, law, carrying, blood circle, cutting, folding knife
 title: Tarp rigging
 summary: Set up a tarp fast and tight: ridgeline, prusiks, guy lines, and the best pitches for UK weather.
 tags: tarp, ridgeline, pitch, A-frame, lean-to, diamond, guy lines, shelter, rigging
+icon: tent
 ---
 !quick
 1. Tie a **ridgeline** between two trees about 3–4 m apart: [[a:bowline]] on one end, [[a:truckers-hitch]] on the other.
@@ -248,20 +258,21 @@ tags: tarp, ridgeline, pitch, A-frame, lean-to, diamond, guy lines, shelter, rig
 === batteries-electronics
 title: Keeping the phone and batteries alive
 summary: Make this phone and the arc lighter last: cold, charging, storage at half charge, and saving power.
-tags: battery, phone, lithium, cold, charging, 50%, storage, power saving, airplane mode
+tags: battery, phone, lithium, cold, charging, 50%, storage, power saving
+icon: battery-charging
 ---
 !quick
 1. **Keep batteries warm:** in an inside pocket by day, in your sleeping bag at night. Cold makes lithium batteries die early (they recover when warmed).
 2. **Don't charge below 0 °C** or in hot sun; charge at room or body temperature.
 3. **Long storage: about 50%** charge, cool and dry. Top up every few months.
-4. **Save power:** airplane mode, dim screen (Settings → brightness), dark theme, phone off between uses.
+4. **Save power:** dim screen (Settings → brightness), Low-power mode, dark theme, phone off between uses.
 !end
 
 ## This phone
 - 5,000 mAh battery. Off between uses, it will hold charge for many weeks. Check it monthly.
 - The phone is **not waterproof**: keep it in a sealed plastic bag when outdoors.
 - The backlight is the biggest drain. Use the guide's brightness slider, and Low-power mode to hide photos.
-- Calls and texts need airplane mode **off**, and use much more power while searching for a signal. Turn it back on afterwards.
+- Keep airplane mode on: radios searching for a network are a constant drain, and this phone has no SIM to use them.
 
 ## Lithium-ion care
 - Avoid keeping it at 100% for long periods, or letting it sit at 0%.
@@ -277,6 +288,7 @@ tags: battery, phone, lithium, cold, charging, 50%, storage, power saving, airpl
 title: Making noise to be found
 summary: Using a whistle, banging and voice to help searchers find you, and saving energy while doing it.
 tags: whistle, sound, signal, voice, rescue, searchers
+icon: volume-2
 ---
 !quick
 1. A **whistle** carries far further than a voice and costs little energy. Six blasts, pause a minute, repeat.
@@ -295,6 +307,7 @@ tags: whistle, sound, signal, voice, rescue, searchers
 title: Field repairs: clothing, kit and boots
 summary: Simple repairs to keep clothing and gear working: stitching, patching, tape, and improvised fixes.
 tags: repair, sewing, stitching, patch, boots, tape, gear repair
+icon: scissors
 ---
 !quick
 1. **Stitch tears early**, with a few big stitches, before they spread.

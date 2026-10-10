@@ -4,6 +4,7 @@
 title: Universal foraging rules (read first)
 summary: The non-negotiable rules for eating anything wild in the UK. This app is not a substitute for expert identification.
 tags: foraging, rules, identification, safety, wild food, disclaimer, fungi, berries
+icon: shield-alert
 ---
 !quick
 1. **If in doubt, leave it out.** Certainty, not "probably".
@@ -39,6 +40,7 @@ In Britain you will be rescued, or walk out, long before starvation matters. A w
 title: Food: how much does it matter?
 summary: Why food is the last priority in a UK survival situation, and how to make what you carry last.
 tags: food, hunger, calories, starvation, priorities, energy
+icon: list-ordered
 ---
 !quick
 1. A healthy adult can survive about **3 weeks** without food (with water). It is the **last** priority.
@@ -60,6 +62,7 @@ tags: food, hunger, calories, starvation, priorities, energy
 title: Seasonal foraging calendar (UK)
 summary: What is in season month by month in Britain, with links to each species. Always check the lookalikes.
 tags: calendar, seasons, foraging, months, spring, summer, autumn, winter
+icon: calendar
 ---
 !quick
 1. **Spring (Mar–May):** nettle tops, wild garlic, cleavers, dandelion, garlic mustard, hawthorn leaves, birch sap (Mar), sorrel.
@@ -96,6 +99,7 @@ tags: calendar, seasons, foraging, months, spring, summer, autumn, winter
 title: Why the "universal edibility test" is dangerous
 summary: The skin-lip-tongue test from military manuals does not protect you from the UK's deadliest plants and fungi.
 tags: universal edibility test, myth, taste test, poison, survival manual
+icon: circle-x
 ---
 !quick
 1. **Don't use the "universal edibility test" in Britain.** Many deadly plants and all deadly fungi taste fine and cause no early symptoms.
@@ -117,6 +121,7 @@ tags: universal edibility test, myth, taste test, poison, survival manual
 title: Trapping, snaring and hunting: the UK law
 summary: Most trapping and snaring in the UK is illegal or tightly regulated. What the law allows, and why it is the wrong priority anyway.
 tags: trapping, snares, traps, hunting, law, poaching, wildlife and countryside act, legal
+icon: scale
 ---
 !quick
 1. Don't set traps or snares. In Britain it is almost certainly **illegal** for you, and rescue will come long before you need the meat.
@@ -149,6 +154,7 @@ tags: trapping, snares, traps, hunting, law, poaching, wildlife and countryside 
 title: Fishing basics and the law
 summary: Simple hook-and-line fishing, improvised kit, preparing fish, and the UK licence and permission rules.
 tags: fishing, rod licence, hook, line, trout, mackerel, sea fishing, bait, law
+icon: fish
 ---
 !quick
 1. **Freshwater (England and Wales):** you need an **Environment Agency rod licence** *and* the fishing rights owner's permission. Scotland: no licence, but you still need permission. Observe close seasons.
@@ -181,6 +187,7 @@ tags: fishing, rod licence, hook, line, trout, mackerel, sea fishing, bait, law
 title: Insects and invertebrates as food
 summary: Which UK invertebrates are safe to eat cooked, which to avoid, and why they aren't worth much effort.
 tags: insects, grubs, worms, woodlice, grasshoppers, protein, bugs
+icon: bug
 ---
 !quick
 1. **Always cook** (boil or roast): parasites and bacteria.
@@ -201,6 +208,7 @@ tags: insects, grubs, worms, woodlice, grasshoppers, protein, bugs
 title: Preparing wild food safely
 summary: Washing, cooking and storing wild food with limited kit to avoid stomach upsets.
 tags: food hygiene, cooking, wild food, storage, washing
+icon: utensils
 ---
 !quick
 1. **Wash** greens in boiled or clean water; discard yellow, slimy or insect-damaged leaves.
@@ -222,6 +230,7 @@ tags: food hygiene, cooking, wild food, storage, washing
 title: Seashore food and shellfish safety
 summary: The coast is the UK's richest wild larder, but shellfish poisoning and tides are serious risks.
 tags: shellfish, mussels, winkles, seaweed, coast, foraging, red tide
+icon: shell
 ---
 !quick
 1. Only gather from **clean, open coasts**, away from harbours, outfalls and river mouths; not after heavy rain.

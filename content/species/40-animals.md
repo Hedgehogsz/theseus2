@@ -14,7 +14,7 @@ tags: snake, viper, venom, bite, zigzag
 wiki: Vipera berus
 ---
 !danger If bitten
-Call **999** (or 112). Keep the person still and calm, with the bitten limb as still as possible. Remove rings, watches and tight clothing near the bite before swelling starts. **Do not** cut, suck, apply ice or use a tourniquet. See [[a:adder-bite]].
+Get emergency help ([[a:when-to-get-help]]). Keep the person still and calm, with the bitten limb as still as possible. Remove rings, watches and tight clothing near the bite before swelling starts. **Do not** cut, suck, apply ice or use a tourniquet. See [[a:adder-bite]].
 !end
 
 ## Identification
@@ -107,7 +107,7 @@ wiki: Vespula vulgaris
 - A stream of wasps going in and out of a hole in a bank or the ground is a nest: move away.
 
 ## What to do
-- Move away calmly from a nest. One sting: wash, cold compress, painkillers. Signs of anaphylaxis (swelling of the face, lips or throat, wheeze, faintness) mean **999**: see [[a:stings-anaphylaxis]].
+- Move away calmly from a nest. One sting: wash, cold compress, painkillers. Signs of anaphylaxis (swelling of the face, lips or throat, wheeze, faintness) mean emergency help: see [[a:stings-anaphylaxis]].
 
 === hornet
 name: European hornet
@@ -490,7 +490,7 @@ wiki: Lion's mane jellyfish
 - Get out of the water. Rinse the area with **seawater** (not fresh water).
 - Remove any tentacles with tweezers or the edge of a bank card.
 - Soak in, or apply, very warm water for at least 30 minutes, then take painkillers.
-- Don't use vinegar or urine, and don't rub the area. Call **999** for difficulty breathing, chest pain, or a large area stung.
+- Don't use vinegar or urine, and don't rub the area. Get emergency help for difficulty breathing, chest pain, or a large area stung.
 
 === mussel
 name: Common mussel

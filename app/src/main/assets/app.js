@@ -1,12 +1,10 @@
 /* Survival Guide web UI. Vanilla JS, no frameworks, no network, no timers or polling.
  *
  * Routes (hash based so the WebView back button and history work):
- *   #/                      home (search, emergency strip, categories, favourites, recent)
- *   #/c/<category>          category article list
- *   #/a/<article>           article
- *   #/s/<species>           species page
- *   #/species?g=&st=&q=     species browser with filters
- *   #/favs  #/recent  #/tools  #/report  #/settings  #/credits  #/about  #/kiosk
+ *   tabs:   #/  #/search?q=  #/species?g=&st=&q=  #/saved  #/tools
+ *   pages:  #/c/<category>  #/a/<article>  #/s/<species>  #/report  #/settings  #/credits  #/about  #/kiosk
+ *
+ * This device has no SIM card and cannot call or text anyone; nothing here may suggest otherwise.
  */
 (function () {
   "use strict";
@@ -18,14 +16,42 @@
   var NATIVE = typeof window.Android !== "undefined";
   var view = document.getElementById("view");
   var titleEl = document.getElementById("title");
+  var barEl = document.getElementById("bar");
+  var backBtn = document.getElementById("back");
+  var saveBtn = document.getElementById("save");
+  var battEl = document.getElementById("batt");
 
+  // icons: arrow-left bookmark house search leaf wrench x chevron-left chevron-right
+  // icons: skull triangle-alert check heart shield circle-alert info lightbulb scale list-checks list-ordered
+  // icons: flashlight radio camera calculator alarm-clock battery-medium settings map-pin sliders-horizontal
+  // icons: images calendar trees paw-print mushroom sprout megaphone image-off
   var STATUS_LABEL = {
-    deadly: "DEADLY", poisonous: "Poisonous", venomous: "Venomous", caution: "Caution",
-    invasive: "Invasive", edible: "Edible", medicinal: "Medicinal", protected: "Protected", info: "Info"
+    deadly: "Deadly", poisonous: "Poisonous", venomous: "Venomous", caution: "Caution",
+    invasive: "Invasive", edible: "Edible", medicinal: "Medicinal", protected: "Protected", info: "Useful"
   };
-  var GROUP_ICON = { plant: "🌿", fungus: "🍄", animal: "🐾" };
+  var STATUS_ICON = { deadly: "skull", poisonous: "triangle-alert", venomous: "triangle-alert", caution: "circle-alert",
+    edible: "check", medicinal: "heart", protected: "shield" };
+  var GROUP_ICON = { plant: "sprout", fungus: "mushroom", animal: "paw-print" };
   var GROUP_LABEL = { plant: "Plants", fungus: "Fungi", animal: "Animals" };
   var TYPE_LABEL = { plant: "Plant", fungus: "Fungus", animal: "Animal" };
+  var CALLOUT_ICON = { quick: "list-ordered", danger: "triangle-alert", warn: "triangle-alert", note: "info",
+    tip: "lightbulb", law: "scale", checklist: "list-checks" };
+
+  // ------------------------------------------------------------------ icons (inline sprite)
+  (function () {
+    var out = ['<svg id="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'];
+    Object.keys(window.ICONS || {}).forEach(function (n) {
+      out.push('<symbol id="i-' + n + '" viewBox="0 0 24 24">' + window.ICONS[n] + "</symbol>");
+    });
+    out.push("</svg>");
+    document.body.insertAdjacentHTML("afterbegin", out.join(""));
+  })();
+  function icon(name, cls) {
+    return '<svg class="ic' + (cls ? " " + cls : "") + '" aria-hidden="true"><use href="#i-' + name + '"/></svg>';
+  }
+  function iconTile(name, catClass, extra) {
+    return '<span class="ic-tile ' + (catClass || "") + (extra ? " " + extra : "") + '">' + icon(name) + "</span>";
+  }
 
   // ------------------------------------------------------------------ storage
   function load(key, dflt) {
@@ -56,10 +82,11 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
-  function badges(st) {
-    return '<span class="badges">' + st.map(function (s) {
-      return '<span class="badge ' + s + '">' + STATUS_LABEL[s] + "</span>";
-    }).join("") + "</span>";
+  function pill(s) {
+    return '<span class="pill ' + s + '">' + (STATUS_ICON[s] ? icon(STATUS_ICON[s]) : "") + STATUS_LABEL[s] + "</span>";
+  }
+  function pills(st, max) {
+    return '<span class="pills">' + st.slice(0, max || st.length).map(pill).join("") + "</span>";
   }
   function native(fn) {
     if (!NATIVE) return null;
@@ -70,18 +97,20 @@
     try { return s ? JSON.parse(s) : null; } catch (e) { return null; }
   }
   function lowPower() { return !!settings.lowPower; }
-  function imgName(im) { return im[0]; }
   function thumbSrc(im) { return "img/t/" + im[0]; }
   function fullSrc(im) { return "img/" + im[0]; }
+  function isDeadly(s) { return s.status.indexOf("deadly") >= 0; }
 
-  function thumbHtml(item, isSpecies) {
-    var ims = item.images || [];
-    if (!ims.length || lowPower()) {
-      return '<span class="thumb" aria-hidden="true">' + (isSpecies ? GROUP_ICON[item.group] : (CATS[item.cat] || {}).icon || "📄") + "</span>";
-    }
-    return '<img class="thumb" loading="lazy" decoding="async" alt="" width="64" height="64" src="' + thumbSrc(ims[0]) + '">';
+  function articleVisual(a) {
+    // A relevant photo where the article has one (e.g. lookalike comparisons), otherwise its own icon.
+    var im = (a.images && a.images[0]) || (a.compare && SPP[a.compare[0]] && SPP[a.compare[0]].images[0]);
+    if (im && !lowPower()) return '<img class="thumb" loading="lazy" decoding="async" alt="" src="' + thumbSrc(im) + '">';
+    return iconTile(a.icon || CATS[a.cat].icon, "c-" + a.cat);
   }
-
+  function speciesVisual(s) {
+    if (s.images.length && !lowPower()) return '<img class="thumb" loading="lazy" decoding="async" alt="" src="' + thumbSrc(s.images[0]) + '">';
+    return iconTile(GROUP_ICON[s.group], "g-" + s.group);
+  }
   function itemFromKey(key) {
     var kind = key.charAt(0), id = key.slice(2);
     if (kind === "a" && ART[id]) return { kind: "a", id: id, item: ART[id] };
@@ -93,13 +122,24 @@
     if (!r) return "";
     if (r.kind === "a") {
       var a = r.item;
-      return '<li><a class="row" href="#/a/' + a.id + '">' + thumbHtml(a, false) +
-        '<span class="txt"><span class="t">' + esc(a.title) + '</span><span class="s">' + esc(a.summary) + "</span></span></a></li>";
+      return '<li><a class="row" href="#/a/' + a.id + '">' + articleVisual(a) +
+        '<span class="txt"><span class="t">' + esc(a.title) + '</span><span class="s">' + esc(a.summary) + "</span></span>" +
+        icon("chevron-right", "chev") + "</a></li>";
     }
     var s = r.item;
-    return '<li><a class="row' + (s.status.indexOf("deadly") >= 0 ? " deadly" : "") + '" href="#/s/' + s.id + '">' + thumbHtml(s, true) +
+    return '<li><a class="row" href="#/s/' + s.id + '">' + speciesVisual(s) +
       '<span class="txt"><span class="t">' + esc(s.name) + '</span><span class="s"><i>' + esc(s.latin) + "</i></span>" +
-      badges(s.status) + "</span></a></li>";
+      pills(s.status, 3) + "</span>" + icon("chevron-right", "chev") + "</a></li>";
+  }
+  function speciesCard(id) {
+    var s = SPP[id];
+    if (!s) return "";
+    var ph = s.images.length && !lowPower()
+      ? '<img loading="lazy" decoding="async" alt="" src="' + thumbSrc(s.images[0]) + '">'
+      : '<span class="noimg g-' + s.group + '">' + icon(GROUP_ICON[s.group]) + "</span>";
+    return '<a class="scard' + (isDeadly(s) ? " deadly" : "") + '" href="#/s/' + id + '"><span class="ph">' + ph +
+      '<span class="pills ph-pills">' + pill(s.status[0]) + "</span></span>" +
+      '<span class="meta"><b>' + esc(s.name) + "</b><i>" + esc(s.latin) + "</i></span></a>";
   }
 
   // Load a JS payload once (bodies, search index, credits). Works on file:// with no network.
@@ -127,6 +167,9 @@
   }
 
   // ------------------------------------------------------------------ router
+  var ROOTS = { "": "home", search: "search", species: "species", saved: "saved", tools: "tools" };
+  var TAB_OF = { c: "home", a: "home", s: "species", favs: "saved", recent: "saved", report: "tools", settings: "tools",
+    credits: "tools", about: "tools", kiosk: "tools" };
   var scrollPos = {};
   var currentHash = null;
   var renderToken = 0;
@@ -142,96 +185,101 @@
       });
       h = h.slice(0, qi);
     }
-    var parts = h.split("/").filter(Boolean);
-    return { parts: parts, q: q };
+    return { parts: h.split("/").filter(Boolean), q: q };
   }
 
-  function setTitle(t) { titleEl.textContent = t; }
+  function setChrome(title, opts) {
+    opts = opts || {};
+    titleEl.textContent = title;
+    backBtn.hidden = !!opts.root;
+    barEl.className = opts.root ? "root" : "";
+    saveBtn.hidden = !opts.saveKey;
+    if (opts.saveKey) {
+      var on = isFav(opts.saveKey);
+      saveBtn.setAttribute("aria-pressed", on);
+      saveBtn.setAttribute("aria-label", on ? "Saved" : "Save");
+      saveBtn.onclick = function () {
+        var now = toggleFav(opts.saveKey);
+        saveBtn.setAttribute("aria-pressed", now);
+        saveBtn.setAttribute("aria-label", now ? "Saved" : "Save");
+      };
+    }
+    battEl.hidden = true;
+    if (opts.battery) {
+      var st = nativeState();
+      if (st && st.battery >= 0) {
+        battEl.innerHTML = icon("battery-medium", "ic-sm") + st.battery + "%";
+        battEl.hidden = false;
+      }
+    }
+    var tab = opts.tab;
+    document.querySelectorAll("#nav a").forEach(function (a) {
+      if (a.getAttribute("data-tab") === tab) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+  }
 
   function render() {
     if (currentHash !== null) scrollPos[currentHash] = window.scrollY;
     currentHash = location.hash || "#/";
     var r = parseRoute(), p = r.parts, token = ++renderToken;
-    document.getElementById("back").hidden = p.length === 0;
+    var head = p[0] || "";
+    var tab = ROOTS[head] !== undefined ? ROOTS[head] : (TAB_OF[head] || "home");
     var done = function () {
       if (token !== renderToken) return;
       window.scrollTo(0, scrollPos[currentHash] || 0);
     };
     var out;
-    switch (p[0]) {
-      case undefined: out = viewHome(); break;
-      case "c": out = viewCategory(p[1]); break;
-      case "a": out = viewArticle(p[1], token); break;
-      case "s": out = viewSpecies(p[1], token); break;
-      case "species": out = viewBrowser(r.q); break;
-      case "favs": out = viewKeyList("Favourites", load("favs", []), "Tap ☆ on any article or species to keep it here."); break;
-      case "recent": out = viewKeyList("Recently viewed", load("recent", []), "Nothing viewed yet."); break;
-      case "tools": out = viewTools(); break;
-      case "report": out = viewReport(); break;
-      case "settings": out = viewSettings(); break;
-      case "credits": out = viewCredits(token); break;
-      case "about": out = viewAbout(); break;
-      case "kiosk": out = viewKiosk(); break;
-      default: out = viewNotFound();
+    switch (head) {
+      case "": out = viewHome(tab); break;
+      case "search": viewSearch(r.q, tab); break;
+      case "species": out = viewBrowser(r.q, tab); break;
+      case "saved": case "favs": case "recent": out = viewSaved(tab); break;
+      case "tools": out = viewTools(tab); break;
+      case "c": out = viewCategory(p[1], tab); break;
+      case "a": out = viewArticle(p[1], token, tab); break;
+      case "s": out = viewSpecies(p[1], token, tab); break;
+      case "report": out = viewReport(tab); break;
+      case "settings": out = viewSettings(tab); break;
+      case "credits": out = viewCredits(token, tab); break;
+      case "about": out = viewAbout(tab); break;
+      case "kiosk": out = viewKiosk(tab); break;
+      default: out = notFound();
     }
     if (out && out.then) out.then(done); else done();
   }
 
   function notFound() {
-    setTitle("Not found");
+    setChrome("Not found", { tab: "home" });
     view.innerHTML = '<p class="empty">That page is not in this guide.</p><p><a class="btn" href="#/">Go to the home screen</a></p>';
   }
-  function viewNotFound() { notFound(); }
 
-  // ------------------------------------------------------------------ home + search
-  function callStrip() {
-    return '<div class="call-strip">' +
-      '<a class="call" href="tel:999" data-dial="999">Call 999<small>Police · Ambulance · Fire · Coastguard · Mountain rescue</small></a>' +
-      '<a class="call" href="tel:112" data-dial="112">Call 112<small>Same service · free · phone needs a SIM</small></a>' +
-      "</div>";
-  }
-
-  function viewHome() {
-    setTitle("Survival Guide");
-    var st = nativeState();
-    var favs = load("favs", []), recent = load("recent", []);
+  // ------------------------------------------------------------------ home
+  function viewHome(tab) {
+    setChrome("Survival Guide", { root: true, tab: tab, battery: true });
+    var recent = load("recent", []).filter(itemFromKey);
     var h = "";
-    h += '<div class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>' +
-      '<input id="q" type="search" inputmode="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Search: nettle, CPR, ferro rod…" aria-label="Search the guide"></div>';
-    h += '<div id="results"></div><div id="home-body">';
-    h += callStrip();
-    h += '<div class="btn-row"><a class="btn" href="#/a/emergency-priorities">⚠️ What to do first</a><a class="btn" href="#/report">📍 Location report</a><a class="btn" href="#/tools">🔦 Tools</a></div>';
-    h += '<div class="tiles">';
+    h += '<a class="searchbox" href="#/search" data-search>' + icon("search") + '<span class="ph-text">Search guides and species</span></a>';
+    h += '<div class="actions">' +
+      '<a class="action primary" href="#/a/emergency-priorities"><span class="badge-ic">' + icon("list-checks", "ic-lg") + "</span>" +
+      '<span class="txt"><b>What to do first</b><span class="sub">Safety, life threats, shelter, then help</span></span>' + icon("chevron-right", "chev") + "</a>" +
+      '<a class="action" href="#/a/signalling-rescue"><span class="badge-ic">' + icon("megaphone", "ic-lg") + "</span>" +
+      '<span class="txt"><b>Signal for help</b><span class="sub">6 whistle blasts or flashes a minute · SOS · V · X</span></span>' + icon("chevron-right", "chev") + "</a>" +
+      "</div>";
+    h += '<div class="section"><span class="label">Guides</span><div class="tiles">';
     IDX.categories.forEach(function (c) {
-      var n = c.id === "identify" ? Object.keys(SPP).length + " species · " : "";
-      h += '<a class="tile' + (c.id === "emergency" ? " emergency" : "") + '" href="#/c/' + c.id + '"><span class="ico" aria-hidden="true">' + c.icon +
-        "</span><b>" + esc(c.title) + "</b><span>" + n + esc(c.summary) + "</span></a>";
+      h += '<a class="tile c-' + c.id + '" href="#/c/' + c.id + '">' + iconTile(c.icon, "") +
+        "<span><b>" + esc(c.title) + '</b><span class="sub">' + esc(c.short) + "</span></span></a>";
     });
-    h += "</div>";
-    if (favs.length) {
-      h += '<h2 class="section-title">Favourites</h2><ul class="list">' + favs.slice(0, 6).map(rowHtml).join("") + "</ul>";
-      if (favs.length > 6) h += '<p><a href="#/favs">All favourites (' + favs.length + ")</a></p>";
-    }
+    h += "</div></div>";
     if (recent.length) {
-      h += '<h2 class="section-title">Recently viewed</h2><ul class="list">' + recent.slice(0, 5).map(rowHtml).join("") + "</ul>";
-      if (recent.length > 5) h += '<p><a href="#/recent">More recently viewed</a></p>';
+      h += '<div class="section"><span class="label">Recently viewed</span><ul class="list">' +
+        recent.slice(0, 3).map(rowHtml).join("") + "</ul></div>";
     }
-    h += '<p class="foot"><a href="#/species">Species guide</a> · <a href="#/favs">Favourites</a> · <a href="#/settings">Settings</a> · <a href="#/credits">Photo credits</a> · <a href="#/about">About &amp; disclaimer</a>';
-    if (st && st.battery >= 0) h += "<br>Battery " + st.battery + "%" + (st.charging ? " (charging)" : "");
-    h += "</p></div>";
+    h += '<div class="foot"><a href="#/report">Location report</a><a href="#/settings">Settings</a><a href="#/about">About</a><a href="#/credits">Photo credits</a></div>';
     view.innerHTML = h;
-    var q = document.getElementById("q");
-    q.value = homeQuery;
-    q.addEventListener("input", function () { homeQuery = q.value; runSearch(q.value); });
-    q.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") { q.blur(); }
-    });
-    if (homeQuery) runSearch(homeQuery);
-    if (pendingFocus) { pendingFocus = false; q.focus(); }
   }
 
-  var pendingFocus = false;
-  var homeQuery = ""; // kept while browsing results, cleared by the Home button
+  // ------------------------------------------------------------------ search
   var SEARCH = null, VOCAB = null;
   var STOP = {};
   ("a an and are as at be but by can do for from has have if in into is it its not of on or so that the their them then there these they this to too was were what when where which while who will with you your its dont than also may more most one some any all each other out up use used using very only just should would could been being over under about after before such how why per off own same both few many much now new well get got make made").split(" ").forEach(function (w) { STOP[w] = 1; });
@@ -275,7 +323,6 @@
     }
     return prev[lb];
   }
-
   function search(q) {
     var toks = qtokens(q);
     if (!toks.length) return [];
@@ -285,14 +332,17 @@
       var t = stem(raw), last = ti === toks.length - 1;
       var best = {};
       var maxd = t.length >= 7 ? 2 : (t.length >= 4 ? 1 : 0);
+      // A correctly spelt word that exists in the guide shouldn't be swamped by look-alike words
+      // ("whistle" vs "thistle"); typos ("nettel") have no exact entry, so fuzzy matches count fully.
+      var fuzzyFactor = terms[t] || terms[raw] ? 0.2 : 1;
       for (var k = 0; k < VOCAB.length; k++) {
         var term = VOCAB[k], w = 0;
         if (term === t || term === raw) w = 1;
         else if (term.indexOf(t) === 0 && t.length >= 2) w = last ? 0.8 : 0.6;
         else if (maxd) {
           var d = editDistance(t, term, maxd);
-          if (d <= maxd) w = d === 1 ? 0.65 : 0.4;
-          else if (last && term.length > t.length && editDistance(t, term.slice(0, t.length), 1) <= 1 && t.length >= 4) w = 0.45;
+          if (d <= maxd) w = (d === 1 ? 0.65 : 0.4) * fuzzyFactor;
+          else if (last && term.length > t.length && t.length >= 4 && editDistance(t, term.slice(0, t.length), 1) <= 1) w = 0.45 * fuzzyFactor;
         }
         if (!w) continue;
         var post = terms[term];
@@ -307,19 +357,67 @@
       });
     });
     var n = toks.length;
+    var stems = toks.map(stem);
     return Object.keys(total).map(function (doc) {
       var cover = hits[doc] / n;
-      return { key: SEARCH.docs[doc], score: total[doc] * cover * cover };
+      var key = SEARCH.docs[doc];
+      return { key: key, score: total[doc] * cover * cover * titleBoost(key, stems) };
     }).sort(function (a, b) { return b.score - a.score; }).slice(0, 40);
   }
 
+  // Results whose title (or species name) matches every query word rank higher, and shorter titles
+  // more so: "nettel" should put "Common nettle" above "Cordage from nettle and bramble".
+  var titleTokCache = {};
+  function titleBoost(key, stems) {
+    var r = itemFromKey(key);
+    if (!r) return 1;
+    var c = titleTokCache[key];
+    if (!c) {
+      var name = r.kind === "a" ? r.item.title : r.item.name;
+      var alt = r.kind === "a" ? "" : r.item.latin + " " + r.item.aka.join(" ");
+      c = titleTokCache[key] = { name: qtokens(name).map(stem), all: qtokens(name + " " + alt).map(stem) };
+    }
+    var hit = stems.every(function (q) {
+      var known = !!SEARCH.terms[q];
+      return c.all.some(function (w) { return w.indexOf(q) === 0 || (!known && q.length >= 4 && editDistance(q, w, 1) <= 1); });
+    });
+    // Shorter names are closer matches: "Common nettle" (2 words) beats "Cordage from nettle and bramble".
+    return hit ? 1.5 + 2.5 / Math.max(1, c.name.length) : 1;
+  }
+
+  var SUGGEST = ["Hypothermia", "Signal for help", "Boil water", "Ferro rod", "Death cap", "Nettle", "Grid reference", "Bleeding", "Wild garlic", "Ticks"];
+  function viewSearch(q, tab) {
+    setChrome("Search", { root: true, tab: tab });
+    var val = q.q || "";
+    view.innerHTML = '<label class="searchbox">' + icon("search") +
+      '<input id="q" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Nettle, CPR, ferro rod…" aria-label="Search the guide" value="' + esc(val) + '">' +
+      '<button class="icon-btn clear" id="qclear" type="button" aria-label="Clear search"' + (val ? "" : " hidden") + ">" + icon("x") + "</button></label>" +
+      '<div id="results"></div>';
+    var inp = document.getElementById("q"), clr = document.getElementById("qclear");
+    inp.addEventListener("input", function () {
+      clr.hidden = !inp.value;
+      history.replaceState(null, "", "#/search" + (inp.value ? "?q=" + encodeURIComponent(inp.value) : ""));
+      currentHash = location.hash;
+      runSearch(inp.value);
+    });
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") inp.blur(); });
+    clr.onclick = function (e) { e.preventDefault(); inp.value = ""; inp.dispatchEvent(new Event("input")); inp.focus(); };
+    runSearch(val);
+    return inp;
+  }
   function runSearch(q) {
-    var res = document.getElementById("results"), body = document.getElementById("home-body");
+    var res = document.getElementById("results");
     if (!res) return;
-    if (!q.trim()) { res.innerHTML = ""; body.hidden = false; return; }
-    body.hidden = true;
+    if (!q.trim()) {
+      res.innerHTML = '<div class="section"><span class="label">Try</span><div class="chips" style="flex-wrap:wrap;overflow:visible">' +
+        SUGGEST.map(function (s) { return '<button class="chip" data-suggest="' + esc(s) + '">' + esc(s) + "</button>"; }).join("") + "</div></div>";
+      res.querySelectorAll("[data-suggest]").forEach(function (b) {
+        b.onclick = function () { var i = document.getElementById("q"); i.value = b.getAttribute("data-suggest"); i.dispatchEvent(new Event("input")); };
+      });
+      return;
+    }
     if (!SEARCH) {
-      res.innerHTML = '<p class="hint">Loading search index…</p>';
+      res.innerHTML = '<p class="count">Loading search index…</p>';
       loadScript("content/search.js").then(function () {
         SEARCH = window.GUIDE_SEARCH;
         VOCAB = Object.keys(SEARCH.terms);
@@ -333,61 +431,80 @@
       res.innerHTML = '<p class="empty">No matches for “' + esc(q) + '”. Try fewer or different words.</p>';
       return;
     }
-    res.innerHTML = '<p class="hint">' + out.length + (out.length === 40 ? "+" : "") + ' results</p><ul class="list">' +
+    res.innerHTML = '<p class="count">' + out.length + (out.length === 40 ? "+" : "") + ' results</p><ul class="list">' +
       out.map(function (r) { return rowHtml(r.key); }).join("") + '</ul><div class="kbd-gap"></div>';
   }
+  // Opening search synchronously inside the tap lets Android show the keyboard straight away.
+  function openSearch() {
+    if (location.hash.indexOf("#/search") !== 0) {
+      if (currentHash !== null) scrollPos[currentHash] = window.scrollY;
+      history.pushState(null, "", "#/search");
+    }
+    currentHash = location.hash;
+    ++renderToken;
+    var inp = viewSearch(parseRoute().q, "search");
+    window.scrollTo(0, 0);
+    inp.focus();
+  }
 
-  // ------------------------------------------------------------------ categories + lists
-  function viewCategory(id) {
+  // ------------------------------------------------------------------ categories
+  function viewCategory(id, tab) {
     var c = CATS[id];
     if (!c) return notFound();
-    setTitle(c.title);
-    var h = '<h1 class="page">' + c.icon + " " + esc(c.title) + '</h1><p class="lead">' + esc(c.summary) + "</p>";
-    if (id === "emergency") h += callStrip();
-    if (id === "first-aid") h += '<div class="banner warn">First-aid information only, not a substitute for training. In an emergency call <a href="tel:999" data-dial="999">999</a> or <a href="tel:112" data-dial="112">112</a> first.</div>';
+    setChrome(c.title, { tab: tab });
+    var h = '<div class="cat-head c-' + c.id + '">' + iconTile(c.icon, "", "page-icon") + '<h1 class="page">' + esc(c.title) + '</h1></div><p class="lead">' + esc(c.summary) + "</p>";
+    if (id === "first-aid") h += '<div class="banner info">' + icon("info") + '<span>First-aid information, not a substitute for training. This phone can\'t call: see <a href="#/a/when-to-get-help">sending for help</a>.</span></div>';
+    if (id === "emergency") h += '<div class="banner info">' + icon("info") + "<span>This phone has no SIM card and <b>cannot call 999 or 112</b>. Get help by signalling, being found, or reaching a working phone or a person.</span></div>";
     if (id === "identify") {
       var counts = { plant: 0, fungus: 0, animal: 0 }, deadly = 0;
-      Object.keys(SPP).forEach(function (k) { counts[SPP[k].group]++; if (SPP[k].status.indexOf("deadly") >= 0) deadly++; });
-      h += '<div class="banner">Never eat any wild plant or fungus unless you are 100% certain of its identity. This app is not a substitute for expert identification.</div>';
-      h += '<a class="btn primary block" href="#/species">Browse all ' + Object.keys(SPP).length + " species</a>";
-      h += '<div class="btn-row">' +
-        '<a class="btn" href="#/species?g=plant">🌿 Plants (' + counts.plant + ")</a>" +
-        '<a class="btn" href="#/species?g=fungus">🍄 Fungi (' + counts.fungus + ")</a>" +
-        '<a class="btn" href="#/species?g=animal">🐾 Animals (' + counts.animal + ")</a>" +
-        '<a class="btn danger" href="#/species?st=deadly">☠ Deadly (' + deadly + ")</a></div>";
-      h += '<h2 class="section-title">Lookalikes and ID guides</h2>';
+      Object.keys(SPP).forEach(function (k) { counts[SPP[k].group]++; if (isDeadly(SPP[k])) deadly++; });
+      h += '<div class="banner">' + icon("triangle-alert") + "<span>Never eat any wild plant or fungus unless you are 100% certain what it is. This guide is not a substitute for expert identification.</span></div>";
+      h += '<a class="action primary" href="#/species"><span class="badge-ic">' + icon("leaf", "ic-lg") + '</span><span class="txt"><b>Browse all ' +
+        Object.keys(SPP).length + ' species</b><span class="sub">' + counts.plant + " plants · " + counts.fungus + " fungi · " + counts.animal + " animals · " + deadly + " deadly</span></span>" + icon("chevron-right", "chev") + "</a>";
+      h += '<div class="chips" style="margin-top:8px">' +
+        '<a class="chip g-plant" href="#/species?g=plant"><span class="dot"></span>Plants</a>' +
+        '<a class="chip g-fungus" href="#/species?g=fungus"><span class="dot"></span>Fungi</a>' +
+        '<a class="chip g-animal" href="#/species?g=animal"><span class="dot"></span>Animals</a>' +
+        '<a class="chip" href="#/species?st=deadly">' + icon("skull") + "Deadly</a></div>";
+      h += '<div class="section"><span class="label">Lookalikes and ID guides</span>';
+    } else {
+      h += '<div class="section"><span class="label">' + c.articles.length + " guides</span>";
     }
-    h += '<ul class="list">' + c.articles.map(function (a) { return rowHtml("a:" + a); }).join("") + "</ul>";
+    h += '<ul class="list">' + c.articles.map(function (a) { return rowHtml("a:" + a); }).join("") + "</ul></div>";
     view.innerHTML = h;
   }
 
-  function viewKeyList(title, keys, emptyMsg) {
-    setTitle(title);
-    var rows = keys.map(rowHtml).join("");
-    var h = '<h1 class="page">' + esc(title) + "</h1>";
-    h += rows ? '<ul class="list">' + rows + "</ul>" : '<p class="empty">' + esc(emptyMsg) + "</p>";
-    if (rows && title === "Recently viewed") h += '<p><button class="btn" id="clear-recent">Clear recently viewed</button></p>';
+  // ------------------------------------------------------------------ saved
+  function viewSaved(tab) {
+    setChrome("Saved", { root: true, tab: tab });
+    var favs = load("favs", []).filter(itemFromKey), recent = load("recent", []).filter(itemFromKey);
+    var h = '<span class="label">Saved</span>';
+    h += favs.length ? '<ul class="list">' + favs.map(rowHtml).join("") + "</ul>"
+      : '<div class="banner info">' + icon("bookmark") + "<span>Tap the bookmark at the top of any guide or species to keep it here.</span></div>";
+    h += '<div class="section"><span class="label">Recently viewed</span>';
+    h += recent.length ? '<ul class="list">' + recent.slice(0, 15).map(rowHtml).join("") + '</ul><button class="btn" id="clear-recent" style="margin-top:8px">Clear recently viewed</button>'
+      : '<p class="muted small">Nothing viewed yet.</p>';
+    h += "</div>";
     view.innerHTML = h;
-    var btn = document.getElementById("clear-recent");
-    if (btn) btn.onclick = function () { save("recent", []); render(); };
+    var b = document.getElementById("clear-recent");
+    if (b) b.onclick = function () { save("recent", []); render(); };
   }
 
   // ------------------------------------------------------------------ species browser
-  function viewBrowser(q) {
-    setTitle("Species guide");
+  function viewBrowser(q, tab) {
+    setChrome("Species", { root: true, tab: tab });
     var g = q.g || "", st = q.st || "", text = q.q || "";
-    var groups = [["", "All"], ["plant", "🌿 Plants"], ["fungus", "🍄 Fungi"], ["animal", "🐾 Animals"]];
-    var stats = [["", "Any"], ["edible", "Edible"], ["medicinal", "Medicinal"], ["caution", "Caution"], ["poisonous", "Poisonous"], ["deadly", "☠ Deadly"], ["venomous", "Venomous"], ["protected", "Protected"]];
-    var h = '<h1 class="page">Species guide</h1>';
-    h += '<div class="banner warn">Identify with several features, never one. Never eat wild fungi unless an expert has confirmed them in person.</div>';
-    h += '<div class="chips" role="group" aria-label="Group">' + groups.map(function (x) {
-      return '<button class="chip" data-g="' + x[0] + '" aria-pressed="' + (g === x[0]) + '">' + x[1] + "</button>";
+    var groups = [["", "All", ""], ["plant", "Plants", "g-plant"], ["fungus", "Fungi", "g-fungus"], ["animal", "Animals", "g-animal"]];
+    var stats = [["edible", "Edible"], ["medicinal", "Medicinal"], ["caution", "Caution"], ["poisonous", "Poisonous"], ["deadly", "Deadly"], ["venomous", "Venomous"], ["protected", "Protected"]];
+    var h = '<input class="filter-input" id="sf" type="search" placeholder="Filter by name…" autocomplete="off" value="' + esc(text) + '" style="margin-top:0">';
+    h += '<div class="chips" role="group" aria-label="Group" style="margin-top:8px">' + groups.map(function (x) {
+      return '<button class="chip ' + x[2] + '" data-g="' + x[0] + '" aria-pressed="' + (g === x[0]) + '">' + (x[2] ? '<span class="dot"></span>' : "") + x[1] + "</button>";
     }).join("") + "</div>";
     h += '<div class="chips" role="group" aria-label="Status">' + stats.map(function (x) {
-      return '<button class="chip" data-st="' + x[0] + '" aria-pressed="' + (st === x[0]) + '">' + x[1] + "</button>";
+      return '<button class="chip" data-st="' + x[0] + '" aria-pressed="' + (st === x[0]) + '">' + (STATUS_ICON[x[0]] ? icon(STATUS_ICON[x[0]]) : "") + x[1] + "</button>";
     }).join("") + "</div>";
-    h += '<input class="filter-input" id="sf" type="search" placeholder="Filter by name…" autocomplete="off" value="' + esc(text) + '">';
-    h += '<p class="hint" id="count"></p><ul class="list" id="splist"></ul>';
+    h += '<div class="banner warn">' + icon("triangle-alert") + "<span>Identify with several features, never one. Never eat wild fungi unless an expert has confirmed them in person.</span></div>";
+    h += '<p class="count" id="count"></p><div class="sgrid" id="sgrid"></div>';
     view.innerHTML = h;
 
     function apply() {
@@ -396,16 +513,12 @@
         var s = SPP[id];
         if (g && s.group !== g) return false;
         if (st && s.status.indexOf(st) < 0) return false;
-        if (t) {
-          var hay = norm(s.name + " " + s.latin + " " + s.aka.join(" ") + " " + s.tags.join(" "));
-          if (hay.indexOf(t) < 0) return false;
-        }
+        if (t && norm(s.name + " " + s.latin + " " + s.aka.join(" ") + " " + s.tags.join(" ")).indexOf(t) < 0) return false;
         return true;
       }).sort(function (a, b) { return SPP[a].name.localeCompare(SPP[b].name); });
       document.getElementById("count").textContent = ids.length + " species";
-      document.getElementById("splist").innerHTML = ids.length
-        ? ids.map(function (id) { return rowHtml("s:" + id); }).join("")
-        : '<li class="empty">No species match these filters.</li>';
+      document.getElementById("sgrid").innerHTML = ids.length ? ids.map(speciesCard).join("")
+        : '<p class="empty" style="grid-column:1/-1">No species match these filters.</p>';
     }
     function updateHash() {
       var parts = [];
@@ -413,16 +526,15 @@
       if (st) parts.push("st=" + st);
       var t = document.getElementById("sf").value.trim();
       if (t) parts.push("q=" + encodeURIComponent(t));
-      var nh = "#/species" + (parts.length ? "?" + parts.join("&") : "");
-      history.replaceState(null, "", nh);
-      currentHash = nh;
+      history.replaceState(null, "", "#/species" + (parts.length ? "?" + parts.join("&") : ""));
+      currentHash = location.hash;
     }
     view.querySelectorAll(".chip").forEach(function (b) {
       b.onclick = function () {
-        if (b.hasAttribute("data-g")) g = b.getAttribute("data-g"); else st = b.getAttribute("data-st");
+        if (b.hasAttribute("data-g")) g = b.getAttribute("data-g");
+        else st = st === b.getAttribute("data-st") ? "" : b.getAttribute("data-st"); // tap again to clear
         view.querySelectorAll(".chip").forEach(function (c) {
-          var on = c.hasAttribute("data-g") ? c.getAttribute("data-g") === g : c.getAttribute("data-st") === st;
-          c.setAttribute("aria-pressed", on);
+          c.setAttribute("aria-pressed", c.hasAttribute("data-g") ? c.getAttribute("data-g") === g : c.getAttribute("data-st") === st);
         });
         updateHash();
         apply();
@@ -432,84 +544,37 @@
     apply();
   }
 
-  // ------------------------------------------------------------------ photos
-  function galleryHtml(ims, label) {
-    if (!ims || !ims.length) return "";
-    var h = '<div class="gallery" data-label="' + esc(label) + '">';
-    ims.forEach(function (im, i) {
-      var attrs = ' data-i="' + i + '" alt="Photo ' + (i + 1) + " of " + esc(label) + '"';
-      if (i === 0) {
-        h += lowPower()
-          ? '<button class="photo-off" data-show="' + i + '">📷 Low-power mode: tap to show photo</button>'
-          : '<img class="main" loading="lazy" decoding="async" src="' + fullSrc(im) + '" width="' + im[1] + '" height="' + im[2] + '"' + attrs + ">";
-        if (ims.length > 1) h += '<div class="more">';
-      } else {
-        h += lowPower()
-          ? '<button class="photo-off" data-show="' + i + '">Photo ' + (i + 1) + "</button>"
-          : '<img loading="lazy" decoding="async" src="' + thumbSrc(im) + '" width="96" height="96"' + attrs + ">";
-      }
-    });
-    if (ims.length > 1) h += "</div>";
-    h += '<p class="credit" id="credit-line">Tap a photo to zoom. Photos: Wikimedia Commons, see credits.</p></div>';
-    return h;
-  }
-
-  function wireGallery(root, ims, label) {
-    var g = root.querySelector(".gallery");
-    if (!g) return;
-    g.addEventListener("click", function (e) {
-      var t = e.target;
-      if (t.hasAttribute("data-show")) {
-        var i = +t.getAttribute("data-show"), im = ims[i];
-        var img = document.createElement("img");
-        img.src = i === 0 ? fullSrc(im) : thumbSrc(im);
-        img.className = i === 0 ? "main" : "";
-        img.setAttribute("data-i", i);
-        img.alt = "Photo " + (i + 1) + " of " + label;
-        t.parentNode.replaceChild(img, t);
-        return;
-      }
-      if (t.tagName === "IMG" && t.hasAttribute("data-i")) openViewer(ims, +t.getAttribute("data-i"), label);
-    });
-    loadCredits().then(function (cr) {
-      var line = g.querySelector("#credit-line");
-      if (!line) return;
-      var names = ims.map(function (im) {
-        var c = cr[imgName(im)];
-        return c ? esc(c.author) + " (" + esc(c.license) + ")" : "";
-      }).filter(Boolean);
-      if (names.length) line.innerHTML = "Photos: " + names.join("; ") + ' · <a href="#/credits">licences</a>';
-    });
-  }
-
-  // Full-screen viewer with pinch-zoom and pan. Pure pointer events; no timers.
-  var V = { ims: [], i: 0, label: "", s: 1, x: 0, y: 0, pts: {}, start: null, lastTap: 0, open: false };
+  // ------------------------------------------------------------------ photo viewer
+  // items: [{src, caption, photo}] ; pure pointer events, no timers.
+  var V = { items: [], i: 0, s: 1, x: 0, y: 0, pts: {}, start: null, lastTap: 0, open: false };
   var vEl = document.getElementById("viewer"), vImg = document.getElementById("viewer-img");
   function vApply() { vImg.style.transform = "translate(" + V.x + "px," + V.y + "px) scale(" + V.s + ")"; }
-  function vReset() {
-    V.s = 1; V.x = 0; V.y = 0; V.pts = {}; V.start = null;
-    vImg.style.transform = "";
-    vImg.style.transformOrigin = "0 0";
-  }
+  function vReset() { V.s = 1; V.x = 0; V.y = 0; V.pts = {}; V.start = null; vImg.style.transform = ""; }
   function vShow() {
-    var im = V.ims[V.i];
+    var it = V.items[V.i];
     vReset();
-    vImg.src = fullSrc(im);
-    vImg.alt = V.label;
+    vImg.src = it.src;
+    vImg.alt = it.caption || "";
     document.getElementById("viewer-prev").hidden = V.i === 0;
-    document.getElementById("viewer-next").hidden = V.i >= V.ims.length - 1;
+    document.getElementById("viewer-next").hidden = V.i >= V.items.length - 1;
     var cap = document.getElementById("viewer-caption");
-    cap.textContent = V.label + (V.ims.length > 1 ? " · " + (V.i + 1) + "/" + V.ims.length : "");
-    loadCredits().then(function (cr) {
-      var c = cr[imgName(im)];
-      if (c) cap.textContent = V.label + (V.ims.length > 1 ? " · " + (V.i + 1) + "/" + V.ims.length : "") + " · Photo: " + c.author + " · " + c.license;
-    });
+    var base = (it.caption || "") + (V.items.length > 1 ? " · " + (V.i + 1) + "/" + V.items.length : "");
+    cap.textContent = base;
+    if (it.photo) {
+      loadCredits().then(function (cr) {
+        var c = cr[it.photo];
+        if (c && V.open && V.items[V.i] === it) cap.textContent = base + " · Photo: " + c.author + " · " + c.license;
+      });
+    }
   }
-  function openViewer(ims, i, label) {
-    V.ims = ims; V.i = i; V.label = label; V.open = true;
+  function openViewer(items, i) {
+    V.items = items; V.i = i; V.open = true;
     vEl.hidden = false;
     vShow();
     history.pushState({ viewer: true }, "");
+  }
+  function photoItems(ims, label) {
+    return ims.map(function (im) { return { src: fullSrc(im), caption: label, photo: im[0] }; });
   }
   function closeViewer(fromPop) {
     if (!V.open) return;
@@ -518,17 +583,17 @@
     vImg.removeAttribute("src");
     if (!fromPop) history.back();
   }
-  window.addEventListener("popstate", function () { if (V.open) closeViewer(true); });
+  window.addEventListener("popstate", function () {
+    if (V.open) { closeViewer(true); return; }
+    if ((location.hash || "#/") !== currentHash) render();
+  });
   document.getElementById("viewer-close").onclick = function () { closeViewer(false); };
   document.getElementById("viewer-prev").onclick = function () { if (V.i > 0) { V.i--; vShow(); } };
-  document.getElementById("viewer-next").onclick = function () { if (V.i < V.ims.length - 1) { V.i++; vShow(); } };
-
-  // Image coordinates: the image is laid out centred; we transform around its top-left corner.
+  document.getElementById("viewer-next").onclick = function () { if (V.i < V.items.length - 1) { V.i++; vShow(); } };
   function imgBox() { var r = vImg.getBoundingClientRect(); return { left: r.left - V.x, top: r.top - V.y }; }
   function zoomAt(cx, cy, ns) {
     ns = Math.max(1, Math.min(8, ns));
     var b = imgBox();
-    // keep the point under (cx, cy) fixed
     var px = (cx - b.left - V.x) / V.s, py = (cy - b.top - V.y) / V.s;
     V.s = ns;
     V.x = cx - b.left - px * ns;
@@ -583,7 +648,7 @@
         if (now - V.lastTap < 320) { zoomAt(e.clientX, e.clientY, V.s > 1 ? 1 : 2.5); V.lastTap = 0; }
         else V.lastTap = now;
       } else if (V.s === 1 && Math.abs(dx) > 60) {
-        if (dx < 0 && V.i < V.ims.length - 1) { V.i++; vShow(); }
+        if (dx < 0 && V.i < V.items.length - 1) { V.i++; vShow(); }
         else if (dx > 0 && V.i > 0) { V.i--; vShow(); }
       }
     }
@@ -595,28 +660,24 @@
   stage.addEventListener("pointerup", endPointer);
   stage.addEventListener("pointercancel", endPointer);
 
-  // ------------------------------------------------------------------ article + species pages
-  function favButton(key) {
-    return '<button class="icon-btn fav" id="favbtn" aria-label="Favourite" aria-pressed="' + isFav(key) + '">' + (isFav(key) ? "★" : "☆") + "</button>";
-  }
-  function wireFav(key) {
-    var b = document.getElementById("favbtn");
-    if (b) b.onclick = function () { var on = toggleFav(key); b.setAttribute("aria-pressed", on); b.textContent = on ? "★" : "☆"; };
+  function creditLine(el, ims) {
+    loadCredits().then(function (cr) {
+      var names = ims.map(function (im) { var c = cr[im[0]]; return c ? esc(c.author) + " (" + esc(c.license) + ")" : ""; }).filter(Boolean);
+      if (names.length && el) el.innerHTML = "Photo" + (names.length > 1 ? "s" : "") + ": " + names.join("; ") + ' · <a href="#/credits">licences</a>';
+    });
   }
 
-  function compareHtml(ids) {
-    return '<div class="compare">' + ids.map(function (id) {
-      var s = SPP[id];
-      if (!s) return "";
-      var ims = s.images || [];
-      var pic = ims.length && !lowPower()
-        ? '<img loading="lazy" decoding="async" src="' + fullSrc(ims[0]) + '" alt="' + esc(s.name) + '">'
-        : '<span class="noimg">' + GROUP_ICON[s.group] + "</span>";
-      return '<a class="card' + (s.status.indexOf("deadly") >= 0 ? " deadly" : "") + '" href="#/s/' + id + '">' + pic +
-        '<span class="c"><b>' + esc(s.name) + "</b><i>" + esc(s.latin) + "</i>" + badges(s.status) + "</span></a>";
-    }).join("") + "</div>";
+  // ------------------------------------------------------------------ article page
+  function decorateBody(root) {
+    root.querySelectorAll("section.quick, section.callout").forEach(function (sec) {
+      var kind = sec.classList.contains("quick") ? "quick" : (sec.className.split(" ")[1] || "note");
+      var h = sec.querySelector("h2");
+      if (h && CALLOUT_ICON[kind]) h.insertAdjacentHTML("afterbegin", icon(CALLOUT_ICON[kind]));
+    });
+    root.querySelectorAll("img[data-zoom]").forEach(function (img) {
+      img.onclick = function () { openViewer([{ src: img.getAttribute("src"), caption: img.alt }], 0); };
+    });
   }
-
   function insertAfterQuick(container, html) {
     if (!html) return;
     var q = container.querySelector(".quick");
@@ -625,157 +686,221 @@
     var ref = q ? q.nextSibling : container.firstChild;
     while (tmp.firstChild) container.insertBefore(tmp.firstChild, ref);
   }
-
   function wireChecklists(root, key) {
-    // Lists in a "checklist" section get persistent tick boxes (kit checklist).
     var state = load("checks", {});
     root.querySelectorAll(".checklist ul, .checklist ol").forEach(function (list, li) {
       list.classList.add("check-list");
-      list.querySelectorAll(":scope > li").forEach(function (item, ii) {
+      Array.prototype.forEach.call(list.children, function (item, ii) {
         var id = key + ":" + li + ":" + ii;
+        // The whole row is the tap target; text and links stay together beside the tick box.
+        var label = document.createElement("label"), wrap = document.createElement("span");
+        while (item.firstChild) wrap.appendChild(item.firstChild);
+        label.appendChild(wrap);
+        item.appendChild(label);
         var cb = document.createElement("input");
         cb.type = "checkbox";
         cb.checked = !!state[id];
         cb.setAttribute("aria-label", "Packed / checked");
         cb.onchange = function () { var s = load("checks", {}); if (cb.checked) s[id] = 1; else delete s[id]; save("checks", s); };
-        item.insertBefore(cb, item.firstChild);
+        label.insertBefore(cb, label.firstChild);
       });
     });
   }
+  function articleGallery(a, force) {
+    if (!a.images || !a.images.length) return "";
+    var im = a.images[0];
+    if (lowPower() && !force) return '<div class="gallery"><button class="photo-off" data-show>' + icon("image-off") + "Low-power mode: tap to show photo</button></div>";
+    return '<figure class="gallery"><img class="main" loading="lazy" decoding="async" src="' + fullSrc(im) + '" width="' + im[1] + '" height="' + im[2] + '" alt="' + esc(a.title) + '" data-photo>' +
+      '<figcaption class="credit" id="a-credit"></figcaption></figure>';
+  }
+  function wireArticleGallery(root, a) {
+    var g = root.querySelector("[data-photo]");
+    if (g) { g.onclick = function () { openViewer(photoItems(a.images, a.title), 0); }; creditLine(document.getElementById("a-credit"), a.images); }
+    var off = root.querySelector("[data-show]");
+    if (off) off.onclick = function () {
+      var box = off.parentNode;
+      box.insertAdjacentHTML("afterend", articleGallery(a, true));
+      box.parentNode.removeChild(box);
+      wireArticleGallery(root, a);
+    };
+  }
 
-  function viewArticle(id, token) {
+  function viewArticle(id, token, tab) {
     var a = ART[id];
     if (!a) return notFound();
     var c = CATS[a.cat];
-    setTitle(a.title);
+    setChrome(c.title, { tab: tab, saveKey: "a:" + id });
     addRecent("a:" + id);
-    view.innerHTML = '<p class="crumb"><a href="#/c/' + a.cat + '">' + c.icon + " " + esc(c.title) + "</a></p>" +
-      favButton("a:" + id) + '<h1 class="page">' + esc(a.title) + '</h1><div class="body" id="body"><p class="muted" id="loading">Loading…</p></div>';
-    wireFav("a:" + id);
+    view.innerHTML = '<a class="crumb c-' + a.cat + '" href="#/c/' + a.cat + '"><span class="dot"></span>' + esc(c.title) + "</a>" +
+      '<h1 class="page">' + esc(a.title) + '</h1><div class="body" id="body"><p class="muted" id="loading">Loading…</p></div>';
     return loadBody("a/" + id).then(function (html) {
       if (token !== renderToken) return;
       var body = document.getElementById("body");
       body.innerHTML = html;
       var extra = "";
-      if (a.compare) extra += compareHtml(a.compare);
-      if (a.images) extra += galleryHtml(a.images, a.title);
+      if (a.compare) extra += '<div class="compare">' + a.compare.map(speciesCard).join("") + "</div>";
+      extra += articleGallery(a);
       insertAfterQuick(body, extra);
       if (a.cat === "first-aid") {
-        body.insertAdjacentHTML("afterbegin", '<p class="small muted">First-aid information, not a substitute for training. Emergency: <a href="tel:999" data-dial="999">999</a> / <a href="tel:112" data-dial="112">112</a>.</p>');
+        body.insertAdjacentHTML("afterbegin", '<p class="small muted" style="margin:0 0 12px">First-aid information, not a substitute for training.</p>');
       }
-      if (a.images) wireGallery(body, a.images, a.title);
+      decorateBody(body);
+      wireArticleGallery(body, a);
       wireChecklists(body, "a:" + id);
     }, function () {
       document.getElementById("body").innerHTML = '<p class="empty">This article could not be loaded.</p>';
     });
   }
 
-  function viewSpecies(id, token) {
+  // ------------------------------------------------------------------ species page
+  function heroHtml(s, force) {
+    var ims = s.images;
+    if (!ims.length) return '<div class="hero none g-' + s.group + '">' + icon(GROUP_ICON[s.group]) + "</div>";
+    if (lowPower() && !force) return '<div class="hero"><button class="photo-off" id="show-photos">' + icon("image-off") + "Low-power mode: tap to show photos</button></div>";
+    var h = '<div class="hero"><img id="hero-img" src="' + fullSrc(ims[0]) + '" width="' + ims[0][1] + '" height="' + ims[0][2] + '" alt="' + esc(s.name) + '">';
+    if (ims.length > 1) h += '<span class="count-chip">' + icon("images", "ic-sm") + ims.length + " photos</span>";
+    h += "</div>";
+    if (ims.length > 1) {
+      h += '<div class="strip">' + ims.map(function (im, i) {
+        return '<button data-i="' + i + '" aria-label="Photo ' + (i + 1) + '"><img loading="lazy" alt="" src="' + thumbSrc(im) + '"></button>';
+      }).join("") + "</div>";
+    }
+    h += '<p class="credit" id="sp-credit"></p>';
+    return h;
+  }
+  function viewSpecies(id, token, tab) {
     var s = SPP[id];
     if (!s) return notFound();
-    setTitle(s.name);
+    setChrome(GROUP_LABEL[s.group], { tab: tab, saveKey: "s:" + id });
     addRecent("s:" + id);
-    var h = '<p class="crumb"><a href="#/species?g=' + s.group + '">' + GROUP_ICON[s.group] + " " + GROUP_LABEL[s.group] + "</a></p>";
-    h += favButton("s:" + id) + '<h1 class="page">' + esc(s.name) + '</h1><p class="latin">' + esc(s.latin) + "</p>" + badges(s.status);
+    var h = '<div id="hero-wrap">' + heroHtml(s) + "</div>";
+    h += '<div class="sp-title"><div class="tt"><h1 class="page">' + esc(s.name) + '</h1><p class="latin">' + esc(s.latin) + "</p>" + pills(s.status) + "</div></div>";
     if (s.group === "fungus") {
-      h += '<div class="banner">Never eat any wild fungus unless its identity has been confirmed in person by an expert. Several UK fungi kill, with symptoms delayed for hours or days.</div>';
+      h += '<div class="banner">' + icon("triangle-alert") + "<span>Never eat any wild fungus unless an expert has confirmed it in person. Several UK fungi kill, with symptoms delayed for hours or days.</span></div>";
     } else if (s.status.indexOf("edible") >= 0 && s.group === "plant") {
-      h += '<div class="banner warn">Only eat a wild plant if you are 100% certain of its identity, using several features. If in doubt, leave it out.</div>';
+      h += '<div class="banner warn">' + icon("triangle-alert") + "<span>Only eat a wild plant if you are 100% certain what it is, using several features. If in doubt, leave it out.</span></div>";
     }
-    h += galleryHtml(s.images, s.name);
-    h += '<dl class="facts">';
-    if (s.aka.length) h += "<dt>Also called</dt><dd>" + esc(s.aka.join(", ")) + "</dd>";
-    h += "<dt>Type</dt><dd>" + TYPE_LABEL[s.group] + (s.kind ? " · " + esc(s.kind) : "") + "</dd>";
-    h += "<dt>Season</dt><dd>" + esc(s.season) + "</dd>";
-    h += "<dt>Habitat</dt><dd>" + esc(s.habitat) + "</dd></dl>";
+    h += '<div class="facts">' +
+      '<div class="f">' + icon("calendar") + '<span><span class="k">Season</span><span class="v">' + esc(s.season) + "</span></span></div>" +
+      '<div class="f">' + icon("trees") + '<span><span class="k">Habitat</span><span class="v">' + esc(s.habitat) + "</span></span></div>" +
+      '<div class="f">' + icon(GROUP_ICON[s.group]) + '<span><span class="k">Type</span><span class="v">' + TYPE_LABEL[s.group] + (s.kind ? " · " + esc(s.kind) : "") +
+      (s.aka.length ? '<br><span class="muted">Also called ' + esc(s.aka.join(", ")) + "</span>" : "") + "</span></span></div>" +
+      "</div>";
     h += '<p class="lead">' + esc(s.summary) + "</p>";
-    if (s.lookalikes.length) {
-      var dangerous = s.lookalikes.filter(function (l) { return SPP[l] && (SPP[l].status.indexOf("deadly") >= 0 || SPP[l].status.indexOf("poisonous") >= 0); });
-      h += '<h2 class="section-title">' + (dangerous.length ? "⚠ Lookalikes, including dangerous ones" : "Lookalikes") + "</h2>";
-      h += '<ul class="list">' + s.lookalikes.map(function (l) { return rowHtml("s:" + l); }).join("") + "</ul>";
-    }
     h += '<div class="body" id="body"></div>';
     view.innerHTML = h;
-    wireFav("s:" + id);
-    wireGallery(view, s.images, s.name);
+    wireHero(s);
     return loadBody("s/" + id).then(function (html) {
       if (token !== renderToken) return;
-      document.getElementById("body").innerHTML = html;
+      var body = document.getElementById("body");
+      body.innerHTML = html;
+      if (s.lookalikes.length) {
+        var dangerous = s.lookalikes.some(function (l) { return SPP[l] && (isDeadly(SPP[l]) || SPP[l].status.indexOf("poisonous") >= 0); });
+        var look = '<div class="look-wrap"><h2>' + (dangerous ? "Don't confuse with" : "Similar species") + "</h2>" +
+          (dangerous ? '<p class="small muted" style="margin:0">Includes poisonous or deadly lookalikes.</p>' : "") +
+          '<div class="look">' + s.lookalikes.map(speciesCard).join("") + "</div></div>";
+        // Place the lookalikes straight after the identification section.
+        var idH = Array.prototype.filter.call(body.querySelectorAll("h2"), function (x) { return /identification/i.test(x.textContent); })[0];
+        var next = null;
+        if (idH) { next = idH.nextElementSibling; while (next && next.tagName !== "H2") next = next.nextElementSibling; }
+        var tmp = document.createElement("div");
+        tmp.innerHTML = look;
+        body.insertBefore(tmp.firstChild, next);
+      }
+      decorateBody(body);
     });
+  }
+  function wireHero(s) {
+    var img = document.getElementById("hero-img");
+    if (img) img.onclick = function () { openViewer(photoItems(s.images, s.name), 0); };
+    view.querySelectorAll(".strip [data-i]").forEach(function (b) {
+      b.onclick = function () { openViewer(photoItems(s.images, s.name), +b.getAttribute("data-i")); };
+    });
+    var off = document.getElementById("show-photos");
+    if (off) off.onclick = function () { document.getElementById("hero-wrap").innerHTML = heroHtml(s, true); wireHero(s); };
+    var cr = document.getElementById("sp-credit");
+    if (cr) creditLine(cr, s.images);
   }
 
   // ------------------------------------------------------------------ tools
-  function viewTools() {
-    setTitle("Tools");
+  function viewTools(tab) {
+    setChrome("Tools", { root: true, tab: tab });
     var st = nativeState();
-    var h = '<h1 class="page">Tools</h1>';
-    h += callStrip();
-    if (!NATIVE) h += '<div class="banner warn">The tool buttons only work inside the app on the phone.</div>';
-    h += '<div class="tools">' +
-      '<button class="btn' + (st && st.torch ? " on" : "") + '" id="torch"><span class="ico">🔦</span>Torch ' + (st && st.torch ? "ON" : "off") + "</button>" +
-      '<button class="btn" data-tool="fm"><span class="ico">📻</span>FM Radio</button>' +
-      '<button class="btn" data-tool="camera"><span class="ico">📷</span>Camera</button>' +
-      '<button class="btn" data-tool="calculator"><span class="ico">🧮</span>Calculator</button>' +
-      '<button class="btn" data-tool="clock"><span class="ico">⏰</span>Clock / alarm</button>' +
-      '<button class="btn" data-tool="battery"><span class="ico">🔋</span>Battery</button>' +
-      '<a class="btn" href="#/report"><span class="ico">📍</span>Location report</a>' +
-      '<a class="btn" href="#/settings"><span class="ico">⚙️</span>Guide settings</a>' +
-      "</div>";
-    h += '<p class="hint">FM Radio needs wired headphones as its aerial. The torch stays on until you switch it off: check it before putting the phone away.</p>';
-    if (st) {
-      h += '<div class="status">Battery: ' + (st.battery >= 0 ? st.battery + "%" : "unknown") + (st.charging ? " · charging" : "") +
-        (st.batteryTempC != null ? " · " + st.batteryTempC + " °C" : "") + "<br>Guide version " + esc(st.version) + "</div>";
+    var torchOn = !!(st && st.torch);
+    function tool(id, ic, label, sub) {
+      return '<button class="tool c-accent" data-tool="' + id + '">' + iconTile(ic) + "<span><b>" + label + '</b><span class="sub">' + sub + "</span></span></button>";
     }
-    h += '<p><a href="#/a/batteries-electronics">Keeping the phone and batteries alive</a> · <a href="#/a/solar-panel">Solar charging</a></p>';
+    var h = "";
+    if (!NATIVE) h += '<div class="banner warn">' + icon("info") + "<span>These buttons only work inside the app on the phone.</span></div>";
+    h += '<div class="tools">' +
+      '<button class="tool c-accent' + (torchOn ? " on" : "") + '" id="torch">' + iconTile("flashlight") + "<span><b>Torch " + (torchOn ? "on" : "off") + '</b><span class="sub">Signal: 6 flashes a minute</span></span></button>' +
+      tool("fm", "radio", "FM Radio", "Needs wired headphones") +
+      tool("camera", "camera", "Camera", "Photograph for ID") +
+      tool("calculator", "calculator", "Calculator", "Pacing and timings") +
+      tool("clock", "alarm-clock", "Clock", "Alarm and stopwatch") +
+      tool("battery", "battery-medium", "Battery", "Usage and saver") +
+      "</div>";
+    h += '<div class="actions"><a class="action" href="#/report"><span class="badge-ic">' + icon("map-pin", "ic-lg") + '</span><span class="txt"><b>Location report</b><span class="sub">Grid reference and details to hand to rescuers</span></span>' + icon("chevron-right", "chev") + "</a></div>";
+    h += '<div class="section"><span class="label">This guide</span><ul class="list">' +
+      '<li><a class="row" href="#/settings">' + iconTile("sliders-horizontal", "c-kit") + '<span class="txt"><span class="t">Settings</span><span class="s">Theme, text size, brightness, low-power mode</span></span>' + icon("chevron-right", "chev") + "</a></li>" +
+      '<li><a class="row" href="#" data-tool-link="settings">' + iconTile("settings", "c-kit") + '<span class="txt"><span class="t">Phone settings</span><span class="s">Open Android settings</span></span>' + icon("chevron-right", "chev") + "</a></li>" +
+      '<li><a class="row" href="#/about">' + iconTile("info", "c-kit") + '<span class="txt"><span class="t">About and licences</span><span class="s">Disclaimer, sources, icon and font licences</span></span>' + icon("chevron-right", "chev") + "</a></li>" +
+      '<li><a class="row" href="#/credits">' + iconTile("images", "c-kit") + '<span class="txt"><span class="t">Photo credits</span><span class="s">' + IDX.counts.photos + " photos from Wikimedia Commons</span></span>" + icon("chevron-right", "chev") + "</a></li>" +
+      "</ul></div>";
+    if (st) {
+      h += '<div class="section status"><span>Battery <b>' + (st.battery >= 0 ? st.battery + "%" : "?") + "</b>" + (st.charging ? " · charging" : "") + "</span>" +
+        (st.batteryTempC != null ? "<span>Temp <b>" + st.batteryTempC + " °C</b></span>" : "") + "<span>Version <b>" + esc(st.version) + "</b></span></div>";
+    }
+    h += '<p class="small muted" style="margin-top:16px">The torch stays on until you switch it off: check it before putting the phone away.</p>';
     view.innerHTML = h;
-    view.querySelectorAll("[data-tool]").forEach(function (b) {
-      b.onclick = function () {
-        var ok = native("launchTool", b.getAttribute("data-tool"));
-        if (!ok) alert(NATIVE ? "That app is not available (it may have been removed or is blocked in kiosk mode)." : "Only available on the phone.");
-      };
-    });
+    function launch(name) {
+      var ok = native("launchTool", name);
+      if (!ok) alert(NATIVE ? "That app is not available (it may have been removed or is blocked in kiosk mode)." : "Only available on the phone.");
+    }
+    view.querySelectorAll("[data-tool]").forEach(function (b) { b.onclick = function () { launch(b.getAttribute("data-tool")); }; });
+    view.querySelectorAll("[data-tool-link]").forEach(function (b) { b.onclick = function (e) { e.preventDefault(); launch(b.getAttribute("data-tool-link")); }; });
     document.getElementById("torch").onclick = function () {
       var cur = nativeState();
-      var want = !(cur && cur.torch);
-      var ok = native("setTorch", want);
-      if (!ok) alert(NATIVE ? "The torch could not be switched (camera may be in use)." : "Only available on the phone.");
+      var ok = native("setTorch", !(cur && cur.torch));
+      if (!ok) alert(NATIVE ? "The torch could not be switched (the camera may be in use)." : "Only available on the phone.");
       render();
     };
   }
 
-  // Location report builder: compose what to say to 999 / 112 (or text to 999 if registered).
-  function viewReport() {
-    setTitle("Location report");
+  // Location report: what to hand to a messenger, a passer-by or rescuers. Works with no signal.
+  function viewReport(tab) {
+    setChrome("Location report", { tab: tab });
     var r = load("report", {});
     var fields = [
-      ["grid", "OS grid reference (2 letters + 6–10 digits)", "e.g. NN 166 712"],
-      ["place", "Nearest named place / landmark / path", "e.g. 300 m north of Loch X bothy, on the main path"],
-      ["what", "What has happened", "e.g. walker fallen, suspected broken ankle, cannot walk"],
-      ["who", "How many people; ages; conditions", "e.g. 2 people; 1 injured, 54, conscious, cold"],
-      ["have", "What you have (shelter, food, light, battery %)", "e.g. tarp, stove, torch, phone 40%"],
-      ["you", "Your name and how you will signal", "e.g. Sam; orange tarp; whistle; torch"]
+      ["grid", "OS grid reference", "e.g. NN 166 712"],
+      ["place", "Nearest named place or landmark", "e.g. 300 m north of the bothy, on the main path"],
+      ["what", "What has happened", "e.g. walker fallen, suspected broken ankle"],
+      ["who", "People and their condition", "e.g. 2 people; 1 injured, 54, conscious, cold"],
+      ["have", "What you have", "e.g. tarp, stove, torch, food for 1 day"],
+      ["signal", "How you will signal", "e.g. orange tarp, whistle, torch"]
     ];
-    var h = '<h1 class="page">Location report</h1><p class="lead">Fill this in calmly, then read it out to the operator. Ask for <b>Police, then Mountain Rescue</b> on land, or <b>Coastguard</b> at the coast. Help: <a href="#/a/grid-references">reading a grid reference</a>.</p>';
+    var h = '<h1 class="page">Location report</h1><p class="lead">Fill this in calmly. Hand it, or show this screen, to whoever goes for help, a passer-by with a phone, or rescuers. Help: <a href="#/a/grid-references">reading a grid reference</a>.</p>';
     h += '<div class="form">' + fields.map(function (f) {
       return '<label for="r-' + f[0] + '">' + f[1] + '</label><input id="r-' + f[0] + '" data-k="' + f[0] + '" placeholder="' + esc(f[2]) + '" value="' + esc(r[f[0]] || "") + '" autocomplete="off">';
     }).join("") + "</div>";
-    h += '<h2 class="section-title">Read this out</h2><div class="report" id="report-out"></div>';
-    h += '<div class="btn-row"><a class="btn primary" href="tel:999" data-dial="999">Call 999</a><button class="btn" id="r-clear">Clear</button></div>';
-    h += '<p class="hint">Emergency SMS (text to 999) only works if this phone number was registered in advance by texting "register" to 999, and only with mobile signal (airplane mode off). Calls to 999/112 are better whenever you can make one.</p>';
+    h += '<div class="section"><span class="label">Show this to rescuers</span><pre class="report" id="report-out"></pre></div>';
+    h += '<div class="btn-row"><button class="btn" id="r-clear">Clear the form</button><a class="btn" href="#/a/when-you-reach-help">What to tell 999</a></div>';
     view.innerHTML = h;
     function out() {
       var x = load("report", {});
-      var lines = [];
-      lines.push("EMERGENCY: " + (x.what || "[what has happened]"));
-      lines.push("Location grid ref: " + (x.grid || "[grid ref]"));
-      lines.push("Near: " + (x.place || "[landmark]"));
-      lines.push("People: " + (x.who || "[number, condition]"));
-      lines.push("We have: " + (x.have || "[kit]"));
-      lines.push("Contact / signal: " + (x.you || "[name, signal]"));
-      document.getElementById("report-out").textContent = lines.join("\n");
+      var d = new Date(x.t || Date.now());
+      document.getElementById("report-out").textContent = [
+        "EMERGENCY: " + (x.what || "[what has happened]"),
+        "Grid ref: " + (x.grid || "[grid reference]"),
+        "Near: " + (x.place || "[landmark]"),
+        "People: " + (x.who || "[number, condition]"),
+        "We have: " + (x.have || "[kit]"),
+        "Signal: " + (x.signal || "[how we'll signal]"),
+        "Written: " + (x.t ? d.toLocaleString("en-GB", { weekday: "short", hour: "2-digit", minute: "2-digit" }) : "[time]")
+      ].join("\n");
     }
     view.querySelectorAll(".form input").forEach(function (inp) {
-      inp.addEventListener("input", function () { var x = load("report", {}); x[inp.getAttribute("data-k")] = inp.value; save("report", x); out(); });
+      inp.addEventListener("input", function () { var x = load("report", {}); x[inp.getAttribute("data-k")] = inp.value; x.t = Date.now(); save("report", x); out(); });
     });
     document.getElementById("r-clear").onclick = function () { if (confirm("Clear the report?")) { save("report", {}); render(); } };
     out();
@@ -787,112 +912,102 @@
     root.setAttribute("data-theme", settings.theme || "dark");
     root.style.setProperty("--fs", (settings.fs || 18) + "px");
     document.getElementById("dim").style.opacity = (settings.dim || 0) / 100;
-    var bar = getComputedStyle(root).getPropertyValue("--surface").trim();
+    var bar = getComputedStyle(root).getPropertyValue("--bg").trim();
     if (bar) native("setSystemBarColor", bar.length === 4 ? "#" + bar[1] + bar[1] + bar[2] + bar[2] + bar[3] + bar[3] : bar);
   }
-
-  function viewSettings() {
-    setTitle("Settings");
+  function viewSettings(tab) {
+    setChrome("Settings", { tab: tab });
     var st = nativeState();
     var bright = st ? st.brightness : -1;
     var theme = settings.theme || "dark";
-    var h = '<h1 class="page">Settings</h1>';
-    h += '<div class="setting"><span class="h" style="font-weight:700">Display mode</span><div class="chips">' +
-      [["dark", "Dark"], ["light", "Bright sun (high contrast)"], ["red", "Night (red)"]].map(function (t) {
-        return '<button class="chip" data-theme-opt="' + t[0] + '" aria-pressed="' + (theme === t[0]) + '">' + t[1] + "</button>";
-      }).join("") + '</div><p class="desc">Dark is easiest on the eyes and battery. Use high contrast in bright sunlight; red at night to keep your night vision.</p></div>';
-    h += '<div class="setting"><label class="h" for="fs">Text size: <span id="fsv">' + (settings.fs || 18) + "</span> px</label>" +
+    var h = '<span class="label">Display</span><div class="group">';
+    h += '<div class="setting"><div class="h">Theme</div><div class="seg">' +
+      [["dark", "Dark"], ["light", "Daylight"], ["red", "Night red"]].map(function (t) {
+        return '<button data-theme-opt="' + t[0] + '" aria-pressed="' + (theme === t[0]) + '">' + t[1] + "</button>";
+      }).join("") + '</div><p class="desc">Daylight is high contrast for direct sun. Night red keeps your night vision.</p></div>';
+    h += '<div class="setting"><div class="h"><label for="fs">Text size</label><span class="v" id="fsv">' + (settings.fs || 18) + " px</span></div>" +
       '<input id="fs" type="range" min="14" max="30" step="1" value="' + (settings.fs || 18) + '"></div>';
-    h += '<div class="setting"><span style="font-weight:700">Screen brightness</span>' +
-      '<label class="check"><input type="checkbox" id="bsys"' + (bright < 0 ? " checked" : "") + (NATIVE ? "" : " disabled") + "> Follow phone setting</label>" +
-      '<input id="bright" type="range" min="0" max="100" step="1" value="' + (bright < 0 ? 30 : Math.round(bright * 100)) + '"' + (bright < 0 || !NATIVE ? " disabled" : "") + ">" +
-      '<p class="desc">Applies only while the guide is open. The bottom of the slider is dimmer than the phone\'s own minimum; the backlight is the biggest battery drain.' + (NATIVE ? "" : " (Phone only.)") + "</p></div>";
-    h += '<div class="setting"><label class="h" for="dimr">Extra dimming: <span id="dimv">' + (settings.dim || 0) + "</span>%</label>" +
-      '<input id="dimr" type="range" min="0" max="80" step="5" value="' + (settings.dim || 0) + '"><p class="desc">Darkens the page on top of the backlight, for reading in the dark.</p></div>';
-    h += '<div class="setting"><label class="check"><input type="checkbox" id="lowp"' + (settings.lowPower ? " checked" : "") + "> Low-power mode</label>" +
-      '<p class="desc">Hides photos until you tap them. Saves battery and memory.</p></div>';
-    h += '<div class="setting"><span style="font-weight:700">Your data</span><div class="btn-row">' +
-      '<button class="btn" id="clr-recent">Clear recently viewed</button><button class="btn" id="clr-favs">Clear favourites</button><button class="btn" id="clr-checks">Clear kit ticks</button></div></div>';
-    h += '<p class="foot"><a href="#/about">About &amp; disclaimer</a> · <a href="#/credits">Photo credits &amp; licences</a></p>';
+    h += '<div class="setting"><div class="h">Screen brightness</div>' +
+      '<label class="switch"><span>Follow phone setting</span><input type="checkbox" id="bsys"' + (bright < 0 ? " checked" : "") + (NATIVE ? "" : " disabled") + "></label>" +
+      '<input id="bright" type="range" min="0" max="100" step="1" value="30"' + (bright < 0 || !NATIVE ? " disabled" : "") + ' aria-label="Brightness">' +
+      '<p class="desc">Only while the guide is open. The low end is dimmer than the phone\'s own minimum.' + (NATIVE ? "" : " Phone only.") + "</p></div>";
+    h += '<div class="setting"><div class="h"><label for="dimr">Extra dimming</label><span class="v" id="dimv">' + (settings.dim || 0) + "%</span></div>" +
+      '<input id="dimr" type="range" min="0" max="80" step="5" value="' + (settings.dim || 0) + '"><p class="desc">Darkens the page on top of the backlight, for reading at night.</p></div>';
+    h += "</div>";
+    h += '<span class="label">Battery</span><div class="group"><div class="setting"><label class="switch"><span>Low-power mode</span><input type="checkbox" id="lowp"' + (settings.lowPower ? " checked" : "") + "></label>" +
+      '<p class="desc">Hides photos until you tap them. Saves battery and memory.</p></div></div>';
+    h += '<span class="label">Your data</span><div class="group"><div class="setting"><div class="btn-row" style="margin:0">' +
+      '<button class="btn" id="clr-recent">Clear recent</button><button class="btn" id="clr-favs">Clear saved</button><button class="btn" id="clr-checks">Clear kit ticks</button></div></div></div>';
     view.innerHTML = h;
-
     view.querySelectorAll("[data-theme-opt]").forEach(function (b) {
       b.onclick = function () { setSetting("theme", b.getAttribute("data-theme-opt")); applySettings(); render(); };
     });
     var fs = document.getElementById("fs");
-    fs.oninput = function () { setSetting("fs", +fs.value); document.getElementById("fsv").textContent = fs.value; applySettings(); };
+    fs.oninput = function () { setSetting("fs", +fs.value); document.getElementById("fsv").textContent = fs.value + " px"; applySettings(); };
     var br = document.getElementById("bright"), bsys = document.getElementById("bsys");
-    br.oninput = function () { native("setBrightness", Math.pow(+br.value / 100, 2)); };
-    bsys.onchange = function () {
-      br.disabled = bsys.checked;
-      native("setBrightness", bsys.checked ? -1 : Math.pow(+br.value / 100, 2));
-    };
     if (bright >= 0) br.value = Math.round(Math.sqrt(bright) * 100);
+    br.oninput = function () { native("setBrightness", Math.pow(+br.value / 100, 2)); };
+    bsys.onchange = function () { br.disabled = bsys.checked; native("setBrightness", bsys.checked ? -1 : Math.pow(+br.value / 100, 2)); };
     var dimr = document.getElementById("dimr");
-    dimr.oninput = function () { setSetting("dim", +dimr.value); document.getElementById("dimv").textContent = dimr.value; applySettings(); };
+    dimr.oninput = function () { setSetting("dim", +dimr.value); document.getElementById("dimv").textContent = dimr.value + "%"; applySettings(); };
     document.getElementById("lowp").onchange = function (e) { setSetting("lowPower", e.target.checked); };
     document.getElementById("clr-recent").onclick = function () { if (confirm("Clear recently viewed?")) save("recent", []); };
-    document.getElementById("clr-favs").onclick = function () { if (confirm("Clear all favourites?")) save("favs", []); };
+    document.getElementById("clr-favs").onclick = function () { if (confirm("Clear all saved items?")) save("favs", []); };
     document.getElementById("clr-checks").onclick = function () { if (confirm("Untick all kit checklist items?")) save("checks", {}); };
   }
 
   // ------------------------------------------------------------------ credits + about
-  function viewCredits(token) {
-    setTitle("Photo credits");
-    view.innerHTML = '<h1 class="page">Photo credits &amp; licences</h1><p class="muted">Loading…</p>';
+  function viewCredits(token, tab) {
+    setChrome("Photo credits", { tab: tab });
+    view.innerHTML = '<p class="muted">Loading…</p>';
     return loadCredits().then(function (cr) {
       if (token !== renderToken) return;
       var owners = {};
-      Object.keys(SPP).forEach(function (id) { (SPP[id].images || []).forEach(function (im) { owners[im[0]] = SPP[id].name; }); });
+      Object.keys(SPP).forEach(function (id) { SPP[id].images.forEach(function (im) { owners[im[0]] = SPP[id].name; }); });
       Object.keys(ART).forEach(function (id) { (ART[id].images || []).forEach(function (im) { owners[im[0]] = ART[id].title; }); });
       var names = Object.keys(cr).sort(function (a, b) { return (owners[a] || "").localeCompare(owners[b] || ""); });
-      var h = '<h1 class="page">Photo credits &amp; licences</h1>';
-      h += '<p class="lead">All ' + names.length + " photos come from Wikimedia Commons and are used under the licences shown (public domain, CC0, CC BY or CC BY-SA). They were resized and converted to WebP for this offline app. CC BY-SA photos remain under CC BY-SA. Full licence texts: creativecommons.org/licenses.</p>";
+      var h = '<h1 class="page">Photo credits</h1><p class="lead">All ' + names.length + " photos come from Wikimedia Commons and are used under the licences shown (public domain, CC0, CC BY or CC BY-SA). They were resized and converted to WebP. CC BY-SA photos remain under CC BY-SA. Licence texts: creativecommons.org/licenses.</p>";
       h += '<ul class="list">' + names.map(function (n) {
         var c = cr[n];
-        return '<li class="row" style="align-items:flex-start">' + (lowPower() ? "" : '<img class="thumb" loading="lazy" alt="" src="img/t/' + n + '">') +
+        return '<li><div class="row" style="align-items:flex-start">' + (lowPower() ? "" : '<img class="thumb" loading="lazy" alt="" src="img/t/' + n + '">') +
           '<span class="txt"><span class="t">' + esc(owners[n] || n) + '</span><span class="s">' + esc(c.author) + " · " + esc(c.license) +
-          '</span><span class="s">' + esc(c.commons) + '</span><span class="s">' + esc(c.source) + "</span></span></li>";
+          '</span><span class="s">' + esc(c.source) + "</span></span></div></li>";
       }).join("") + "</ul>";
       view.innerHTML = h;
     }, function () { view.innerHTML = '<p class="empty">No photo credits found.</p>'; });
   }
-
-  function viewAbout() {
-    setTitle("About");
+  function viewAbout(tab) {
+    setChrome("About", { tab: tab });
     var st = nativeState();
     var h = '<h1 class="page">About this guide</h1>';
-    h += '<div class="banner">This guide is general information for a dedicated offline survival phone. It is not a substitute for first-aid training, expert identification of plants and fungi, or professional rescue. <b>In an emergency call 999 or 112.</b></div>';
+    h += '<div class="banner">' + icon("triangle-alert") + "<span>General information for a dedicated offline survival phone. It is not a substitute for first-aid training, expert identification of plants and fungi, or professional rescue.</span></div>";
     h += '<div class="body">';
-    h += "<h2>Foraging</h2><p>Never eat any wild plant, berry or fungus unless you are 100% certain what it is, using several features, ideally confirmed in person by an expert. Several UK species kill, and some deadly fungi cause no symptoms for a day or more. Photos and descriptions here cannot replace a specimen in an expert's hand.</p>";
-    h += "<h2>First aid</h2><p>First-aid content follows NHS, St John Ambulance and British Red Cross public guidance as written at the time of writing. Guidance changes; training matters more than reading.</p>";
-    h += "<h2>The law</h2><p>UK wildlife, access and fishing law applies. Most wild animals are protected; uprooting wild plants without the landowner's permission is illegal; many traps and snares are banned. The guide says where something is restricted.</p>";
-    h += "<h2>Contents</h2><p>" + IDX.counts.articles + " articles, " + IDX.counts.species + " species, " + IDX.counts.photos + ' photos. Every article ends with its sources. <a href="#/credits">Photo credits &amp; licences</a>.</p>';
-    h += "<h2>Offline by design</h2><p>The guide never uses the network: no fonts, images, analytics or updates are fetched. The app has no internet permission. It runs no background services, keeps no wakelocks, uses no timers or polling, and follows the phone's screen timeout.</p>";
-    if (st) h += "<p class=\"muted\">Version " + esc(st.version) + "</p>";
+    h += '<h2>This phone can\'t call</h2><p>It has no SIM card, and in the UK a phone without a SIM cannot reach 999 or 112. Getting help means signalling, being found, or reaching a working phone or a person. See <a href="#/c/emergency">Emergency</a>.</p>';
+    h += "<h2>Foraging</h2><p>Never eat any wild plant, berry or fungus unless you are 100% certain what it is, using several features, ideally confirmed in person by an expert. Several UK species kill, and some deadly fungi cause no symptoms for a day or more.</p>";
+    h += "<h2>First aid</h2><p>First-aid content follows NHS, St John Ambulance and British Red Cross public guidance as written at the time. Training matters more than reading.</p>";
+    h += "<h2>The law</h2><p>UK wildlife, access and fishing law applies. Most wild animals are protected; uprooting wild plants without the landowner's permission is illegal; many traps and snares are banned.</p>";
+    h += "<h2>Contents</h2><p>" + IDX.counts.articles + " guides, " + IDX.counts.species + " species, " + IDX.counts.photos + ' photos. Every guide lists its sources. <a href="#/credits">Photo credits</a>.</p>';
+    h += "<h2>Offline by design</h2><p>The guide never uses the network. It has no internet permission, runs no background services, keeps no wakelocks, uses no timers or polling, and follows the phone's screen timeout.</p>";
+    h += "<h2>Licences</h2><ul><li>Icons: Lucide (ISC licence), plus a few custom icons in the same style.</li><li>Typeface: Atkinson Hyperlegible, © 2020 Braille Institute of America, SIL Open Font License 1.1.</li><li>Photos: Wikimedia Commons contributors, licences as listed in Photo credits.</li></ul>";
+    if (st) h += '<p class="muted">Version ' + esc(st.version) + "</p>";
     h += "</div>";
     view.innerHTML = h;
   }
 
   // ------------------------------------------------------------------ hidden kiosk menu
-  function viewKiosk() {
-    setTitle("Kiosk settings");
+  function viewKiosk(tab) {
+    setChrome("Kiosk settings", { tab: tab });
     var st = nativeState() || {};
-    var h = '<h1 class="page">Kiosk / device owner</h1>';
-    h += '<div class="status">Device owner: <b>' + (st.deviceOwner ? "yes" : "no") + "</b><br>Pinned (lock task): <b>" + (st.lockTask ? "yes" : "no") +
-      "</b><br>Kiosk pin enabled: <b>" + (st.kioskEnabled ? "yes" : "no") + "</b>" + (st.kioskSuspended ? " (paused until restart)" : "") + "</div>";
-    h += '<button class="btn block" id="k-exit">Unpin and open phone Settings</button><p class="hint">The pin comes back after the phone restarts.</p>';
+    var h = '<h1 class="page">Kiosk and device owner</h1>';
+    h += '<div class="status"><span>Device owner <b>' + (st.deviceOwner ? "yes" : "no") + "</b></span><span>Pinned <b>" + (st.lockTask ? "yes" : "no") +
+      "</b></span><span>Kiosk pin <b>" + (st.kioskEnabled ? "on" : "off") + "</b>" + (st.kioskSuspended ? " (paused until restart)" : "") + "</span></div>";
+    h += '<div class="section"><button class="btn block" id="k-exit">Unpin and open phone Settings</button><p class="small muted">The pin comes back after the phone restarts.</p>';
     h += '<button class="btn block" id="k-toggle">' + (st.kioskEnabled ? "Turn kiosk pin off permanently" : "Turn kiosk pin on") + "</button>";
     h += '<button class="btn danger block" id="k-remove"' + (st.deviceOwner ? "" : " disabled") + ">Remove device owner</button>";
-    h += '<p class="hint">Removing device owner makes this an ordinary app again (needed before uninstalling it). To restore it, run the adb <code>dpm set-device-owner</code> command again.</p>';
+    h += '<p class="small muted">Removing device owner makes this an ordinary app again (needed before uninstalling it). To restore it, run the adb <code>dpm set-device-owner</code> command again.</p></div>';
     view.innerHTML = h;
-    document.getElementById("k-exit").onclick = function () {
-      if (confirm("Unpin the guide and open the phone's Settings?")) native("exitKiosk");
-    };
-    document.getElementById("k-toggle").onclick = function () {
-      native("setKioskEnabled", !st.kioskEnabled);
-      render();
-    };
+    document.getElementById("k-exit").onclick = function () { if (confirm("Unpin the guide and open the phone's Settings?")) native("exitKiosk"); };
+    document.getElementById("k-toggle").onclick = function () { native("setKioskEnabled", !st.kioskEnabled); render(); };
     document.getElementById("k-remove").onclick = function () {
       if (confirm("Remove device owner? The guide will no longer be pinned or protected.") && confirm("Are you sure? Restoring it needs a PC with adb.")) {
         var ok = native("removeDeviceOwner");
@@ -913,31 +1028,16 @@
   titleEl.addEventListener("pointercancel", function () { pressStart = 0; });
   titleEl.addEventListener("contextmenu", function (e) { e.preventDefault(); });
 
-  document.getElementById("back").onclick = function () { history.back(); };
-  document.getElementById("homeBtn").onclick = function () { goHome(false); };
-  document.getElementById("searchBtn").onclick = function () { goHome(true); };
-
-  function goHome(focusSearch) {
-    pendingFocus = focusSearch;
-    homeQuery = "";
-    if (location.hash === "#/" || location.hash === "" || location.hash === "#") {
-      render();
-    } else {
-      location.hash = "#/";
-    }
-  }
-  window.appGoHome = function () { goHome(false); };
-
-  // Phone links: use the native dialer bridge (tel: also works as a fallback).
+  backBtn.onclick = function () {
+    if (history.length > 1) history.back(); else location.hash = "#/";
+  };
   document.addEventListener("click", function (e) {
-    var a = e.target.closest ? e.target.closest("[data-dial]") : null;
-    if (a && NATIVE) {
-      e.preventDefault();
-      native("dial", a.getAttribute("data-dial"));
-    }
+    var a = e.target.closest ? e.target.closest('[data-search], #nav a[data-tab="search"]') : null;
+    if (a) { e.preventDefault(); openSearch(); }
   });
+  window.appGoHome = function () { if (location.hash === "#/" || !location.hash) render(); else location.hash = "#/"; };
 
-  window.addEventListener("hashchange", render);
+  window.addEventListener("hashchange", function () { if ((location.hash || "#/") !== currentHash) render(); });
   applySettings();
   render();
 })();

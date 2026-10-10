@@ -5,6 +5,7 @@ title: Map and compass basics
 summary: Set the map, read the key features, and use a baseplate compass to take and follow a bearing.
 tags: map, compass, bearing, orienteering, OS map, contours, setting the map, baseplate
 wiki: Orienteering compass
+icon: compass
 ---
 !quick
 1. **Set the map:** turn it so north on the map points to north on the compass needle. Now everything on the map lines up with the ground.
@@ -36,6 +37,7 @@ title: Reading OS grid references
 summary: How to give a precise UK location from an OS map: the 2 letters, then "along the corridor and up the stairs".
 tags: grid reference, OS grid, eastings, northings, location, map reference, 6-figure, 8-figure
 wiki: Ordnance Survey National Grid
+icon: grid-3x3
 ---
 !quick
 1. Find the **two letters** of the 100 km square (printed in the map corners and margins), e.g. **NY**.
@@ -64,6 +66,7 @@ wiki: Ordnance Survey National Grid
 title: Walking on a bearing in poor visibility
 summary: Hold a compass bearing in fog or darkness using leapfrogging, landmarks, and pace counting.
 tags: bearing, fog, mist, whiteout, compass, leapfrog, poor visibility
+icon: navigation-2
 ---
 !quick
 1. Take the bearing carefully off the map; set it on the compass.
@@ -85,6 +88,7 @@ tags: bearing, fog, mist, whiteout, compass, leapfrog, poor visibility
 title: Finding north without a compass
 summary: Use the sun, a shadow stick, a watch, the Plough and Polaris. Ignore the moss myth.
 tags: north, direction, sun, shadow stick, watch method, Polaris, North Star, Plough, moss myth, stars
+icon: sun
 ---
 !quick
 1. **Shadow stick:** mark the tip of a stick's shadow, wait 15–20 min, mark again. First mark → second mark points **east**.
@@ -127,6 +131,7 @@ tags: north, direction, sun, shadow stick, watch method, Polaris, North Star, Pl
 title: Pacing, timing and Naismith's rule
 summary: Estimate walking time with Naismith's rule, and measure distance by counting your paces.
 tags: Naismith, pacing, timing, distance, speed, double pace, ascent
+icon: timer
 ---
 !quick
 1. **Naismith:** allow **1 hour per 5 km** plus **10 minutes per 100 m** of climb. Add time for rough ground, darkness, the group and the weather.
@@ -155,6 +160,7 @@ Add **1 minute for every 10 m of ascent**. Steep descents also take longer than 
 title: Handrails, catching features and attack points
 summary: Navigate using linear features: follow handrails, stop at catching features, and attack small targets from big ones.
 tags: handrail, catching feature, attack point, aiming off, navigation strategy
+icon: signpost
 ---
 !quick
 1. **Handrail:** follow a line you can't lose: a wall, fence, stream, path or forest edge.
@@ -175,6 +181,7 @@ tags: handrail, catching feature, attack point, aiming off, navigation strategy
 title: Reading contours and terrain
 summary: Recognise hills, valleys, ridges, spurs and steepness from contour patterns.
 tags: contours, relief, spur, valley, ridge, slope, steep, map reading
+icon: mountain
 ---
 !quick
 1. **Close contours = steep**; widely spaced = gentle.
@@ -191,44 +198,11 @@ tags: contours, relief, spur, valley, ridge, slope, steep, map reading
 - Ordnance Survey: Understanding map contours
 - Mountain Training: Navigation
 
-=== signalling-rescue
-title: Signalling for rescue
-summary: Whistle and torch distress signals (6 per minute), ground-to-air symbols, body signals, and making yourself visible.
-tags: signal, whistle, torch, SOS, distress, ground-to-air, rescue, helicopter, mirror, flash
----
-!quick
-1. **Six** whistle blasts or torch flashes **in a minute**, then a minute's silence, repeated. That is the **UK mountain distress signal**. The reply is **three**.
-2. **SOS** in light: ··· — — — ··· (3 short, 3 long, 3 short).
-3. **Ground-to-air:** a big **V** (need help) or **X** (need medical help), at least 3 m long, in contrasting material.
-4. **Be seen:** bright clothing spread out, movement, a fire's smoke by day (where safe).
-!end
-
-## Sound and light
-- A whistle carries much further than a shout and costs no energy. Your torch, or the phone's torch ([Tools](#/tools)), can signal at night.
-- Save your battery: signal at intervals (e.g. every 10–15 minutes), and when you hear or see searchers.
-
-## Ground-to-air signals
-!svg ground-to-air
-Use rocks, logs, dug turf, clothing or a tarp. Make the lines straight and the symbols big, ideally 3 m long or more, with a strong contrast against the ground.
-
-## Body signals to a helicopter
-- **Both arms up in a Y**: Yes, we need help.
-- **One arm up, one arm down**: No, we don't need help.
-
-## Other tips
-- **Mirror** or any shiny surface (the phone screen, the steel pot lid): flash sunlight towards aircraft or distant people. Aim by sighting along your outstretched hand.
-- **Smoke:** add green leaves to a fire for white smoke by day. Only where it is safe and legal; don't start a wildfire.
-- Stay near open ground, paths and ridgelines where searchers will look.
-
-## Sources
-- Mountain Rescue England and Wales: International distress signal (six blasts)
-- HM Coastguard / UK SAR: Signalling to helicopters
-- ICAO Annex 12: Ground-to-air visual signal code
-
 === night-navigation
 title: Moving at night
 summary: Usually stay put at night. If you must move, how to do it safely and save your torch.
 tags: night, darkness, headtorch, torch, moving at night
+icon: moon-star
 ---
 !quick
 1. **Usually: stop, shelter and wait for daylight**, especially on steep or unknown ground.

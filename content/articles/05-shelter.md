@@ -4,6 +4,7 @@
 title: Priorities and the rule of threes
 summary: Why shelter comes before water and food in Britain, and how to decide what to do first.
 tags: rule of threes, priorities, shelter first, exposure, protection, location, water, food
+icon: list-ordered
 ---
 !quick
 1. **Protection** first: first aid, then out of the **wind and wet**, off the cold ground.
@@ -30,6 +31,7 @@ About **3 minutes** without air (or with catastrophic bleeding), **3 hours** wit
 title: Choosing a shelter site
 summary: Spot the hazards: widowmaker branches, flood plains, cold hollows, exposed ridges. Pick a safe, dry, sheltered spot.
 tags: site, camp, widowmaker, dead branches, flood, frost hollow, ash dieback, wind
+icon: map-pinned
 ---
 !quick
 1. **Look up:** no dead branches or dead or leaning trees within falling distance (widowmakers). Beware **ash dieback** and beech limbs.
@@ -59,6 +61,7 @@ tags: site, camp, widowmaker, dead branches, flood, frost hollow, ash dieback, w
 title: Debris hut
 summary: A warm, rain-shedding natural shelter made from a ridge pole, a ribbed frame and a thick pile of leaves. No tarp needed.
 tags: debris hut, natural shelter, leaves, ridgepole, insulation, survival shelter
+icon: trees
 ---
 !quick
 1. **Ridge pole:** a strong pole a little longer than you, one end raised to hip height on a stump, fork or tripod, the other on the ground.
@@ -86,6 +89,7 @@ tags: debris hut, natural shelter, leaves, ridgepole, insulation, survival shelt
 title: Lean-to shelter
 summary: A quick open-fronted shelter with a ridge pole between two trees and a thatched roof, used with a fire in front.
 tags: lean-to, shelter, ridge pole, thatch, reflector fire, tarp
+icon: house
 ---
 !quick
 1. Lash a **ridge pole** between two trees at about chest height.
@@ -108,6 +112,7 @@ tags: lean-to, shelter, ridge pole, thatch, reflector fire, tarp
 title: A-frame tarp shelter
 summary: The most weatherproof simple tarp pitch: a ridgeline between two trees with both sides pegged low into the wind.
 tags: tarp, A-frame, ridgeline, pitch, rain, wind
+icon: tent
 ---
 !quick
 1. Tie a **tight ridgeline** between two trees, about waist to chest height (lower in wind).
@@ -130,6 +135,7 @@ tags: tarp, A-frame, ridgeline, pitch, rain, wind
 title: Insulation from the ground
 summary: The ground steals heat faster than air. Put a thick, dry layer underneath you before anything else.
 tags: insulation, ground, conduction, bracken, heather, leaves, mat, bed
+icon: layers
 ---
 !quick
 1. **Never sit or lie directly on the ground** in cold or wet weather.
@@ -153,6 +159,7 @@ Heat flows into cold, wet ground by **conduction** far faster than into air. A t
 title: Wind, rain and snow considerations
 summary: How weather changes your shelter: lowering profiles in wind, shedding rain, and handling snow in the British hills.
 tags: wind, snow, rain, avalanche, snow hole, storm, shelter
+icon: wind
 ---
 !quick
 1. **Wind:** pitch low, with the narrowest end into the wind; use walls, boulders, dense trees or the lee of a slope.
@@ -175,6 +182,7 @@ tags: wind, snow, rain, avalanche, snow hole, storm, shelter
 title: Staying warm through the night
 summary: Practical ways to sleep warmer: dry clothes, a hat, eating before bed, a hot water bottle, and emptying your bladder.
 tags: sleep, night, warm, cold, sleeping bag, hot water bottle, layers
+icon: bed-double
 ---
 !quick
 1. **Dry clothes** on for sleeping; keep a set of dry socks for bed only.
@@ -197,6 +205,7 @@ tags: sleep, night, warm, cold, sleeping bag, hot water bottle, layers
 title: Bothies and other emergency shelter
 summary: The UK's network of free mountain bothies, refuges and other buildings that can save a life.
 tags: bothy, refuge, mountain bothies association, hut, building, shelter
+icon: home
 ---
 !quick
 1. **Bothies** are simple unlocked huts in remote parts of Scotland, northern England and Wales, open to all, free.

@@ -5,6 +5,7 @@ title: Ferro rod technique
 summary: Throw a shower of 3,000 °C sparks into fine tinder by pulling the rod back, not by pushing the striker forward.
 tags: ferro rod, ferrocerium, firesteel, sparks, striker, tinder
 wiki: Ferrocerium
+icon: sparkles
 ---
 !quick
 1. Prepare **everything first**: tinder bundle, a pile of pencil-lead-thin kindling, then thumb-thick, then wrist-thick sticks.
@@ -38,6 +39,7 @@ title: Flint and steel
 summary: Strike a high-carbon steel against a sharp flint edge to make sparks that land on char cloth, then blow the ember into flame.
 tags: flint, steel, striker, char cloth, ember, traditional fire, sparks, chert, quartz
 wiki: Fire striker
+icon: sparkle
 ---
 !quick
 1. Hold a **sharp-edged flint** in your non-dominant hand with a piece of **char cloth** pinched on top, just behind the edge.
@@ -72,6 +74,7 @@ title: Making char cloth in a tin
 summary: Turn 100% cotton into char cloth that catches the faintest spark, using a tin with a small hole in the lid.
 tags: char cloth, charcloth, cotton, tin, charring, flint and steel, ember
 wiki: Char cloth
+icon: package
 ---
 !quick
 1. Cut **100% cotton or linen** into squares (5 cm) and pack them loosely into a **metal tin** with a lid.
@@ -100,6 +103,7 @@ title: Sun fire with a magnifier
 summary: Focus sunlight on char cloth or dark tinder. Possible on clear UK days from spring to autumn around midday.
 tags: magnifier, magnifying glass, lens, burning glass, sun, solar fire
 wiki: Burning glass
+icon: zoom-in
 ---
 !quick
 1. Needs **direct, bright sun**, usually 10:00–15:00 from March to September. Haze and cloud stop it.
@@ -129,6 +133,7 @@ wiki: Burning glass
 title: Arc lighter: use and care
 summary: Your rechargeable plasma arc lighter: windproof and fuel-free, but battery-dependent and sensitive to cold and wet.
 tags: arc lighter, plasma lighter, USB, rechargeable, battery, electric lighter
+icon: zap
 ---
 !quick
 1. Prepare tinder and kindling **first**. The arc is small; touch it to the **edge** of birch bark, a feather stick's curls, paper or a candle wick.
@@ -157,6 +162,7 @@ title: UK natural tinders
 summary: Where to find birch bark, cramp balls, dead bracken, clematis and honeysuckle bark, thistle and reedmace down, and fatwood.
 tags: tinder, birch bark, cramp balls, King Alfred's cakes, bracken, clematis, honeysuckle, thistle down, reedmace, fatwood, pine
 wiki: Fatwood
+icon: flame-kindling
 ---
 !quick
 1. **Birch bark:** oily, burns even when damp. Peel thin curls from dead or fallen birch.
@@ -194,6 +200,7 @@ title: Feather sticks
 summary: Carve a dry stick into a cluster of thin curls that light easily, even when the outside of the wood is wet.
 tags: feather stick, carving, kindling, knife, wet wood, curls
 wiki: Feather stick
+icon: pocket-knife
 ---
 !quick
 1. Choose **dead, dry, straight-grained** wood about thumb to wrist thick: pine, birch, hazel, ash. Split wet wood to reach the **dry inner core**.
@@ -217,6 +224,7 @@ title: Fire lays: teepee, log cabin, star and Dakota hole
 summary: Which fire structure to build for lighting, boiling, cooking, warmth or keeping a low profile.
 tags: teepee, tipi, log cabin, star fire, Dakota hole, fire lay, cooking fire
 wiki: Dakota fire hole
+icon: tent-tree
 ---
 !quick
 1. **Teepee:** lights easily, burns hot and fast. Best for starting a fire and boiling water.
@@ -251,6 +259,7 @@ A wall of stacked green logs or rocks behind the fire throws heat towards your s
 title: Lighting a fire in wet weather
 summary: How to get a fire going in typical UK rain: standing dead wood, splitting to the dry core, a platform, and three times more kindling.
 tags: wet weather, rain, damp wood, standing dead, splitting, platform, fire
+icon: cloud-rain
 ---
 !quick
 1. **Find dry fuel:** standing dead branches that **snap** cleanly; split them to reach the dry core.
@@ -278,6 +287,7 @@ tags: wet weather, rain, damp wood, standing dead, splitting, platform, fire
 title: Banking a fire overnight
 summary: Keep embers alive until morning so you don't have to relight from scratch.
 tags: banking, embers, overnight, coals, ash, morning fire
+icon: moon
 ---
 !quick
 1. Before bed, rake the **embers into a tight pile**.
@@ -299,6 +309,7 @@ tags: banking, embers, overnight, coals, ash, morning fire
 title: Carrying embers
 summary: Move fire from camp to camp with a smouldering ember in a tin or a fungus, saving your ignition kit.
 tags: ember, carry fire, fire horn, tinder fungus, amadou, cramp balls, punk wood
+icon: lamp
 ---
 !quick
 1. Use a **slow-burning** material: [[s:tinder-fungus]] (amadou), dry [[s:cramp-balls|cramp balls]], or rotten "punk" wood.
@@ -320,6 +331,7 @@ tags: ember, carry fire, fire horn, tinder fungus, amadou, cramp balls, punk woo
 title: Fire safety and the law
 summary: Where you can light a fire in the UK, how to keep it safe, carbon monoxide, and putting it out properly.
 tags: fire safety, law, permission, wildfire, moorland, peat, extinguish, carbon monoxide, Leave No Trace
+icon: shield-alert
 ---
 !quick
 1. **Permission:** in England, Wales and Northern Ireland you need the **landowner's** permission to light a fire. In Scotland small fires are allowed responsibly under the Access Code, but **not** near woods, peat or farmland in dry weather.
@@ -352,6 +364,7 @@ tags: fire safety, law, permission, wildfire, moorland, peat, extinguish, carbon
 title: Firewood: which UK woods burn best
 summary: Which dead wood to collect for heat, cooking and long burns, and what to avoid.
 tags: firewood, ash, oak, birch, hazel, softwood, fuel, burn
+icon: tree-deciduous
 ---
 !quick
 1. **Best all-rounders:** ash (burns well even damp), beech, oak (long and hot once going), birch (lights easily), hazel.
@@ -373,6 +386,7 @@ tags: firewood, ash, oak, birch, hazel, softwood, fuel, burn
 title: Cooking on a fire
 summary: Use embers, not flames; how to boil, roast and cook safely with one steel pot.
 tags: cooking, embers, coals, pot, roast, hygiene
+icon: soup
 ---
 !quick
 1. Cook over **embers**, not flames: let a log cabin fire burn down for 20–30 minutes.
@@ -394,6 +408,7 @@ tags: cooking, embers, coals, pot, roast, hygiene
 title: Using fire for warmth
 summary: Get the most warmth from a small fire with a reflector wall, the right distance, and a long, steady burn.
 tags: warmth, reflector, heat, lean-to, night, fire
+icon: thermometer
 ---
 !quick
 1. Build a **reflector**: stacked logs or rocks behind the fire, facing your shelter.

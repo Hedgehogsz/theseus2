@@ -50,6 +50,9 @@ jobs:
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
 
+      - name: Build UI assets (icon sprite, embedded font)
+        run: python3 tools/build_ui_assets.py
+
       - name: Build content bundle (index, bodies, search, credits)
         run: python3 tools/build_content.py
 
@@ -69,7 +72,9 @@ jobs:
       - name: Show APK size and signature
         run: |
           ls -l app/build/outputs/apk/release/
-          "$ANDROID_HOME"/build-tools/$(ls "$ANDROID_HOME"/build-tools | sort -V | tail -1)/apksigner verify --print-certs app/build/outputs/apk/release/app-release.apk
+          BT="$ANDROID_HOME"/build-tools/$(ls "$ANDROID_HOME"/build-tools | sort -V | tail -1)
+          "$BT"/apksigner verify --print-certs app/build/outputs/apk/release/app-release.apk
+          "$BT"/aapt2 dump badging app/build/outputs/apk/release/app-release.apk | head -1
 
       - uses: actions/upload-artifact@v4
         with:

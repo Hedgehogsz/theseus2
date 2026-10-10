@@ -152,11 +152,7 @@ class MainActivity : Activity() {
             val uri = request.url
             return when {
                 uri.scheme == "file" && uri.path?.startsWith("/android_asset/") == true -> false
-                uri.scheme == "tel" -> {
-                    Tools.dial(this@MainActivity, uri.schemeSpecificPart ?: "999")
-                    true
-                }
-                else -> true // never leave the app or touch the network
+                else -> true // never leave the app, open a dialler or touch the network
             }
         }
 

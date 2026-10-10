@@ -14,7 +14,7 @@ tags: amanita, amatoxin, alpha-amanitin, volva, deadly, green cap
 wiki: Amanita phalloides
 ---
 !danger Deadly: half a cap can kill an adult
-Contains amatoxins, which destroy the liver and kidneys. Cooking, drying or freezing does not destroy them. Symptoms start **6–24 hours** after eating: violent vomiting and watery diarrhoea. A **false recovery** follows after about a day, then liver failure 3–5 days later. Anyone who may have eaten it needs hospital **immediately**, even if they feel fine. Call **999** and keep a sample: [[a:poisoning]].
+Contains amatoxins, which destroy the liver and kidneys. Cooking, drying or freezing does not destroy them. Symptoms start **6–24 hours** after eating: violent vomiting and watery diarrhoea. A **false recovery** follows after about a day, then liver failure 3–5 days later. Anyone who may have eaten it needs hospital **immediately**, even if they feel fine. Get emergency help and keep a sample: [[a:poisoning]].
 !end
 
 ## Identification
@@ -42,7 +42,7 @@ tags: amanita, amatoxin, white mushroom, volva, deadly
 wiki: Amanita virosa
 ---
 !danger Deadly
-Same amatoxins and delayed symptoms as the [[s:death-cap]]. **Never eat any all-white gilled mushroom from woodland.** Call **999**: [[a:poisoning]].
+Same amatoxins and delayed symptoms as the [[s:death-cap]]. **Never eat any all-white gilled mushroom from woodland.** Get emergency help: [[a:poisoning]].
 !end
 
 ## Identification
@@ -765,7 +765,7 @@ tags: inocybe, muscarine, fibrecap, red staining
 wiki: Inocybe erubescens
 ---
 !danger Deadly
-Contains high levels of muscarine. Within 15 minutes to 2 hours it causes sweating, salivation, tears, a slow heart, a fall in blood pressure and breathing trouble. Call **999**: [[a:poisoning]].
+Contains high levels of muscarine. Within 15 minutes to 2 hours it causes sweating, salivation, tears, a slow heart, a fall in blood pressure and breathing trouble. Get emergency help: [[a:poisoning]].
 !end
 
 ## Identification

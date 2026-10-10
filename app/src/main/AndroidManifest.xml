@@ -7,13 +7,9 @@
         <package android:name="com.sec.android.app.fm" />
         <package android:name="com.sec.android.app.camera" />
         <package android:name="com.sec.android.app.popupcalculator" />
-        <package android:name="com.samsung.android.dialer" />
+        <package android:name="com.sec.android.app.clockpackage" />
         <package android:name="com.android.settings" />
         <package android:name="com.samsung.android.lool" />
-        <intent>
-            <action android:name="android.intent.action.DIAL" />
-            <data android:scheme="tel" />
-        </intent>
         <intent>
             <action android:name="android.media.action.STILL_IMAGE_CAMERA" />
         </intent>

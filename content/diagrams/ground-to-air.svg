@@ -1,13 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 160" role="img" aria-label="Ground-to-air signals: V requires assistance, X requires medical assistance, N no, Y yes, arrow proceeding in this direction">
-  <style>.s{fill:none;stroke:#c8102e;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}.t{font:700 17px sans-serif;fill:#111;text-anchor:middle}.b{fill:#e9e4d4;stroke:#555;stroke-width:1}</style>
-  <rect class="b" x="5" y="5" width="90" height="90" rx="6"/><path class="s" d="M25 25 50 75 75 25"/>
-  <text class="t" x="50" y="122">V</text><text class="t" x="50" y="150">Help</text>
-  <rect class="b" x="105" y="5" width="90" height="90" rx="6"/><path class="s" d="M125 25 175 75M175 25 125 75"/>
-  <text class="t" x="150" y="122">X</text><text class="t" x="150" y="150">Medical</text>
-  <rect class="b" x="205" y="5" width="90" height="90" rx="6"/><path class="s" d="M225 75V25l50 50V25"/>
-  <text class="t" x="250" y="122">N</text><text class="t" x="250" y="150">No</text>
-  <rect class="b" x="305" y="5" width="90" height="90" rx="6"/><path class="s" d="M325 25 350 50 375 25M350 50v25"/>
-  <text class="t" x="350" y="122">Y</text><text class="t" x="350" y="150">Yes</text>
-  <rect class="b" x="405" y="5" width="90" height="90" rx="6"/><path class="s" d="M450 80V22M430 42 450 22 470 42"/>
-  <text class="t" x="450" y="122">↑</text><text class="t" x="450" y="150">Went here</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 290" role="img" aria-label="Ground-to-air signals: SOS; V need assistance; X need medical help; Y yes; N no; arrow gone this way">
+  <style>.s{fill:none;stroke:#c8102e;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}.l{font:700 17px sans-serif;fill:#1d1b18;text-anchor:middle}.m{font:600 14px sans-serif;fill:#4a453d;text-anchor:middle}.b{fill:#ece6d6;stroke:#b9b09a;stroke-width:1}</style>
+  <rect class="b" x="6" y="6" width="108" height="86" rx="8"/>
+  <text x="60" y="66" text-anchor="middle" style="font:800 40px sans-serif;fill:#c8102e;letter-spacing:2px">SOS</text>
+  <text class="l" x="60" y="114">SOS</text><text class="m" x="60" y="132">Distress</text>
+  <rect class="b" x="126" y="6" width="108" height="86" rx="8"/><path class="s" d="M152 24 180 76 208 24"/>
+  <text class="l" x="180" y="114">V</text><text class="m" x="180" y="132">Assistance</text>
+  <rect class="b" x="246" y="6" width="108" height="86" rx="8"/><path class="s" d="M272 24 328 76M328 24 272 76"/>
+  <text class="l" x="300" y="114">X</text><text class="m" x="300" y="132">Medical help</text>
+  <rect class="b" x="6" y="150" width="108" height="86" rx="8"/><path class="s" d="M32 168 60 196 88 168M60 196v24"/>
+  <text class="l" x="60" y="258">Y</text><text class="m" x="60" y="276">Yes</text>
+  <rect class="b" x="126" y="150" width="108" height="86" rx="8"/><path class="s" d="M156 220v-52l48 52v-52"/>
+  <text class="l" x="180" y="258">N</text><text class="m" x="180" y="276">No</text>
+  <rect class="b" x="246" y="150" width="108" height="86" rx="8"/><path class="s" d="M300 222v-56M278 188l22-22 22 22"/>
+  <text class="l" x="300" y="258">↑</text><text class="m" x="300" y="276">Gone this way</text>
 </svg>
