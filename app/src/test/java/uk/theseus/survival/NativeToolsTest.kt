@@ -172,6 +172,7 @@ class NativeToolsTest {
     @Test
     fun mapFilesAreServedWithByteRanges() {
         val a = controller().get()
+        MapFiles.baseForTests = java.nio.file.Files.createTempDirectory("media").toFile()
         val dir = MapFiles.dir(a)!!
         val f = File(dir, "gb.pmtiles")
         f.writeBytes(ByteArray(1000) { (it % 251).toByte() })
@@ -188,7 +189,8 @@ class NativeToolsTest {
             val st = JSONObject(MapFiles.status(a).toString())
             assertEquals(1000, st.getJSONObject("files").getJSONObject("gb.pmtiles").getInt("size"))
         } finally {
-            f.delete()
+            MapFiles.baseForTests?.deleteRecursively()
+            MapFiles.baseForTests = null
         }
     }
 

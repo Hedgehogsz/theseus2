@@ -18,9 +18,12 @@ object MapFiles {
     val NAMES = listOf("gb.pmtiles", "contours.pmtiles", "places.tsv")
     private val SAFE = Regex("^[a-z0-9][a-z0-9._-]{0,63}$")
 
+    /** Unit tests only: the test runner has no external storage. */
+    internal var baseForTests: File? = null
+
     fun dir(context: Context): File? {
         @Suppress("DEPRECATION")
-        val base = context.externalMediaDirs.firstOrNull { it != null } ?: return null
+        val base = baseForTests ?: context.externalMediaDirs.firstOrNull { it != null } ?: return null
         return File(base, "maps").also { it.mkdirs() }
     }
 
