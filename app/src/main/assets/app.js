@@ -1,18 +1,21 @@
-/* Survival Guide web UI. Vanilla JS, no frameworks, no network, no timers or polling.
+/* Survival Guide web UI. Vanilla JS, no frameworks, no network.
  *
  * Routes (hash based so the WebView back button and history work):
  *   tabs:   #/  #/search?q=  #/species?g=&st=&q=  #/saved  #/tools
- *   pages:  #/c/<category>  #/a/<article>  #/s/<species>  #/report  #/settings  #/credits  #/about  #/kiosk
+ *   guide:  #/g/<group>  #/c/<category>  #/a/<article>  #/s/<species>  #/f/<flow>/<node>
+ *   extra:  #/cards  #/season?m=  #/report  #/settings  #/credits  #/about  #/kiosk  #/poweroff
+ *   tools:  #/tool/<id> and #/map (registered by tools.js)
  *
+ * Timers only ever run while a tool that needs them is on screen (metronome, boil timer, beacons).
  * This device has no SIM card and cannot call or text anyone; nothing here may suggest otherwise.
  */
 (function () {
   "use strict";
 
   var IDX = window.GUIDE_INDEX;
-  var ART = IDX.articles, SPP = IDX.species;
-  var CATS = {};
-  IDX.categories.forEach(function (c) { CATS[c.id] = c; });
+  var ART = IDX.articles, SPP = IDX.species, CATS = IDX.categories, FLOWS = IDX.flows_meta || {};
+  var GROUPS = {};
+  IDX.groups.forEach(function (g) { GROUPS[g.id] = g; });
   var NATIVE = typeof window.Android !== "undefined";
   var view = document.getElementById("view");
   var titleEl = document.getElementById("title");
@@ -20,20 +23,25 @@
   var backBtn = document.getElementById("back");
   var saveBtn = document.getElementById("save");
   var battEl = document.getElementById("batt");
+  var powerBtn = document.getElementById("power");
+  var sensorEl = document.getElementById("sensor");
 
-  // icons: arrow-left bookmark house search leaf wrench x chevron-left chevron-right
+  // icons: arrow-left bookmark house search leaf wrench x chevron-left chevron-right power
   // icons: skull triangle-alert check heart shield circle-alert info lightbulb scale list-checks list-ordered
   // icons: flashlight radio camera calculator alarm-clock battery-medium settings map-pin sliders-horizontal
-  // icons: images calendar trees paw-print mushroom sprout megaphone image-off
+  // icons: images calendar trees paw-print mushroom sprout megaphone image-off brain clock gauge book-open
+  // icons: volume-2 square package arrow-up-right rotate-ccw flag satellite list-tree star calendar-range
   var STATUS_LABEL = {
-    deadly: "Deadly", poisonous: "Poisonous", venomous: "Venomous", caution: "Caution",
+    deadly: "Deadly", poisonous: "Poisonous", venomous: "Venomous", psychoactive: "Psychoactive", caution: "Caution",
     invasive: "Invasive", edible: "Edible", medicinal: "Medicinal", protected: "Protected", info: "Useful"
   };
   var STATUS_ICON = { deadly: "skull", poisonous: "triangle-alert", venomous: "triangle-alert", caution: "circle-alert",
-    edible: "check", medicinal: "heart", protected: "shield" };
+    edible: "check", medicinal: "heart", protected: "shield", psychoactive: "brain" };
   var GROUP_ICON = { plant: "sprout", fungus: "mushroom", animal: "paw-print" };
   var GROUP_LABEL = { plant: "Plants", fungus: "Fungi", animal: "Animals" };
   var TYPE_LABEL = { plant: "Plant", fungus: "Fungus", animal: "Animal" };
+  var LEVEL_LABEL = { easy: "Easy", moderate: "Moderate", hard: "Hard" };
+  var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var CALLOUT_ICON = { quick: "list-ordered", danger: "triangle-alert", warn: "triangle-alert", note: "info",
     tip: "lightbulb", law: "scale", checklist: "list-checks" };
 
@@ -76,6 +84,24 @@
     save("recent", r.slice(0, 30));
   }
 
+  // ------------------------------------------------------------------ native bridge
+  function native(fn) {
+    if (!NATIVE || typeof window.Android[fn] !== "function") return null;
+    try { return window.Android[fn].apply(window.Android, Array.prototype.slice.call(arguments, 1)); } catch (e) { return null; }
+  }
+  function nativeJson(fn) {
+    var s = native.apply(null, arguments);
+    try { return s ? JSON.parse(s) : null; } catch (e) { return null; }
+  }
+  function nativeState() { return nativeJson("getState"); }
+  // Events from the app: window.__native(event, data). Tools subscribe while their screen is open.
+  var listeners = {};
+  function onNative(ev, fn) { (listeners[ev] = listeners[ev] || []).push(fn); }
+  function offNative(ev, fn) { listeners[ev] = (listeners[ev] || []).filter(function (f) { return f !== fn; }); }
+  window.__native = function (ev, data) {
+    (listeners[ev] || []).slice().forEach(function (fn) { try { fn(data || {}); } catch (e) { if (window.console) console.warn(e); } });
+  };
+
   // ------------------------------------------------------------------ helpers
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -88,24 +114,17 @@
   function pills(st, max) {
     return '<span class="pills">' + st.slice(0, max || st.length).map(pill).join("") + "</span>";
   }
-  function native(fn) {
-    if (!NATIVE) return null;
-    try { return window.Android[fn].apply(window.Android, Array.prototype.slice.call(arguments, 1)); } catch (e) { return null; }
-  }
-  function nativeState() {
-    var s = native("getState");
-    try { return s ? JSON.parse(s) : null; } catch (e) { return null; }
-  }
   function lowPower() { return !!settings.lowPower; }
   function thumbSrc(im) { return "img/t/" + im[0]; }
   function fullSrc(im) { return "img/" + im[0]; }
   function isDeadly(s) { return s.status.indexOf("deadly") >= 0; }
+  function grpClass(catId) { var c = CATS[catId]; return c ? "grp-" + c.group : ""; }
 
   function articleVisual(a) {
     // A relevant photo where the article has one (e.g. lookalike comparisons), otherwise its own icon.
     var im = (a.images && a.images[0]) || (a.compare && SPP[a.compare[0]] && SPP[a.compare[0]].images[0]);
     if (im && !lowPower()) return '<img class="thumb" loading="lazy" decoding="async" alt="" src="' + thumbSrc(im) + '">';
-    return iconTile(a.icon || CATS[a.cat].icon, "c-" + a.cat);
+    return iconTile(a.icon || CATS[a.cat].icon, grpClass(a.cat));
   }
   function speciesVisual(s) {
     if (s.images.length && !lowPower()) return '<img class="thumb" loading="lazy" decoding="async" alt="" src="' + thumbSrc(s.images[0]) + '">';
@@ -115,15 +134,23 @@
     var kind = key.charAt(0), id = key.slice(2);
     if (kind === "a" && ART[id]) return { kind: "a", id: id, item: ART[id] };
     if (kind === "s" && SPP[id]) return { kind: "s", id: id, item: SPP[id] };
+    if (kind === "f" && FLOWS[id]) return { kind: "f", id: id, item: FLOWS[id] };
     return null;
   }
-  function rowHtml(key) {
+  function rowHtml(key, note) {
     var r = itemFromKey(key);
     if (!r) return "";
     if (r.kind === "a") {
       var a = r.item;
       return '<li><a class="row" href="#/a/' + a.id + '">' + articleVisual(a) +
-        '<span class="txt"><span class="t">' + esc(a.title) + '</span><span class="s">' + esc(a.summary) + "</span></span>" +
+        '<span class="txt"><span class="t">' + esc(a.title) + '</span><span class="s">' + esc(a.summary) + "</span>" +
+        (note ? '<span class="xref">' + icon("arrow-up-right", "ic-sm") + esc(note) + "</span>" : "") + "</span>" +
+        icon("chevron-right", "chev") + "</a></li>";
+    }
+    if (r.kind === "f") {
+      var f = r.item;
+      return '<li><a class="row" href="#/f/' + f.id + '">' + iconTile(f.icon, "grp-urgent") +
+        '<span class="txt"><span class="t">' + esc(f.title) + '</span><span class="s">Step by step · ' + esc(f.summary) + "</span></span>" +
         icon("chevron-right", "chev") + "</a></li>";
     }
     var s = r.item;
@@ -137,12 +164,15 @@
     var ph = s.images.length && !lowPower()
       ? '<img loading="lazy" decoding="async" alt="" src="' + thumbSrc(s.images[0]) + '">'
       : '<span class="noimg g-' + s.group + '">' + icon(GROUP_ICON[s.group]) + "</span>";
+    // The most severe status, plus the psychoactive badge when it isn't already the first.
+    var top = [s.status[0]];
+    if (s.status.indexOf("psychoactive") > 0) top.push("psychoactive");
     return '<a class="scard' + (isDeadly(s) ? " deadly" : "") + '" href="#/s/' + id + '"><span class="ph">' + ph +
-      '<span class="pills ph-pills">' + pill(s.status[0]) + "</span></span>" +
+      '<span class="pills ph-pills">' + top.map(pill).join("") + "</span></span>" +
       '<span class="meta"><b>' + esc(s.name) + "</b><i>" + esc(s.latin) + "</i></span></a>";
   }
 
-  // Load a JS payload once (bodies, search index, credits). Works on file:// with no network.
+  // Load a JS payload once (bodies, search index, credits, map libraries).
   var scriptCache = {};
   function loadScript(src) {
     if (!scriptCache[src]) {
@@ -156,6 +186,12 @@
     }
     return scriptCache[src];
   }
+  function loadCss(href) {
+    if (document.querySelector('link[href="' + href + '"]')) return;
+    var l = document.createElement("link");
+    l.rel = "stylesheet"; l.href = href;
+    document.head.appendChild(l);
+  }
   var BODIES = {};
   window.__body = function (key, html) { BODIES[key] = html; };
   function loadBody(key) {
@@ -168,11 +204,14 @@
 
   // ------------------------------------------------------------------ router
   var ROOTS = { "": "home", search: "search", species: "species", saved: "saved", tools: "tools" };
-  var TAB_OF = { c: "home", a: "home", s: "species", favs: "saved", recent: "saved", report: "tools", settings: "tools",
-    credits: "tools", about: "tools", kiosk: "tools" };
+  var TAB_OF = { g: "home", c: "home", a: "home", f: "home", cards: "home", season: "species", s: "species",
+    favs: "saved", recent: "saved", report: "tools", settings: "tools", credits: "tools", about: "tools",
+    kiosk: "tools", tool: "tools", map: "tools", poweroff: "home" };
+  var ROUTES = {}; // extra routes registered by tools.js: head -> fn(parts, query, tab, token)
   var scrollPos = {};
   var currentHash = null;
   var renderToken = 0;
+  var leaveFn = null; // called when the current screen is left (stops sensors, timers, speech)
 
   function parseRoute() {
     var h = location.hash.replace(/^#/, "") || "/";
@@ -204,6 +243,7 @@
         saveBtn.setAttribute("aria-label", now ? "Saved" : "Save");
       };
     }
+    powerBtn.hidden = !opts.power;
     battEl.hidden = true;
     if (opts.battery) {
       var st = nativeState();
@@ -217,9 +257,23 @@
       if (a.getAttribute("data-tab") === tab) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
   }
+  /** The small "sensor active" indicator in the header; label null hides it. */
+  function sensorChip(label) {
+    sensorEl.hidden = !label;
+    if (label) sensorEl.innerHTML = '<span class="live"></span>' + esc(label);
+  }
+
+  function leave() {
+    var f = leaveFn;
+    leaveFn = null;
+    if (f) { try { f(); } catch (e) { if (window.console) console.warn(e); } }
+    sensorChip(null);
+    native("ttsStop");
+  }
 
   function render() {
     if (currentHash !== null) scrollPos[currentHash] = window.scrollY;
+    leave();
     currentHash = location.hash || "#/";
     var r = parseRoute(), p = r.parts, token = ++renderToken;
     var head = p[0] || "";
@@ -229,21 +283,28 @@
       window.scrollTo(0, scrollPos[currentHash] || 0);
     };
     var out;
-    switch (head) {
-      case "": out = viewHome(tab); break;
-      case "search": viewSearch(r.q, tab); break;
-      case "species": out = viewBrowser(r.q, tab); break;
-      case "saved": case "favs": case "recent": out = viewSaved(tab); break;
-      case "tools": out = viewTools(tab); break;
-      case "c": out = viewCategory(p[1], tab); break;
-      case "a": out = viewArticle(p[1], token, tab); break;
-      case "s": out = viewSpecies(p[1], token, tab); break;
-      case "report": out = viewReport(tab); break;
-      case "settings": out = viewSettings(tab); break;
-      case "credits": out = viewCredits(token, tab); break;
-      case "about": out = viewAbout(tab); break;
-      case "kiosk": out = viewKiosk(tab); break;
-      default: out = notFound();
+    if (ROUTES[head]) {
+      out = ROUTES[head](p, r.q, tab, token);
+    } else {
+      switch (head) {
+        case "": out = viewHome(tab); break;
+        case "search": viewSearch(r.q, tab); break;
+        case "species": out = viewBrowser(r.q, tab); break;
+        case "saved": case "favs": case "recent": out = viewSaved(tab); break;
+        case "g": out = viewGroup(p[1], tab); break;
+        case "c": out = viewCategory(p[1], tab); break;
+        case "a": out = viewArticle(p[1], token, tab); break;
+        case "s": out = viewSpecies(p[1], token, tab); break;
+        case "f": out = viewFlow(p[1], p[2], token, tab); break;
+        case "cards": out = viewCards(token, tab); break;
+        case "season": out = viewSeason(r.q, tab); break;
+        case "report": out = viewReport(tab); break;
+        case "settings": out = viewSettings(tab); break;
+        case "credits": out = viewCredits(token, tab); break;
+        case "about": out = viewAbout(tab); break;
+        case "poweroff": out = viewPowerOff(tab); break;
+        default: out = notFound();
+      }
     }
     if (out && out.then) out.then(done); else done();
   }
@@ -254,33 +315,51 @@
   }
 
   // ------------------------------------------------------------------ home
+  function urgentTile(u) {
+    var kind = u.to.charAt(0), id = u.to.slice(2);
+    var href = kind === "a" ? "#/a/" + id : kind === "f" ? "#/f/" + id : "#/c/" + id;
+    return '<a class="utile" href="' + href + '">' + icon(u.icon) + "<span><b>" + esc(u.title) + '</b><span class="sub">' + esc(u.sub) + "</span></span></a>";
+  }
+  function inSeason(s, m) {
+    return (s.harvest || []).filter(function (h) { return h[1] <= h[2] ? (m >= h[1] && m <= h[2]) : (m >= h[1] || m <= h[2]); });
+  }
   function viewHome(tab) {
-    setChrome("Survival Guide", { root: true, tab: tab, battery: true });
+    setChrome("Survival Guide", { root: true, tab: tab, battery: true, power: true });
     var recent = load("recent", []).filter(itemFromKey);
     var h = "";
     h += '<a class="searchbox" href="#/search" data-search>' + icon("search") + '<span class="ph-text">Search guides and species</span></a>';
-    h += '<div class="actions">' +
-      '<a class="action primary" href="#/a/emergency-priorities"><span class="badge-ic">' + icon("list-checks", "ic-lg") + "</span>" +
-      '<span class="txt"><b>What to do first</b><span class="sub">Safety, life threats, shelter, then help</span></span>' + icon("chevron-right", "chev") + "</a>" +
-      '<a class="action" href="#/a/signalling-rescue"><span class="badge-ic">' + icon("megaphone", "ic-lg") + "</span>" +
-      '<span class="txt"><b>Signal for help</b><span class="sub">6 whistle blasts or flashes a minute · SOS · V · X</span></span>' + icon("chevron-right", "chev") + "</a>" +
-      "</div>";
-    h += '<div class="section"><span class="label">Guides</span><div class="tiles">';
-    IDX.categories.forEach(function (c) {
-      h += '<a class="tile c-' + c.id + '" href="#/c/' + c.id + '">' + iconTile(c.icon, "") +
-        "<span><b>" + esc(c.title) + '</b><span class="sub">' + esc(c.short) + "</span></span></a>";
+    h += '<div class="section first"><span class="label urgent-label">Urgent</span><div class="urgent">' + IDX.urgent.map(urgentTile).join("") + "</div></div>";
+    var otherFlows = IDX.flows.filter(function (f) { return !IDX.urgent.some(function (u) { return u.to === "f:" + f; }); });
+    if (otherFlows.length) {
+      h += '<div class="section"><span class="label">Step by step</span><ul class="list">' + otherFlows.map(function (f) { return rowHtml("f:" + f); }).join("") + "</ul></div>";
+    }
+    h += '<div class="section"><span class="label">The guide</span><div class="groups">';
+    IDX.groups.forEach(function (g) {
+      h += '<a class="group-card grp-' + g.id + '" href="#/g/' + g.id + '">' + iconTile(g.icon, "grp-" + g.id) +
+        '<span class="txt"><b>' + esc(g.title) + '</b><span class="sub">' + esc(g.short) + "</span></span>" + icon("chevron-right", "chev") + "</a>";
     });
     h += "</div></div>";
+    h += '<div class="section"><span class="label">Tools</span><div class="quick-tools">' +
+      [["map", "map", "Map"], ["tool/compass", "compass", "Compass"], ["tool/gps", "locate-fixed", "Position"], ["tool/signal", "siren", "Signal"]]
+        .map(function (t) { return '<a href="#/' + t[0] + '">' + icon(t[1], "ic-lg") + "<span>" + t[2] + "</span></a>"; }).join("") + "</div></div>";
+    var m = new Date().getMonth() + 1;
+    var now = Object.keys(SPP).filter(function (id) { return inSeason(SPP[id], m).length; });
+    if (now.length) {
+      var pick = now.filter(function (id) { return SPP[id].images.length; }).slice(0, 4);
+      h += '<div class="section"><span class="label">In season in ' + MONTHS[m - 1] + '</span><a class="season-card" href="#/season">' +
+        '<span class="faces">' + (lowPower() ? "" : pick.map(function (id) { return '<img loading="lazy" alt="" src="' + thumbSrc(SPP[id].images[0]) + '">'; }).join("")) + "</span>" +
+        '<span class="txt"><b>' + now.length + ' things to forage now</b><span class="sub">Only with certain identification</span></span>' + icon("chevron-right", "chev") + "</a></div>";
+    }
     if (recent.length) {
       h += '<div class="section"><span class="label">Recently viewed</span><ul class="list">' +
-        recent.slice(0, 3).map(rowHtml).join("") + "</ul></div>";
+        recent.slice(0, 3).map(function (k) { return rowHtml(k); }).join("") + "</ul></div>";
     }
     h += '<div class="foot"><a href="#/report">Location report</a><a href="#/settings">Settings</a><a href="#/about">About</a><a href="#/credits">Photo credits</a></div>';
     view.innerHTML = h;
   }
 
   // ------------------------------------------------------------------ search
-  var SEARCH = null, VOCAB = null;
+  var SEARCH = null, VOCAB = null, SYN = null;
   var STOP = {};
   ("a an and are as at be but by can do for from has have if in into is it its not of on or so that the their them then there these they this to too was were what when where which while who will with you your its dont than also may more most one some any all each other out up use used using very only just should would could been being over under about after before such how why per off own same both few many much now new well get got make made").split(" ").forEach(function (w) { STOP[w] = 1; });
 
@@ -328,6 +407,10 @@
     if (!toks.length) return [];
     var terms = SEARCH.terms;
     var total = {}, hits = {};
+    if (!SYN) {
+      SYN = {};
+      (SEARCH.syn || []).forEach(function (g) { g.forEach(function (w) { SYN[w] = (SYN[w] || []).concat(g); }); });
+    }
     toks.forEach(function (raw, ti) {
       var t = stem(raw), last = ti === toks.length - 1;
       var best = {};
@@ -335,9 +418,13 @@
       // A correctly spelt word that exists in the guide shouldn't be swamped by look-alike words
       // ("whistle" vs "thistle"); typos ("nettel") have no exact entry, so fuzzy matches count fully.
       var fuzzyFactor = terms[t] || terms[raw] ? 0.2 : 1;
+      // Synonyms ("shrooms" -> fungi, "haemorrhage" -> bleeding) count almost as much as the word itself.
+      var syn = {};
+      (SYN[t] || []).concat(SYN[raw] || []).forEach(function (w) { if (w !== t) syn[w] = 1; });
       for (var k = 0; k < VOCAB.length; k++) {
         var term = VOCAB[k], w = 0;
         if (term === t || term === raw) w = 1;
+        else if (syn[term]) w = 0.75;
         else if (term.indexOf(t) === 0 && t.length >= 2) w = last ? 0.8 : 0.6;
         else if (maxd) {
           var d = editDistance(t, term, maxd);
@@ -373,8 +460,8 @@
     if (!r) return 1;
     var c = titleTokCache[key];
     if (!c) {
-      var name = r.kind === "a" ? r.item.title : r.item.name;
-      var alt = r.kind === "a" ? "" : r.item.latin + " " + r.item.aka.join(" ");
+      var name = r.kind === "s" ? r.item.name : r.item.title;
+      var alt = r.kind === "s" ? r.item.latin + " " + r.item.aka.join(" ") : "";
       c = titleTokCache[key] = { name: qtokens(name).map(stem), all: qtokens(name + " " + alt).map(stem) };
     }
     var hit = stems.every(function (q) {
@@ -447,30 +534,61 @@
     inp.focus();
   }
 
-  // ------------------------------------------------------------------ categories
+  // ------------------------------------------------------------------ groups and categories
+  function viewGroup(id, tab) {
+    var g = GROUPS[id];
+    if (!g) return notFound();
+    setChrome(g.title, { tab: tab });
+    var h = '<div class="cat-head grp-' + g.id + '">' + iconTile(g.icon, "grp-" + g.id, "page-icon") + '<h1 class="page">' + esc(g.title) + "</h1></div>";
+    h += '<p class="lead">' + esc(g.intro) + "</p>";
+    if (g.links && g.links.length) {
+      h += '<div class="actions">' + g.links.map(function (lk) {
+        return '<a class="action" href="' + esc(lk.to) + '"><span class="badge-ic">' + icon(lk.icon, "ic-lg") + '</span><span class="txt"><b>' +
+          esc(lk.title) + '</b><span class="sub">' + esc(lk.sub) + "</span></span>" + icon("chevron-right", "chev") + "</a>";
+      }).join("") + "</div>";
+    }
+    h += '<div class="section"><span class="label">' + g.categories.length + (g.categories.length === 1 ? " section" : " sections") + '</span><div class="tiles">';
+    g.categories.forEach(function (cid) {
+      var c = CATS[cid];
+      h += '<a class="tile grp-' + g.id + '" href="#/c/' + c.id + '">' + iconTile(c.icon, "") +
+        "<span><b>" + esc(c.title) + '</b><span class="sub">' + esc(c.short) + "</span></span></a>";
+    });
+    h += "</div></div>";
+    view.innerHTML = h;
+  }
+
   function viewCategory(id, tab) {
     var c = CATS[id];
     if (!c) return notFound();
+    var g = GROUPS[c.group];
     setChrome(c.title, { tab: tab });
-    var h = '<div class="cat-head c-' + c.id + '">' + iconTile(c.icon, "", "page-icon") + '<h1 class="page">' + esc(c.title) + '</h1></div><p class="lead">' + esc(c.summary) + "</p>";
-    if (id === "first-aid") h += '<div class="banner info">' + icon("info") + '<span>First-aid information, not a substitute for training. This phone can\'t call: see <a href="#/a/when-to-get-help">sending for help</a>.</span></div>';
-    if (id === "emergency") h += '<div class="banner info">' + icon("info") + "<span>This phone has no SIM card and <b>cannot call 999 or 112</b>. Get help by signalling, being found, or reaching a working phone or a person.</span></div>";
-    if (id === "identify") {
-      var counts = { plant: 0, fungus: 0, animal: 0 }, deadly = 0;
-      Object.keys(SPP).forEach(function (k) { counts[SPP[k].group]++; if (isDeadly(SPP[k])) deadly++; });
+    var h = '<a class="crumb grp-' + g.id + '" href="#/g/' + g.id + '"><span class="dot"></span>' + esc(g.title) + "</a>";
+    h += '<div class="cat-head grp-' + g.id + '">' + iconTile(c.icon, "grp-" + g.id, "page-icon") + '<h1 class="page">' + esc(c.title) + "</h1></div>";
+    h += '<p class="lead">' + esc(c.intro) + "</p>";
+    if (id === "first-aid" || id === "medicine") h += '<div class="banner info">' + icon("info") + '<span>First-aid information, not a substitute for training. This phone can\'t call: see <a href="#/a/when-to-get-help">sending for help</a>.</span></div>';
+    if (id === "lost") h += '<div class="banner info">' + icon("info") + "<span>This phone has no SIM card and <b>cannot call 999 or 112</b>. Get help by signalling, being found, or reaching a working phone or a person.</span></div>";
+    if (id === "identify" || id === "lookalikes") {
       h += '<div class="banner">' + icon("triangle-alert") + "<span>Never eat any wild plant or fungus unless you are 100% certain what it is. This guide is not a substitute for expert identification.</span></div>";
       h += '<a class="action primary" href="#/species"><span class="badge-ic">' + icon("leaf", "ic-lg") + '</span><span class="txt"><b>Browse all ' +
-        Object.keys(SPP).length + ' species</b><span class="sub">' + counts.plant + " plants · " + counts.fungus + " fungi · " + counts.animal + " animals · " + deadly + " deadly</span></span>" + icon("chevron-right", "chev") + "</a>";
-      h += '<div class="chips" style="margin-top:8px">' +
-        '<a class="chip g-plant" href="#/species?g=plant"><span class="dot"></span>Plants</a>' +
-        '<a class="chip g-fungus" href="#/species?g=fungus"><span class="dot"></span>Fungi</a>' +
-        '<a class="chip g-animal" href="#/species?g=animal"><span class="dot"></span>Animals</a>' +
-        '<a class="chip" href="#/species?st=deadly">' + icon("skull") + "Deadly</a></div>";
-      h += '<div class="section"><span class="label">Lookalikes and ID guides</span>';
-    } else {
-      h += '<div class="section"><span class="label">' + c.articles.length + " guides</span>";
+        Object.keys(SPP).length + ' species</b><span class="sub">Plants, fungi, animals and psychoactive species, with photos</span></span>' + icon("chevron-right", "chev") + "</a>";
     }
-    h += '<ul class="list">' + c.articles.map(function (a) { return rowHtml("a:" + a); }).join("") + "</ul></div>";
+    var start = ART[c.start];
+    if (start) {
+      h += '<a class="start-here grp-' + g.id + '" href="#/a/' + start.id + '"><span class="tag">' + icon("flag", "ic-sm") + "Start here</span>" +
+        '<span class="row-in">' + articleVisual(start) + '<span class="txt"><b>' + esc(start.title) + '</b><span class="sub">' + esc(start.summary) + "</span></span>" +
+        icon("chevron-right", "chev") + "</span></a>";
+    }
+    c.topics.forEach(function (t) {
+      var items = t.items.filter(function (x) { return x !== c.start; });
+      if (!items.length) return;
+      h += '<div class="section topic"><span class="label">' + esc(t.title) + '</span><ul class="list">' + items.map(function (x) {
+        if (x.charAt(0) === "@") {
+          var a = ART[x.slice(1)];
+          return a ? rowHtml("a:" + a.id, "In " + CATS[a.cat].title) : "";
+        }
+        return rowHtml("a:" + x);
+      }).join("") + "</ul></div>";
+    });
     view.innerHTML = h;
   }
 
@@ -479,10 +597,10 @@
     setChrome("Saved", { root: true, tab: tab });
     var favs = load("favs", []).filter(itemFromKey), recent = load("recent", []).filter(itemFromKey);
     var h = '<span class="label">Saved</span>';
-    h += favs.length ? '<ul class="list">' + favs.map(rowHtml).join("") + "</ul>"
+    h += favs.length ? '<ul class="list">' + favs.map(function (k) { return rowHtml(k); }).join("") + "</ul>"
       : '<div class="banner info">' + icon("bookmark") + "<span>Tap the bookmark at the top of any guide or species to keep it here.</span></div>";
     h += '<div class="section"><span class="label">Recently viewed</span>';
-    h += recent.length ? '<ul class="list">' + recent.slice(0, 15).map(rowHtml).join("") + '</ul><button class="btn" id="clear-recent" style="margin-top:8px">Clear recently viewed</button>'
+    h += recent.length ? '<ul class="list">' + recent.slice(0, 15).map(function (k) { return rowHtml(k); }).join("") + '</ul><button class="btn" id="clear-recent" style="margin-top:8px">Clear recently viewed</button>'
       : '<p class="muted small">Nothing viewed yet.</p>';
     h += "</div>";
     view.innerHTML = h;
@@ -494,24 +612,30 @@
   function viewBrowser(q, tab) {
     setChrome("Species", { root: true, tab: tab });
     var g = q.g || "", st = q.st || "", text = q.q || "";
-    var groups = [["", "All", ""], ["plant", "Plants", "g-plant"], ["fungus", "Fungi", "g-fungus"], ["animal", "Animals", "g-animal"]];
-    var stats = [["edible", "Edible"], ["medicinal", "Medicinal"], ["caution", "Caution"], ["poisonous", "Poisonous"], ["deadly", "Deadly"], ["venomous", "Venomous"], ["protected", "Protected"]];
-    var h = '<input class="filter-input" id="sf" type="search" placeholder="Filter by name…" autocomplete="off" value="' + esc(text) + '" style="margin-top:0">';
+    // "Psychoactive" sits with the groups as its own tab: it spans plants and fungi.
+    var groups = [["", "All", ""], ["plant", "Plants", "g-plant"], ["fungus", "Fungi", "g-fungus"], ["animal", "Animals", "g-animal"], ["psychoactive", "Psychoactive", "g-psy"]];
+    var stats = [["edible", "Edible"], ["medicinal", "Medicinal"], ["caution", "Caution"], ["poisonous", "Poisonous"], ["deadly", "Deadly"], ["venomous", "Venomous"], ["protected", "Protected"], ["invasive", "Invasive"]];
+    var h = '<input class="filter-input" id="sf" type="search" placeholder="Filter by name…" autocomplete="off" value="' + esc(text) + '" style="margin-top:0" aria-label="Filter species by name">';
     h += '<div class="chips" role="group" aria-label="Group" style="margin-top:8px">' + groups.map(function (x) {
       return '<button class="chip ' + x[2] + '" data-g="' + x[0] + '" aria-pressed="' + (g === x[0]) + '">' + (x[2] ? '<span class="dot"></span>' : "") + x[1] + "</button>";
     }).join("") + "</div>";
     h += '<div class="chips" role="group" aria-label="Status">' + stats.map(function (x) {
       return '<button class="chip" data-st="' + x[0] + '" aria-pressed="' + (st === x[0]) + '">' + (STATUS_ICON[x[0]] ? icon(STATUS_ICON[x[0]]) : "") + x[1] + "</button>";
     }).join("") + "</div>";
-    h += '<div class="banner warn">' + icon("triangle-alert") + "<span>Identify with several features, never one. Never eat wild fungi unless an expert has confirmed them in person.</span></div>";
-    h += '<p class="count" id="count"></p><div class="sgrid" id="sgrid"></div>';
+    h += '<div id="sbanner"></div><p class="count" id="count"></p><div class="sgrid" id="sgrid"></div>';
     view.innerHTML = h;
 
+    function banner() {
+      document.getElementById("sbanner").innerHTML = g === "psychoactive"
+        ? '<div class="banner psy">' + icon("brain") + '<span>For identification, safety, the law and first aid only. In the outdoors, impairment kills, and several of these have deadly lookalikes. <a href="#/a/psychoactive-safety">Read the safety guide</a>.</span></div>'
+        : '<div class="banner warn">' + icon("triangle-alert") + "<span>Identify with several features, never one. Never eat wild fungi unless an expert has confirmed them in person.</span></div>";
+    }
     function apply() {
       var t = norm(document.getElementById("sf").value.trim());
       var ids = Object.keys(SPP).filter(function (id) {
         var s = SPP[id];
-        if (g && s.group !== g) return false;
+        if (g === "psychoactive") { if (s.status.indexOf("psychoactive") < 0) return false; }
+        else if (g && s.group !== g) return false;
         if (st && s.status.indexOf(st) < 0) return false;
         if (t && norm(s.name + " " + s.latin + " " + s.aka.join(" ") + " " + s.tags.join(" ")).indexOf(t) < 0) return false;
         return true;
@@ -519,6 +643,7 @@
       document.getElementById("count").textContent = ids.length + " species";
       document.getElementById("sgrid").innerHTML = ids.length ? ids.map(speciesCard).join("")
         : '<p class="empty" style="grid-column:1/-1">No species match these filters.</p>';
+      banner();
     }
     function updateHash() {
       var parts = [];
@@ -724,15 +849,65 @@
       wireArticleGallery(root, a);
     };
   }
+  function metaChips(a) {
+    var out = [];
+    if (a.time) out.push('<span class="mchip">' + icon("clock", "ic-sm") + esc(a.time) + "</span>");
+    if (a.level) out.push('<span class="mchip lv-' + a.level + '">' + icon("gauge", "ic-sm") + LEVEL_LABEL[a.level] + "</span>");
+    out.push('<span class="mchip">' + icon("book-open", "ic-sm") + a.read + " min read</span>");
+    return out.join("");
+  }
+
+  // Read aloud: shown only when an offline English voice works. The first article view checks once.
+  var tts = { available: -1, speaking: false };
+  onNative("tts", function (d) {
+    if (d.available !== undefined) tts.available = d.available ? 1 : 0;
+    if (d.speaking !== undefined) tts.speaking = d.speaking;
+    var b = document.getElementById("tts");
+    if (b) {
+      b.hidden = tts.available !== 1;
+      b.innerHTML = icon(tts.speaking ? "square" : "volume-2", "ic-sm") + (tts.speaking ? "Stop reading" : "Read aloud");
+    }
+  });
+  function wireTts(body) {
+    if (!NATIVE) return;
+    if (tts.available < 0) {
+      var st = nativeState();
+      tts.available = st && st.tts !== undefined ? st.tts : -1;
+      if (tts.available < 0) native("ttsCheck");
+    }
+    var b = document.getElementById("tts");
+    if (!b) return;
+    b.hidden = tts.available !== 1;
+    tts.speaking = false;
+    b.onclick = function () {
+      if (tts.speaking) { native("ttsStop"); tts.speaking = false; window.__native("tts", { speaking: false }); return; }
+      var clone = body.cloneNode(true);
+      var src = clone.querySelector("#sources");
+      if (src) { while (src.nextSibling) src.parentNode.removeChild(src.nextSibling); src.parentNode.removeChild(src); }
+      var text = document.querySelector("h1.page").textContent + ".\n" + clone.innerText;
+      native("ttsSpeak", text);
+    };
+  }
 
   function viewArticle(id, token, tab) {
     var a = ART[id];
     if (!a) return notFound();
-    var c = CATS[a.cat];
+    var c = CATS[a.cat], g = GROUPS[c.group];
     setChrome(c.title, { tab: tab, saveKey: "a:" + id });
     addRecent("a:" + id);
-    view.innerHTML = '<a class="crumb c-' + a.cat + '" href="#/c/' + a.cat + '"><span class="dot"></span>' + esc(c.title) + "</a>" +
-      '<h1 class="page">' + esc(a.title) + '</h1><div class="body" id="body"><p class="muted" id="loading">Loading…</p></div>';
+    var h = '<a class="crumb grp-' + g.id + '" href="#/c/' + c.id + '"><span class="dot"></span>' + esc(g.title) + " › " + esc(c.title) + "</a>" +
+      '<h1 class="page">' + esc(a.title) + "</h1>" +
+      '<div class="meta-row">' + metaChips(a) + (NATIVE ? '<button class="mchip tts" id="tts" hidden>' + icon("volume-2", "ic-sm") + "Read aloud</button>" : "") + "</div>";
+    if (a.needs && a.needs.length) {
+      h += '<div class="needs"><span class="k">' + icon("package", "ic-sm") + "You'll need</span>" + a.needs.map(function (n) {
+        return n[1] ? '<a class="need" href="#/a/' + n[1] + '">' + esc(n[0]) + "</a>" : '<span class="need">' + esc(n[0]) + "</span>";
+      }).join("") + "</div>";
+    }
+    h += '<div class="body" id="body"><p class="muted" id="loading">Loading…</p></div>';
+    if (a.related && a.related.length) {
+      h += '<div class="section related"><span class="label">Related</span><ul class="list">' + a.related.map(function (r) { return rowHtml("a:" + r); }).join("") + "</ul></div>";
+    }
+    view.innerHTML = h;
     return loadBody("a/" + id).then(function (html) {
       if (token !== renderToken) return;
       var body = document.getElementById("body");
@@ -741,12 +916,13 @@
       if (a.compare) extra += '<div class="compare">' + a.compare.map(speciesCard).join("") + "</div>";
       extra += articleGallery(a);
       insertAfterQuick(body, extra);
-      if (a.cat === "first-aid") {
+      if (c.group === "stay-alive" && a.cat === "first-aid") {
         body.insertAdjacentHTML("afterbegin", '<p class="small muted" style="margin:0 0 12px">First-aid information, not a substitute for training.</p>');
       }
       decorateBody(body);
       wireArticleGallery(body, a);
       wireChecklists(body, "a:" + id);
+      wireTts(body);
     }, function () {
       document.getElementById("body").innerHTML = '<p class="empty">This article could not be loaded.</p>';
     });
@@ -779,6 +955,14 @@
       h += '<div class="banner">' + icon("triangle-alert") + "<span>Never eat any wild fungus unless an expert has confirmed it in person. Several UK fungi kill, with symptoms delayed for hours or days.</span></div>";
     } else if (s.status.indexOf("edible") >= 0 && s.group === "plant") {
       h += '<div class="banner warn">' + icon("triangle-alert") + "<span>Only eat a wild plant if you are 100% certain what it is, using several features. If in doubt, leave it out.</span></div>";
+    }
+    if (s.status.indexOf("psychoactive") >= 0) {
+      h += '<div class="banner psy">' + icon("brain") + '<span><b>Psychoactive.</b> Covered for identification, safety, the law and first aid only. Impairment outdoors kills. <a href="#/a/psychoactive-safety">Safety and the law</a>.</span></div>';
+    }
+    if (s.harvest && s.harvest.length) {
+      h += '<div class="harvest">' + icon("calendar-range", "ic-sm") + "<span>" + s.harvest.map(function (x) {
+        return esc(x[0]) + " " + MONTHS[x[1] - 1].slice(0, 3) + (x[2] !== x[1] ? "–" + MONTHS[x[2] - 1].slice(0, 3) : "");
+      }).join(" · ") + "</span></div>";
     }
     h += '<div class="facts">' +
       '<div class="f">' + icon("calendar") + '<span><span class="k">Season</span><span class="v">' + esc(s.season) + "</span></span></div>" +
@@ -822,52 +1006,104 @@
     if (cr) creditLine(cr, s.images);
   }
 
-  // ------------------------------------------------------------------ tools
-  function viewTools(tab) {
-    setChrome("Tools", { root: true, tab: tab });
-    var st = nativeState();
-    var torchOn = !!(st && st.torch);
-    function tool(id, ic, label, sub) {
-      return '<button class="tool c-accent" data-tool="' + id + '">' + iconTile(ic) + "<span><b>" + label + '</b><span class="sub">' + sub + "</span></span></button>";
-    }
-    var h = "";
-    if (!NATIVE) h += '<div class="banner warn">' + icon("info") + "<span>These buttons only work inside the app on the phone.</span></div>";
-    h += '<div class="tools">' +
-      '<button class="tool c-accent' + (torchOn ? " on" : "") + '" id="torch">' + iconTile("flashlight") + "<span><b>Torch " + (torchOn ? "on" : "off") + '</b><span class="sub">Signal: 6 flashes a minute</span></span></button>' +
-      tool("fm", "radio", "FM Radio", "Needs wired headphones") +
-      tool("camera", "camera", "Camera", "Photograph for ID") +
-      tool("calculator", "calculator", "Calculator", "Pacing and timings") +
-      tool("clock", "alarm-clock", "Clock", "Alarm and stopwatch") +
-      tool("battery", "battery-medium", "Battery", "Usage and saver") +
-      "</div>";
-    h += '<div class="actions"><a class="action" href="#/report"><span class="badge-ic">' + icon("map-pin", "ic-lg") + '</span><span class="txt"><b>Location report</b><span class="sub">Grid reference and details to hand to rescuers</span></span>' + icon("chevron-right", "chev") + "</a></div>";
-    h += '<div class="section"><span class="label">This guide</span><ul class="list">' +
-      '<li><a class="row" href="#/settings">' + iconTile("sliders-horizontal", "c-kit") + '<span class="txt"><span class="t">Settings</span><span class="s">Theme, text size, brightness, low-power mode</span></span>' + icon("chevron-right", "chev") + "</a></li>" +
-      '<li><a class="row" href="#" data-tool-link="settings">' + iconTile("settings", "c-kit") + '<span class="txt"><span class="t">Phone settings</span><span class="s">Open Android settings</span></span>' + icon("chevron-right", "chev") + "</a></li>" +
-      '<li><a class="row" href="#/about">' + iconTile("info", "c-kit") + '<span class="txt"><span class="t">About and licences</span><span class="s">Disclaimer, sources, icon and font licences</span></span>' + icon("chevron-right", "chev") + "</a></li>" +
-      '<li><a class="row" href="#/credits">' + iconTile("images", "c-kit") + '<span class="txt"><span class="t">Photo credits</span><span class="s">' + IDX.counts.photos + " photos from Wikimedia Commons</span></span>" + icon("chevron-right", "chev") + "</a></li>" +
-      "</ul></div>";
-    if (st) {
-      h += '<div class="section status"><span>Battery <b>' + (st.battery >= 0 ? st.battery + "%" : "?") + "</b>" + (st.charging ? " · charging" : "") + "</span>" +
-        (st.batteryTempC != null ? "<span>Temp <b>" + st.batteryTempC + " °C</b></span>" : "") + "<span>Version <b>" + esc(st.version) + "</b></span></div>";
-    }
-    h += '<p class="small muted" style="margin-top:16px">The torch stays on until you switch it off: check it before putting the phone away.</p>';
-    view.innerHTML = h;
-    function launch(name) {
-      var ok = native("launchTool", name);
-      if (!ok) alert(NATIVE ? "That app is not available (it may have been removed or is blocked in kiosk mode)." : "Only available on the phone.");
-    }
-    view.querySelectorAll("[data-tool]").forEach(function (b) { b.onclick = function () { launch(b.getAttribute("data-tool")); }; });
-    view.querySelectorAll("[data-tool-link]").forEach(function (b) { b.onclick = function (e) { e.preventDefault(); launch(b.getAttribute("data-tool-link")); }; });
-    document.getElementById("torch").onclick = function () {
-      var cur = nativeState();
-      var ok = native("setTorch", !(cur && cur.torch));
-      if (!ok) alert(NATIVE ? "The torch could not be switched (the camera may be in use)." : "Only available on the phone.");
-      render();
-    };
+  // ------------------------------------------------------------------ decision flows
+  // One node per screen; each answer is a new history entry, so Back goes to the previous question.
+  function viewFlow(id, node, token, tab) {
+    var meta = FLOWS[id];
+    if (!meta) return notFound();
+    setChrome(meta.title, { tab: tab, saveKey: "f:" + id });
+    view.innerHTML = '<p class="muted" id="loading">Loading…</p>';
+    return loadBody("f/" + id).then(function (flow) {
+      if (token !== renderToken) return;
+      var nid = node && flow.nodes[node] ? node : flow.start;
+      var n = flow.nodes[nid];
+      var trail = load("flow-trail", {});
+      var depth = nid === flow.start ? 1 : (trail[id] && trail[id][nid]) || 2;
+      var h = '<div class="flow-head">' + iconTile(meta.icon, "grp-urgent") + "<div><b>" + esc(meta.title) + '</b><span class="sub">Step ' + depth + "</span></div></div>";
+      h += '<div class="flow-card' + (n.opts.length ? "" : " end") + '"><div class="body">' + n.html + "</div>";
+      if (n.q) h += '<p class="flow-q">' + n.q + "</p>";
+      h += "</div>";
+      if (n.opts.length) {
+        h += '<div class="flow-opts">' + n.opts.map(function (o) {
+          return '<a class="opt" href="#/f/' + id + "/" + o[1] + '" data-next="' + o[1] + '">' + o[0] + icon("chevron-right", "chev") + "</a>";
+        }).join("") + "</div>";
+      }
+      if (n.links.length) {
+        h += '<div class="flow-links">' + n.links.map(function (href) {
+          var m = href.match(/^#\/(a|s|f|c|tool)\/(.+)$/), label = href;
+          if (m && m[1] === "a" && ART[m[2]]) label = ART[m[2]].title;
+          else if (m && m[1] === "s" && SPP[m[2]]) label = SPP[m[2]].name;
+          else if (m && m[1] === "f" && FLOWS[m[2]]) label = FLOWS[m[2]].title;
+          else if (m && m[1] === "c" && CATS[m[2]]) label = CATS[m[2]].title;
+          else if (m && m[1] === "tool") label = (TOOL_NAMES[m[2]] || m[2]) + " tool";
+          return '<a class="btn" href="' + esc(href) + '">' + icon(m && m[1] === "tool" ? "wrench" : "book-open", "ic-sm") + esc(label) + "</a>";
+        }).join("") + "</div>";
+      }
+      if (nid !== flow.start) h += '<p class="flow-restart"><a href="#/f/' + id + '">' + icon("rotate-ccw", "ic-sm") + "Start again</a></p>";
+      view.innerHTML = h;
+      decorateBody(view);
+      view.querySelectorAll("[data-next]").forEach(function (a) {
+        a.addEventListener("click", function () {
+          var t = load("flow-trail", {});
+          t[id] = t[id] || {};
+          t[id][a.getAttribute("data-next")] = depth + 1;
+          save("flow-trail", t);
+        });
+      });
+    });
+  }
+  var TOOL_NAMES = { compass: "Compass", gps: "Position", map: "Map", sun: "Sun and moon", signal: "Signal", morse: "Morse",
+    level: "Clinometer", pace: "Pace counter", cpr: "CPR metronome", casualty: "Casualty log", boil: "Boil timer",
+    calc: "Calculators", notebook: "Notebook", battery: "Battery", torch: "Torch", "phone-mode": "Phone mode" };
+
+  // ------------------------------------------------------------------ first-aid quick cards
+  function viewCards(token, tab) {
+    setChrome("First-aid cards", { tab: tab });
+    view.innerHTML = '<h1 class="page">First-aid quick cards</h1><p class="lead">The quick steps from the key first-aid guides. Tap a title for the full guide.</p><div id="cards"><p class="muted" id="loading">Loading…</p></div>';
+    return Promise.all(IDX.cards.map(function (id) { return loadBody("a/" + id); })).then(function (bodies) {
+      if (token !== renderToken) return;
+      var tmp = document.createElement("div");
+      document.getElementById("cards").innerHTML = IDX.cards.map(function (id, i) {
+        tmp.innerHTML = bodies[i];
+        var q = tmp.querySelector(".quick");
+        var steps = q ? q.querySelector("ol, ul") : null;
+        // Steps can contain links of their own, so the card is not one big link.
+        return '<div class="qcard"><a class="qtitle" href="#/a/' + id + '">' + esc(ART[id].title) + icon("chevron-right", "ic-sm") + "</a>" +
+          (steps ? '<div class="quick bare">' + steps.outerHTML + "</div>" : "") + "</div>";
+      }).join("");
+    });
   }
 
-  // Location report: what to hand to a messenger, a passer-by or rescuers. Works with no signal.
+  // ------------------------------------------------------------------ in season now
+  function viewSeason(q, tab) {
+    setChrome("In season", { tab: tab });
+    var m = +(q.m || new Date().getMonth() + 1);
+    if (!(m >= 1 && m <= 12)) m = new Date().getMonth() + 1;
+    var h = '<h1 class="page">In season: ' + MONTHS[m - 1] + "</h1>";
+    h += '<div class="chips months" role="group" aria-label="Month">' + MONTHS.map(function (name, i) {
+      return '<a class="chip" href="#/season?m=' + (i + 1) + '" aria-pressed="' + (i + 1 === m) + '">' + name.slice(0, 3) + "</a>";
+    }).join("") + "</div>";
+    h += '<div class="banner warn">' + icon("triangle-alert") + '<span>Only eat what you can identify with complete certainty, using several features. Most have poisonous lookalikes: check the species page every time. Fungi: only with an expert, in person.</span></div>';
+    var rows = { plant: [], fungus: [], animal: [] };
+    Object.keys(SPP).forEach(function (id) {
+      var parts = inSeason(SPP[id], m);
+      if (parts.length) rows[SPP[id].group].push([id, parts.map(function (p) { return p[0]; }).join(", ")]);
+    });
+    ["plant", "fungus", "animal"].forEach(function (gk) {
+      var list = rows[gk].sort(function (a, b) { return SPP[a[0]].name.localeCompare(SPP[b[0]].name); });
+      if (!list.length) return;
+      h += '<div class="section"><span class="label">' + GROUP_LABEL[gk] + " · " + list.length + '</span><ul class="list">' + list.map(function (x) {
+        var s = SPP[x[0]];
+        return '<li><a class="row" href="#/s/' + s.id + '">' + speciesVisual(s) + '<span class="txt"><span class="t">' + esc(s.name) +
+          '</span><span class="s">' + esc(x[1]) + "</span>" + pills(s.status, 2) + "</span>" + icon("chevron-right", "chev") + "</a></li>";
+      }).join("") + "</ul></div>";
+    });
+    h += '<p class="small muted">Months are typical for the UK; the south is often 2–3 weeks ahead of Scotland. See also the <a href="#/a/foraging-calendar">seasonal calendar</a>.</p>';
+    view.innerHTML = h;
+  }
+
+  // ------------------------------------------------------------------ location report
+  // What to hand to a messenger, a passer-by or rescuers. The GPS tool fills in the grid reference.
   function viewReport(tab) {
     setChrome("Location report", { tab: tab });
     var r = load("report", {});
@@ -879,7 +1115,9 @@
       ["have", "What you have", "e.g. tarp, stove, torch, food for 1 day"],
       ["signal", "How you will signal", "e.g. orange tarp, whistle, torch"]
     ];
-    var h = '<h1 class="page">Location report</h1><p class="lead">Fill this in calmly. Hand it, or show this screen, to whoever goes for help, a passer-by with a phone, or rescuers. Help: <a href="#/a/grid-references">reading a grid reference</a>.</p>';
+    var h = '<h1 class="page">Location report</h1><p class="lead">Fill this in calmly. Hand it, or show this screen, to whoever goes for help, a passer-by with a phone, or rescuers.</p>';
+    h += '<a class="action" href="#/tool/gps"><span class="badge-ic">' + icon("locate-fixed", "ic-lg") + '</span><span class="txt"><b>Fill in my grid reference</b><span class="sub">' +
+      (r.gridAuto ? "From GPS " + esc(r.gridAuto) : "Uses GPS for a minute or two, then switches it off") + "</span></span>" + icon("chevron-right", "chev") + "</a>";
     h += '<div class="form">' + fields.map(function (f) {
       return '<label for="r-' + f[0] + '">' + f[1] + '</label><input id="r-' + f[0] + '" data-k="' + f[0] + '" placeholder="' + esc(f[2]) + '" value="' + esc(r[f[0]] || "") + '" autocomplete="off">';
     }).join("") + "</div>";
@@ -891,7 +1129,7 @@
       var d = new Date(x.t || Date.now());
       document.getElementById("report-out").textContent = [
         "EMERGENCY: " + (x.what || "[what has happened]"),
-        "Grid ref: " + (x.grid || "[grid reference]"),
+        "Grid ref: " + (x.grid || "[grid reference]") + (x.latlon ? "  (" + x.latlon + ")" : ""),
         "Near: " + (x.place || "[landmark]"),
         "People: " + (x.who || "[number, condition]"),
         "We have: " + (x.have || "[kit]"),
@@ -914,6 +1152,7 @@
     document.getElementById("dim").style.opacity = (settings.dim || 0) / 100;
     var bar = getComputedStyle(root).getPropertyValue("--bg").trim();
     if (bar) native("setSystemBarColor", bar.length === 4 ? "#" + bar[1] + bar[1] + bar[2] + bar[2] + bar[3] + bar[3] : bar);
+    if (window.App && App.onTheme) App.onTheme(settings.theme || "dark");
   }
   function viewSettings(tab) {
     setChrome("Settings", { tab: tab });
@@ -924,7 +1163,7 @@
     h += '<div class="setting"><div class="h">Theme</div><div class="seg">' +
       [["dark", "Dark"], ["light", "Daylight"], ["red", "Night red"]].map(function (t) {
         return '<button data-theme-opt="' + t[0] + '" aria-pressed="' + (theme === t[0]) + '">' + t[1] + "</button>";
-      }).join("") + '</div><p class="desc">Daylight is high contrast for direct sun. Night red keeps your night vision.</p></div>';
+      }).join("") + '</div><p class="desc">Daylight is high contrast for direct sun. Night red is red on black to keep your night vision.</p></div>';
     h += '<div class="setting"><div class="h"><label for="fs">Text size</label><span class="v" id="fsv">' + (settings.fs || 18) + " px</span></div>" +
       '<input id="fs" type="range" min="14" max="30" step="1" value="' + (settings.fs || 18) + '"></div>';
     h += '<div class="setting"><div class="h">Screen brightness</div>' +
@@ -936,8 +1175,11 @@
     h += "</div>";
     h += '<span class="label">Battery</span><div class="group"><div class="setting"><label class="switch"><span>Low-power mode</span><input type="checkbox" id="lowp"' + (settings.lowPower ? " checked" : "") + "></label>" +
       '<p class="desc">Hides photos until you tap them. Saves battery and memory.</p></div></div>';
+    h += '<span class="label">Phone</span><ul class="list">' +
+      '<li><a class="row" href="#/tool/phone-mode">' + iconTile("smartphone", "grp-reference") + '<span class="txt"><span class="t">Phone mode</span><span class="s">Survival mode or normal phone, restore apps</span></span>' + icon("chevron-right", "chev") + "</a></li>" +
+      '<li><a class="row" href="#/tool/battery">' + iconTile("battery-medium", "grp-reference") + '<span class="txt"><span class="t">Battery and power</span><span class="s">Sessions left, storage and solar charging</span></span>' + icon("chevron-right", "chev") + "</a></li></ul>";
     h += '<span class="label">Your data</span><div class="group"><div class="setting"><div class="btn-row" style="margin:0">' +
-      '<button class="btn" id="clr-recent">Clear recent</button><button class="btn" id="clr-favs">Clear saved</button><button class="btn" id="clr-checks">Clear kit ticks</button></div></div></div>';
+      '<button class="btn" id="clr-recent">Clear recent</button><button class="btn" id="clr-favs">Clear saved</button><button class="btn" id="clr-checks">Clear ticks</button></div></div></div>';
     view.innerHTML = h;
     view.querySelectorAll("[data-theme-opt]").forEach(function (b) {
       b.onclick = function () { setSetting("theme", b.getAttribute("data-theme-opt")); applySettings(); render(); };
@@ -953,7 +1195,7 @@
     document.getElementById("lowp").onchange = function (e) { setSetting("lowPower", e.target.checked); };
     document.getElementById("clr-recent").onclick = function () { if (confirm("Clear recently viewed?")) save("recent", []); };
     document.getElementById("clr-favs").onclick = function () { if (confirm("Clear all saved items?")) save("favs", []); };
-    document.getElementById("clr-checks").onclick = function () { if (confirm("Untick all kit checklist items?")) save("checks", {}); };
+    document.getElementById("clr-checks").onclick = function () { if (confirm("Untick all checklist items?")) save("checks", {}); };
   }
 
   // ------------------------------------------------------------------ credits + about
@@ -966,13 +1208,17 @@
       Object.keys(SPP).forEach(function (id) { SPP[id].images.forEach(function (im) { owners[im[0]] = SPP[id].name; }); });
       Object.keys(ART).forEach(function (id) { (ART[id].images || []).forEach(function (im) { owners[im[0]] = ART[id].title; }); });
       var names = Object.keys(cr).sort(function (a, b) { return (owners[a] || "").localeCompare(owners[b] || ""); });
-      var h = '<h1 class="page">Photo credits</h1><p class="lead">All ' + names.length + " photos come from Wikimedia Commons and are used under the licences shown (public domain, CC0, CC BY or CC BY-SA). They were resized and converted to WebP. CC BY-SA photos remain under CC BY-SA. Licence texts: creativecommons.org/licenses.</p>";
+      var h = '<h1 class="page">Credits</h1>';
+      h += '<div class="section first"><span class="label">Map data</span><div class="body small"><p>Map © <b>OpenStreetMap contributors</b>, available under the Open Database Licence (ODbL), openstreetmap.org/copyright. Vector tiles built with Protomaps (protomaps.com).</p>' +
+        "<p>Contours derived from <b>OS Terrain 50</b>. Contains OS data © Crown copyright and database right. Open Government Licence v3.0.</p>" +
+        "<p>Magnetic declination: World Magnetic Model WMM2025, NOAA NCEI and British Geological Survey (public domain).</p></div></div>";
+      h += '<div class="section"><span class="label">Photos</span><p class="small">All ' + names.length + " photos come from Wikimedia Commons and are used under the licences shown (public domain, CC0, CC BY or CC BY-SA). They were resized and converted to WebP. CC BY-SA photos remain under CC BY-SA. Licence texts: creativecommons.org/licenses.</p>";
       h += '<ul class="list">' + names.map(function (n) {
         var c = cr[n];
         return '<li><div class="row" style="align-items:flex-start">' + (lowPower() ? "" : '<img class="thumb" loading="lazy" alt="" src="img/t/' + n + '">') +
           '<span class="txt"><span class="t">' + esc(owners[n] || n) + '</span><span class="s">' + esc(c.author) + " · " + esc(c.license) +
           '</span><span class="s">' + esc(c.source) + "</span></span></div></li>";
-      }).join("") + "</ul>";
+      }).join("") + "</ul></div>";
       view.innerHTML = h;
     }, function () { view.innerHTML = '<p class="empty">No photo credits found.</p>'; });
   }
@@ -982,43 +1228,42 @@
     var h = '<h1 class="page">About this guide</h1>';
     h += '<div class="banner">' + icon("triangle-alert") + "<span>General information for a dedicated offline survival phone. It is not a substitute for first-aid training, expert identification of plants and fungi, or professional rescue.</span></div>";
     h += '<div class="body">';
-    h += '<h2>This phone can\'t call</h2><p>It has no SIM card, and in the UK a phone without a SIM cannot reach 999 or 112. Getting help means signalling, being found, or reaching a working phone or a person. See <a href="#/c/emergency">Emergency</a>.</p>';
-    h += "<h2>Foraging</h2><p>Never eat any wild plant, berry or fungus unless you are 100% certain what it is, using several features, ideally confirmed in person by an expert. Several UK species kill, and some deadly fungi cause no symptoms for a day or more.</p>";
-    h += "<h2>First aid</h2><p>First-aid content follows NHS, St John Ambulance and British Red Cross public guidance as written at the time. Training matters more than reading.</p>";
-    h += "<h2>The law</h2><p>UK wildlife, access and fishing law applies. Most wild animals are protected; uprooting wild plants without the landowner's permission is illegal; many traps and snares are banned.</p>";
-    h += "<h2>Contents</h2><p>" + IDX.counts.articles + " guides, " + IDX.counts.species + " species, " + IDX.counts.photos + ' photos. Every guide lists its sources. <a href="#/credits">Photo credits</a>.</p>';
-    h += "<h2>Offline by design</h2><p>The guide never uses the network. It has no internet permission, runs no background services, keeps no wakelocks, uses no timers or polling, and follows the phone's screen timeout.</p>";
-    h += "<h2>Licences</h2><ul><li>Icons: Lucide (ISC licence), plus a few custom icons in the same style.</li><li>Typeface: Atkinson Hyperlegible, © 2020 Braille Institute of America, SIL Open Font License 1.1.</li><li>Photos: Wikimedia Commons contributors, licences as listed in Photo credits.</li></ul>";
+    h += '<h2>This phone can\'t call</h2><p>It has no SIM card, and in the UK a phone without a SIM cannot reach 999 or 112. Getting help means signalling, being found, or reaching a working phone or a person. See <a href="#/c/lost">Lost in the hills or forest</a> and <a href="#/c/self-rescue">Self-rescue</a>.</p>';
+    h += "<h2>Foraging and psychoactive species</h2><p>Never eat any wild plant, berry or fungus unless you are 100% certain what it is, using several features, ideally confirmed in person by an expert. Psychoactive species are included only so you can recognise them, stay safe, know the law and give first aid.</p>";
+    h += "<h2>First aid</h2><p>First-aid content follows NHS, St John Ambulance, British Red Cross and Resuscitation Council UK public guidance as written at the time. Training matters more than reading.</p>";
+    h += "<h2>The law</h2><p>UK wildlife, access, fishing and drugs law applies. Most wild animals are protected; uprooting wild plants without the landowner's permission is illegal; many traps and snares are banned; psilocybin mushrooms are Class A.</p>";
+    h += "<h2>Contents</h2><p>" + IDX.counts.articles + " guides, " + IDX.flows.length + " step-by-step flows, " + IDX.counts.species + " species, " + IDX.counts.photos + ' photos. Every guide lists its sources. <a href="#/credits">Credits</a>.</p>';
+    h += "<h2>Offline and battery</h2><p>The guide never uses the network: no internet permission, no Google services, no background services or wakelocks. Sensors and GPS run only while their tool is on screen and switch off by themselves. The map reads its data from the phone's storage.</p>";
+    h += "<h2>Licences</h2><ul><li>Icons: Lucide (ISC licence), plus a few custom icons in the same style.</li><li>Typeface: Atkinson Hyperlegible, © 2020 Braille Institute of America, SIL Open Font License 1.1.</li>" +
+      "<li>Map: MapLibre GL JS (BSD 3-Clause), PMTiles (BSD 3-Clause, Protomaps), Noto Sans glyphs (SIL OFL 1.1). Map data © OpenStreetMap contributors (ODbL); contours contain OS data © Crown copyright (OGL v3).</li>" +
+      "<li>Magnetic model: WMM2025 (NOAA/BGS, public domain).</li><li>Photos: Wikimedia Commons contributors, licences as listed in Credits.</li></ul>";
     if (st) h += '<p class="muted">Version ' + esc(st.version) + "</p>";
     h += "</div>";
     view.innerHTML = h;
   }
 
-  // ------------------------------------------------------------------ hidden kiosk menu
-  function viewKiosk(tab) {
-    setChrome("Kiosk settings", { tab: tab });
-    var st = nativeState() || {};
-    var h = '<h1 class="page">Kiosk and device owner</h1>';
-    h += '<div class="status"><span>Device owner <b>' + (st.deviceOwner ? "yes" : "no") + "</b></span><span>Pinned <b>" + (st.lockTask ? "yes" : "no") +
-      "</b></span><span>Kiosk pin <b>" + (st.kioskEnabled ? "on" : "off") + "</b>" + (st.kioskSuspended ? " (paused until restart)" : "") + "</span></div>";
-    h += '<div class="section"><button class="btn block" id="k-exit">Unpin and open phone Settings</button><p class="small muted">The pin comes back after the phone restarts.</p>';
-    h += '<button class="btn block" id="k-toggle">' + (st.kioskEnabled ? "Turn kiosk pin off permanently" : "Turn kiosk pin on") + "</button>";
-    h += '<button class="btn danger block" id="k-remove"' + (st.deviceOwner ? "" : " disabled") + ">Remove device owner</button>";
-    h += '<p class="small muted">Removing device owner makes this an ordinary app again (needed before uninstalling it). To restore it, run the adb <code>dpm set-device-owner</code> command again.</p></div>';
+  // ------------------------------------------------------------------ before you power off
+  function viewPowerOff(tab) {
+    setChrome("Before you power off", { tab: tab });
+    var st = nativeState();
+    var items = [
+      ["Torch and signals off", "Check the torch isn't still on."],
+      ["Waypoint saved", "Save your position (camp, car, casualty) in the Position tool."],
+      ["Notes written", "Time, place, what you've decided. Your future self will thank you."],
+      ["Next check-in time decided", "Switch on again at a set time, not 'every so often'."],
+      ["Phone in a warm inside pocket", "Cold batteries die fast. Keep it dry, in a sealed bag."]
+    ];
+    var h = '<h1 class="page">Before you power off</h1>';
+    if (st && st.battery >= 0) h += '<div class="status"><span>Battery <b>' + st.battery + "%</b></span>" + (st.charging ? "<span><b>Charging</b></span>" : "") + "</div>";
+    h += '<div class="checklist"><ul>' + items.map(function (x) { return "<li><b>" + x[0] + "</b> " + x[1] + "</li>"; }).join("") + "</ul></div>";
+    h += '<div class="power-how">' + icon("power", "ic-lg") + "<div><b>Hold the power button → Power off</b><span>The guide can't switch the phone off itself. Powering off between uses saves far more battery than anything else.</span></div></div>";
+    h += '<p><a class="btn" href="#/tool/battery">' + icon("battery-medium", "ic-sm") + "Battery and power</a></p>";
     view.innerHTML = h;
-    document.getElementById("k-exit").onclick = function () { if (confirm("Unpin the guide and open the phone's Settings?")) native("exitKiosk"); };
-    document.getElementById("k-toggle").onclick = function () { native("setKioskEnabled", !st.kioskEnabled); render(); };
-    document.getElementById("k-remove").onclick = function () {
-      if (confirm("Remove device owner? The guide will no longer be pinned or protected.") && confirm("Are you sure? Restoring it needs a PC with adb.")) {
-        var ok = native("removeDeviceOwner");
-        alert(ok ? "Device owner removed." : "Could not remove device owner.");
-        render();
-      }
-    };
+    wireChecklists(view, "poweroff-" + new Date().toDateString());
   }
 
   // ------------------------------------------------------------------ global wiring
-  // Long-press the title for 5 seconds to open the hidden kiosk menu. Measured on release: no timers.
+  // Long-press the title for 5 seconds to open the hidden menu (phone mode). Measured on release: no timers.
   var pressStart = 0;
   titleEl.addEventListener("pointerdown", function (e) { pressStart = e.timeStamp; });
   titleEl.addEventListener("pointerup", function (e) {
@@ -1031,13 +1276,25 @@
   backBtn.onclick = function () {
     if (history.length > 1) history.back(); else location.hash = "#/";
   };
+  powerBtn.onclick = function () { location.hash = "#/poweroff"; };
   document.addEventListener("click", function (e) {
     var a = e.target.closest ? e.target.closest('[data-search], #nav a[data-tab="search"]') : null;
     if (a) { e.preventDefault(); openSearch(); }
   });
   window.appGoHome = function () { if (location.hash === "#/" || !location.hash) render(); else location.hash = "#/"; };
-
   window.addEventListener("hashchange", function () { if ((location.hash || "#/") !== currentHash) render(); });
-  applySettings();
-  render();
+  onNative("resume", function () { if (/^#\/?$/.test(location.hash || "#/")) render(); });
+
+  // The API tools.js and map.js build on.
+  window.App = {
+    IDX: IDX, NATIVE: NATIVE, view: view, settings: settings, MONTHS: MONTHS, TOOL_NAMES: TOOL_NAMES,
+    icon: icon, iconTile: iconTile, esc: esc, load: load, save: save, setSetting: setSetting,
+    native: native, nativeJson: nativeJson, nativeState: nativeState, onNative: onNative, offNative: offNative,
+    setChrome: setChrome, sensorChip: sensorChip, render: render, rowHtml: rowHtml, loadScript: loadScript, loadCss: loadCss,
+    wireChecklists: wireChecklists, openViewer: openViewer,
+    route: function (head, fn) { ROUTES[head] = fn; },
+    onLeave: function (fn) { var prev = leaveFn; leaveFn = prev ? function () { prev(); fn(); } : fn; },
+    isCurrent: function (token) { return token === renderToken; },
+    start: function () { applySettings(); render(); }
+  };
 })();

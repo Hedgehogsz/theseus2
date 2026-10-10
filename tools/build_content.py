@@ -38,8 +38,11 @@ STATUSES = ["deadly", "poisonous", "venomous", "psychoactive", "caution", "invas
             "info"]
 LEVELS = ["easy", "moderate", "hard"]
 # Tool screens articles may link to with [[t:id]] (kept in step with TOOLS in app.js).
-TOOLS = {"compass", "gps", "map", "sun", "signal", "morse", "level", "pace", "cpr", "casualty", "boil", "calc",
-         "notebook", "battery", "torch", "phone-mode"}
+TOOL_LABELS = {"compass": "compass", "gps": "position tool", "map": "map", "sun": "sun and moon tool", "signal": "signal tool",
+               "morse": "Morse tool", "level": "clinometer", "pace": "pace counter", "cpr": "CPR metronome",
+               "casualty": "casualty log", "boil": "boil timer", "calc": "calculators", "notebook": "notebook",
+               "battery": "battery page", "torch": "torch", "phone-mode": "phone mode settings"}
+TOOLS = set(TOOL_LABELS)
 MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
 GROUPS = {"plant", "fungus", "animal"}
 
@@ -150,6 +153,10 @@ def link_target(href: str, owner: str) -> tuple[str, str | None]:
                 label = Ctx.flows[target]["title"]
             elif kind == "c" and target in Ctx.categories:
                 label = Ctx.categories[target]["title"]
+            elif kind == "t":
+                label = TOOL_LABELS.get(target)
+            if kind == "t" and target == "map":
+                return "#/map", label
             return f"#/{'tool' if kind == 't' else kind}/{target}", label
     if href.startswith("tel:") or href.startswith("#/"):
         return href, None
@@ -607,7 +614,7 @@ def main() -> int:
             "icon": m.get("icon", ""),
             "time": m.get("time", ""),
             "level": level,
-            "needs": split_list(m.get("needs")),
+            "needs": [n.strip('"\'') for n in split_list(m.get("needs"))],
             "related": split_list(m.get("related")),
             "wiki": split_list(m.get("wiki"), "|"),
         }
@@ -727,6 +734,13 @@ def main() -> int:
         for t in cats[a["cat"]]["topics"]:
             if a["id"] in t["items"]:
                 rel += [x.lstrip("@") for x in t["items"] if x.lstrip("@") != a["id"]]
+        # Then the rest of its category, then pages that cross-reference it from other categories.
+        for t in cats[a["cat"]]["topics"]:
+            rel += [x.lstrip("@") for x in t["items"] if x.lstrip("@") != a["id"]]
+        for c in cats.values():
+            for t in c["topics"]:
+                if "@" + a["id"] in t["items"]:
+                    rel += [x.lstrip("@") for x in t["items"] if x.lstrip("@") != a["id"]]
         seen = []
         for r in rel:
             if r not in seen and r in articles:

@@ -178,29 +178,6 @@ icon: wind
 - Scottish Avalanche Information Service (sais.gov.uk)
 - Mountaineering Scotland: Winter skills
 
-=== staying-warm-night
-title: Staying warm through the night
-summary: Practical ways to sleep warmer: dry clothes, a hat, eating before bed, a hot water bottle, and emptying your bladder.
-tags: sleep, night, warm, cold, sleeping bag, hot water bottle, layers
-icon: bed-double
----
-!quick
-1. **Dry clothes** on for sleeping; keep a set of dry socks for bed only.
-2. **Hat** and neck covering; warm hands and feet before getting in.
-3. Eat something fatty and drink something warm before bed; **pee before sleeping**.
-4. A bottle of hot water (not boiling, cap tight, wrapped in a sock) inside the bag.
-!end
-
-## More tips
-- Get into bed warm: do a few minutes of exercise first, but don't sweat.
-- Thick insulation underneath matters more than layers on top ([[a:insulation-ground]]).
-- Put tomorrow's clothes inside the bag (or under you) so they are not frozen or damp in the morning.
-- Huddle with others if cold.
-
-## Sources
-- Mountain Training: Camping skills
-- British Mountaineering Council: Winter camping advice
-
 === bothies
 title: Bothies and other emergency shelter
 summary: The UK's network of free mountain bothies, refuges and other buildings that can save a life.

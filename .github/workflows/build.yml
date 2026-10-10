@@ -69,6 +69,13 @@ jobs:
       - name: Build signed release APK and run unit tests
         run: ./gradlew --no-daemon assembleRelease testDebugUnitTest
 
+      - name: No Google Play services anywhere in the app's dependencies
+        run: |
+          ./gradlew --no-daemon -q :app:dependencies > deps.txt
+          grep -c . deps.txt
+          if grep -i "com.google.android.gms\|com.google.firebase" deps.txt; then echo "GMS dependency found"; exit 1; fi
+          echo "No com.google.android.gms or Firebase dependencies."
+
       - name: Show APK size and signature
         run: |
           ls -l app/build/outputs/apk/release/

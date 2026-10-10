@@ -53,7 +53,7 @@ Open the sun tool to see how long until sunset. Under cloud or trees it gets too
 - Insulate underneath: a stone floor steals heat.
 - Eat and drink something warm if you can. A fire only in a proper fireplace, and never a stove or charcoal in a closed room (carbon monoxide).
 - In a bothy, write your name, route and plans in the bothy book.
-> [[a:staying-warm-night]] [[a:bothies]] [[a:drying-clothes]]
+> [[a:sleeping-warm]] [[a:bothies]] [[a:drying-clothes]]
 
 @ stop-now
 **Stop and camp now.** Pick your spot:
@@ -147,7 +147,7 @@ You can get through the night without a fire.
 ? Is anyone stumbling, confused, slurring, drowsy, or has stopped shivering?
 + Yes: hypo-night
 + No: morning
-> [[a:emergency-night-out]] [[a:staying-warm-night]]
+> [[a:emergency-night-out]] [[a:sleeping-warm]]
 
 @ hypo-night
 **Treat hypothermia now.**

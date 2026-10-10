@@ -106,6 +106,10 @@ class Signals(private val context: Context, private val emit: (event: String, da
 
     /** Plays a sine tone with soft edges (no clicks). One static buffer is reused while the tone stays the same. */
     private fun beep(freq: Int, ms: Long) {
+        runCatching { playTone(freq, ms) } // audio failures must never stop a beacon's torch or crash the app
+    }
+
+    private fun playTone(freq: Int, ms: Long) {
         val rate = 22050
         val key = "$freq/$ms"
         if (key != trackKey || track == null) {

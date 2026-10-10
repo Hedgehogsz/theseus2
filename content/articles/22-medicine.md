@@ -451,7 +451,7 @@ icon: heater
 time: hours
 level: moderate
 needs: survival-bag, warm-layers, steel-bottle, tarp
-related: hypothermia, cold-and-wet, staying-warm-night, insulation-ground
+related: hypothermia, cold-and-wet, sleeping-warm, insulation-ground
 ---
 !quick
 1. **Handle gently and keep them lying flat.** Get them out of wind and rain, onto insulation.

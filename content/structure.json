@@ -1,12 +1,12 @@
 {
   "_doc": "The guide's hierarchy: group > category > topic > article. Every article appears in exactly one topic. Entries starting with '@' are cross-references to an article that lives elsewhere (shown with an arrow, not counted as membership). 'start' is pinned as 'Start here' and must be one of the category's own articles. Urgent tiles and links point at a:article, f:flow, c:category or a route (#/...).",
   "urgent": [
-    {"title": "What to do first", "icon": "list-checks", "to": "a:emergency-priorities", "sub": "Safety, life threats, shelter, then help"},
-    {"title": "Someone is injured", "icon": "heart-pulse", "to": "f:injured", "sub": "Step by step: danger, breathing, bleeding"},
-    {"title": "I'm lost", "icon": "map-pin-off", "to": "f:lost", "sub": "Stop, think, then stay or go"},
-    {"title": "Signal for help", "icon": "megaphone", "to": "a:signalling-rescue", "sub": "6 blasts or flashes a minute · SOS · V · X"},
-    {"title": "Severe weather now", "icon": "cloud-lightning", "to": "a:severe-weather-now", "sub": "Lightning, gales, snow, heat, flood"},
-    {"title": "Fire, flood or smoke", "icon": "flame", "to": "a:fire-flood-smoke-now", "sub": "Get out, stay out, get high"}
+    {"title": "What to do first", "icon": "list-checks", "to": "a:emergency-priorities", "sub": "Safety, life threats, shelter"},
+    {"title": "Someone is injured", "icon": "heart-pulse", "to": "f:injured", "sub": "Step by step"},
+    {"title": "I'm lost", "icon": "map-pin-off", "to": "f:lost", "sub": "Step by step"},
+    {"title": "Signal for help", "icon": "megaphone", "to": "a:signalling-rescue", "sub": "6 a minute · SOS · V · X"},
+    {"title": "Severe weather now", "icon": "cloud-lightning", "to": "a:severe-weather-now", "sub": "Lightning, gales, snow"},
+    {"title": "Fire, flood or smoke", "icon": "flame", "to": "a:fire-flood-smoke-now", "sub": "Get out, stay out"}
   ],
   "flows": ["injured", "lost", "water-now", "dark-cold"],
   "groups": [
@@ -29,10 +29,10 @@
          "intro": "In Britain the cold and wet kill more people than anything else outdoors. Get out of the wind, off the ground and into dry layers before you do anything else.",
          "start": "shelter-priorities",
          "topics": [
-           {"title": "First steps", "articles": ["shelter-priorities", "site-selection", "insulation-ground", "staying-warm-night"]},
+           {"title": "First steps", "articles": ["shelter-priorities", "site-selection", "insulation-ground", "sleeping-warm"]},
            {"title": "Clothing", "articles": ["cold-and-wet", "layering"]},
            {"title": "Ready-made shelter", "articles": ["bothies"]},
-           {"title": "Build one", "articles": ["@debris-hut", "@tarp-a-frame", "@lean-to", "@sleeping-warm"]}
+           {"title": "Build one", "articles": ["@debris-hut", "@tarp-a-frame", "@lean-to"]}
          ]},
         {"id": "water", "title": "Water", "icon": "droplet", "short": "Find and make safe",
          "intro": "You can last about three days without water, less in heat or hard work. Almost all UK water needs boiling before you drink it.",
@@ -160,7 +160,7 @@
          "intro": "Once you're past the first night, survival is about routine: water, fire, shelter maintenance, food, rest and hygiene, every day.",
          "start": "daily-routine",
          "topics": [
-           {"title": "Every day", "articles": ["daily-routine", "rationing", "sleeping-warm", "drying-clothes"]},
+           {"title": "Every day", "articles": ["daily-routine", "rationing", "@sleeping-warm", "drying-clothes"]},
            {"title": "Your camp", "articles": ["long-term-shelter", "@latrines"]},
            {"title": "Staying healthy", "articles": ["@blisters", "@preventing-infection", "@dental-care", "@when-youre-ill"]}
          ]},

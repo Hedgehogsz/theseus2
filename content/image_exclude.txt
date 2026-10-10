@@ -96,3 +96,82 @@ Columba-palumbus-dist.png  # species/wood-pigeon #1
 Boilingkettle.jpg  # article/settle-strain-boil #1
 Priestley Burning Lens Replica.jpg  # article/magnifier-fire #1
 2016 Busola.JPG  # article/map-compass-basics #1
+
+# v1.2 review: drawings, maps, charts, micrographs, skeletons, rashes, cultivars, distant/blurry, wrong species
+American Mink - Young.JPG  # american-mink
+12-10-21 Dreieich Pilze 19.jpg  # amethyst-deceiver
+Brugmansia bicolor.jpg  # angels-trumpet
+2012-05-06 Panaeolus cinctulus (Bolton) Britzelm 226699.jpg  # banded-mottlegill
+2012-06-09 Tylopilus felleus (Bull.) P. Karst 226782 crop.jpg  # bitter-bolete
+222 Buxus sempervirens Box LEAF epidermis print.jpg  # box
+0882Fb. St. Petersburg. Shchuchye Lake Nature Reserve.jpg  # brown-birch-bolete
+Cancer pagurus (eggs).jpg  # brown-crab
+Euproctis Chrysorrhoea skin rash cutted.png  # brown-tail-moth
+Illustration of Rhamnus catharticus 63-cropped.png  # buckthorn
+Cattle inspected for ticks.jpg  # cattle
+Illustration Cichorium intybus0 clean.jpg  # chicory
+Chicory Anther.jpg  # chicory
+Chicory Root.jpg  # chicory
+Tabanidae - Haematopota pluvialis-001.JPG  # cleg
+Cerastoderma edule 001.png  # cockle
+Cicuta virosa - Köhler–s Medizinal-Pflanzen-038 cropped.jpg  # cowbane
+Vaccinium vitis-idaea (area in Iceland).jpg  # cowberry
+0886Fb. Санкт-Петербург. Заказник "Озеро Щучье".jpg  # cowberry
+1895 Abbildungen aus Pilzfuehrer.jpg  # devils-bolete
+20190227Cornus sanguinea1.jpg  # dogwood
+Modell von Claviceps purpurea (Mutterkornpilz) -Osterloh Nr. 42- -Brendel 10 g, 2- (2).jpg  # ergot
+Stroma Claviceps purpurea.JPG  # ergot
+Farmed production of Anguilla anguilla.png  # european-eel
+Total production of Anguilla anguilla.png  # european-eel
+Amanita citrina 1.jpg  # false-death-cap
+Chenopodium album GBIFDistMap1.png  # fat-hen
+Melganzenvoet bloemen Chenopodium album.jpg  # fat-hen
+Illustration Aethusa cynapium0.jpg  # fools-parsley
+Triturus cristatus dis.png  # great-crested-newt
+Chelidonium majus - Köhler–s Medizinal-Pflanzen-033.jpg  # greater-celandine
+Ground Ivy (Glechoma hederacea) Spectral comparison Vis UV IR.jpg  # ground-ivy
+Baby Erinaceus europaeus (1).jpg  # hedgehog
+Erinaceus europaeus 04 MWNH 896.jpg  # hedgehog
+Hyoscyamus niger - Köhler–s Medizinal-Pflanzen-073.jpg  # henbane
+Bites from Scotland midges.jpg  # highland-midge
+Ilex aquifolium & Fagus sylvatica (55026763098).jpg  # holly
+1955. Pseudohylesinus grandis egg galleries on wood of Pacific silver fir and mycelium of Armillaria mellea. Baker River District, Mt. Baker National Forest. Washington. (34741043491).jpg  # honey-fungus
+Illustration Aesculus hippocastanum0 clean.jpg  # horse-chestnut
+Juniper wood pieces and 1 cent coin.jpg  # juniper
+Psilocybe semilanceata 73941.jpg  # liberty-cap
+After 6 weeks intensive inspection there were again Coprinopsis picacea, Syn Coprinus (GB= Magpie Inkcap, D= Specht-Tintling , F= Coprin pie, Syn. Coprin noir et blanc, NL= Spechtinktzwam) at 15 October 2014. Last year - panoramio.jpg  # magpie-inkcap
+Illustration Colchicum autumnale0.jpg  # meadow-saffron
+Colchicum autumnale00.jpg  # meadow-saffron
+Krijtlandpad – Viscum album in the Netherlands (cropped).jpg  # mistletoe
+Mistletoe.jpg  # mistletoe
+Picea abies 'Inversa'.jpg  # norway-spruce
+Description iconographique comparée du squelette et du système dentaire des mammifères récents et fossiles (Lutra lutra).jpg  # otter
+2023 04 04 Puurijärvi 02.jpg  # otter
+Esox lucius 30zz.jpg  # pike
+09 09 - Weissensee-Trockitesten - TauchSport-Steininger (4626758060).jpg  # pike
+Anatomy of a Physalia physalis colony.png  # portuguese-man-o-war
+Bluebottle (Physalia physalis) sail camber.png  # portuguese-man-o-war
+Interspecific social interaction between golden jackal (Canis aureus) and red fox (Vulpes vulpes) (fig. 1).png  # red-fox
+Lactarius deliciosus sliced email.jpg  # saffron-milkcap
+243 Hippophae rhamnoides.jpg  # sea-buckthorn
+Budowa raka.JPG  # signal-crayfish
+Galanthus Nivalis, sneeuwklokje. 12-02-2024. (d.j.b.).jpg  # snowdrop
+Gymnopilus junonius.png  # spectacular-rustgill
+Agaricus gambosus — Flora Batava — Volume v19.jpg  # st-georges-mushroom
+Acer pseudoplatanusAA.jpg  # sycamore
+2009-10-30 Clitopilus prunulus 27673 mod.jpg  # the-miller
+2009-10-30 Clitopilus prunulus 27673.jpg  # the-miller
+Russula emetica 61164.jpg  # the-sickener
+3tSiYi8BZAY.jpg  # thorn-apple
+1902 Cattle ticks (Ixodoidea) of the United States p467 Fig. 227.jpg  # tick
+'Fairy ring' in the forest - geograph.org.uk - 274456.jpg  # trooping-funnel
+(Craterellus tubaeformis 4) - Flickr - Tero Karppinen.jpg  # trumpet-chanterelle
+156 Valeriana officinalis L.jpg  # valerian
+Bark of Juglans regia 01.jpg  # walnut
+Cuvier-15-Vive-Percis.jpg  # weever-fish
+Austropotamobius italicus Dohlenkrebs.JPG  # white-clawed-crayfish
+Pastinaca sativa MHNT.BOT.2004.0.jpg  # wild-parsnip
+Pastinaca sativa Sturm28.jpg  # wild-parsnip
+030 Wald-Sauerklee (Oxalis acetosella) am Mittelweg im Wald auf dem Blümer Berg.jpg  # wood-sorrel
+20180205Artemisia absinthium1.jpg  # wormwood
+1130 Eibe.jpg  # yew

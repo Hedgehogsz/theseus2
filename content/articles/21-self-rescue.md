@@ -130,7 +130,7 @@ Trains are fast and almost silent until they are on you. Much of southern Englan
 - Sound bounces off valley sides. Get a few bearings from different spots before you trust a direction.
 
 ## Using the phone
-The [[t:map]] shows roads, tracks, walls and power lines around your GPS position without any signal. Check it, plan the shortest line to a road, then switch the phone off to save battery ([[a:kit-phone]]).
+The [[t:map]] shows roads, tracks, walls and power lines around your GPS position without any signal. Check it, plan the shortest line to a road, then switch the phone off to save battery ([[a:phone-navigation]]).
 
 !law Access
 In **Scotland** you have a right of responsible access to most land, including crossing farmland. In **England and Wales** you have a right to walk on public rights of way and open access land; in an emergency, cross land by the least damaging way, use gates, and leave them as you find them.
@@ -614,7 +614,7 @@ tags: sleep, night, warm, cold night, hot water bottle, insulation, sleeping bag
 icon: bed-single
 level: easy
 needs: steel-bottle, cotton-cloth, survival-bag, warm-layers
-related: staying-warm-night, insulation-ground, hypothermia, drying-clothes
+related: sleeping-warm, insulation-ground, hypothermia, drying-clothes
 ---
 !quick
 1. **Thick insulation under you** first: at least a hand's depth when squashed. It matters more than what's on top.
@@ -859,7 +859,7 @@ related: lost-person-actions, map-compass-basics, contours-terrain, grid-referen
 - The phone's GPS works **without signal or SIM**: it listens to satellites. In the open it usually gets a fix in under a minute; in deep valleys or forest it can take longer or be less accurate.
 - Open [[t:gps]], wait until the accuracy figure is small (tens of metres), and **write down the grid reference** ([[a:grid-references]]).
 - Open the [[t:map]] to see where that is, and note nearby features and the way out.
-- **Switch the phone off** afterwards. Check again only at decision points ([[a:kit-phone]]).
+- **Switch the phone off** afterwards. Check again only at decision points ([[a:phone-navigation]]).
 - Keep your paper map and compass skills going: phones fail in cold, wet and at low battery.
 
 ## Area of uncertainty

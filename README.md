@@ -1,28 +1,34 @@
 # Survival Guide (UK), an offline field guide for a dedicated Android phone
 
-A fully offline survival guide app for a debloated Samsung Galaxy A21s (Android 12) kept in
-airplane mode. It contains 130+ illustrated articles across 11 categories (emergency, first aid,
-water, fire, shelter, navigation, weather, food & foraging, identification, skills, kit) and a
-UK species guide (160+ plants, fungi and animals) with Wikimedia Commons photos, deadly-lookalike
-comparisons, typo-tolerant search, saved pages, recently viewed and a tools screen. It can run as
-the phone's home launcher and pin itself in kiosk (lock-task) mode.
+A fully offline survival guide app for a debloated Samsung Galaxy A21s (Android 12) with **no SIM, no accounts, no
+Google Play services**, kept in airplane mode and switched off between uses.
 
-The app never uses the network. It has no INTERNET permission, `blockNetworkLoads` is on, and
-there are no web fonts, CDNs or analytics. All content, including photos, icons and the font, ships
-inside the APK.
+- **209 articles** in six groups, from what to do in the first minutes to living off-grid for months:
+  Stay alive · Situations · When help isn't coming · Skills · Nature · Reference.
+- **4 step-by-step decision flows:** someone is injured, I'm lost, I need water now, it's getting dark and cold.
+- **268 UK species** (plants, fungi, animals and a psychoactive section), with 700+ Wikimedia Commons photos,
+  "don't confuse with" lookalikes and what's in season now.
+- **Phone-powered tools:**
+  - navigation: compass, GPS grid reference and waypoints, offline map of Great Britain, sun and moon,
+    clinometer, pace counter
+  - signalling: SOS and mountain distress beacons by torch, screen and sound; Morse
+  - medical: CPR metronome, casualty log, boil timer
+  - calculators and a field notebook
+- **Phone mode:** switch between survival mode (the guide is the pinned home screen) and a normal phone, with no PC.
 
-**The phone has no SIM card and cannot call or text anyone**, so the app has no call or SMS
-features. The Emergency section is written for a device that can't call: distress signals
-(6 whistle blasts or torch flashes a minute, ground-to-air SOS/V/X), being visible, stay put or
-walk out, and finding a phone or people. A short *When you reach a phone or a person* page and
-the **Location report** say what to tell 999/112 once someone else can call.
+The app never uses the network: no INTERNET permission, `blockNetworkLoads`, no Google libraries, no CDNs or
+analytics. Everything except the map data ships inside the APK; the map data is copied to the phone once
+(see [docs/MAP.md](docs/MAP.md)).
 
-## Install on the phone (Windows)
+**The phone has no SIM card and cannot call or text anyone**, so the app has no call or SMS features. The guide
+covers signalling, being found, self-rescue, and what to tell 999 once you reach a phone or a person.
 
-### Updating an installed copy (device owner, pinned)
+## Install or update (Windows)
 
-A device-owner app can only be replaced by an APK signed with the **same key**, with a higher
-`versionCode`. Every build from this repo uses `keystore/release.jks`, so:
+### Updating an installed copy
+
+A device-owner app can only be replaced by an APK signed with the **same key** and a higher `versionCode`
+(v1.2.0 is versionCode 3). Every build from this repo uses `keystore/release.jks`:
 
 ```
 C:\adb\adb.exe install -r app-release.apk
@@ -35,234 +41,166 @@ C:\adb\adb.exe push app-release.apk /data/local/tmp/
 C:\adb\adb.exe shell pm install -r /data/local/tmp/app-release.apk
 ```
 
-Device owner, the home-app setting, lock-task pinning, settings and saved pages all survive the
-update. The app restarts on the new version.
+Device owner, settings and saved pages survive the update. On first start, v1.2 moves your saved pages, settings and
+checklists across to its new storage once, and, as device owner with no mode chosen yet, switches on **survival mode**
+so nothing changes for you.
 
-### First install
-
-Download the signed APK (`dist/app-release.apk` in this repo, or the `SurvivalGuide-release-apk`
-artifact of the latest *Build APK* GitHub Actions run), put it next to `adb.exe`, then:
+### First install on a fresh phone
 
 ```
 C:\adb\adb.exe install -r app-release.apk
 C:\adb\adb.exe shell dpm set-device-owner uk.theseus.survival/.KioskAdminReceiver
-C:\adb\adb.exe shell cmd package set-home-activity uk.theseus.survival/.MainActivity
 ```
 
-- `set-device-owner` only works while the phone has **no accounts** (yours has none). Afterwards the
-  app pins itself (lock-task mode) and is the persistent home app. The power menu, status bar, Home
-  button and the allow-listed stock apps (FM Radio, Camera, Calculator, Clock, Settings,
-  battery/Device care) still work.
-- **Hidden menu:** long-press the title bar text for **5 seconds**, then release. From there you can
-  unpin and open Settings (until the next reboot), turn the kiosk pin off permanently, or
-  **Remove device owner** (calls `clearDeviceOwnerApp`). Remove device owner before uninstalling,
-  otherwise only a factory reset removes it.
-- Updating later: `adb install -r` a newer APK signed with the same key (see `keystore/README`).
-  Settings, saved pages and device owner status are kept.
+`set-device-owner` only works while the phone has **no accounts**. Then copy the map files (below).
 
-> **No SIM, no 999:** in the UK a phone without a SIM card cannot call 999/112 (networks stopped
-> connecting SIM-less emergency calls in 2009). This device is deliberately SIM-free, so the guide
-> concentrates on signalling and reaching people. `tools/check_links.py` fails the build if any
-> call or SMS link creeps back into the app.
+### Map data
+
+Download `gb.pmtiles`, `contours.pmtiles` and `places.tsv` from the latest **Map data** release (GitHub → Releases)
+and push them:
+
+```
+C:\adb\adb.exe push gb.pmtiles /sdcard/Android/media/uk.theseus.survival/maps/gb.pmtiles
+C:\adb\adb.exe push contours.pmtiles /sdcard/Android/media/uk.theseus.survival/maps/contours.pmtiles
+C:\adb\adb.exe push places.tsv /sdcard/Android/media/uk.theseus.survival/maps/places.tsv
+```
+
+Sizes, checksums and how to rebuild the data: [docs/MAP.md](docs/MAP.md).
+
+## Phone mode (Settings → Phone mode, or long-press the title for 5 seconds)
+
+| | Survival mode | Normal phone |
+|---|---|---|
+| Home button | The guide (persistent preferred HOME activity, set as device owner, so it wins even with Samsung's launcher enabled) | Samsung's launcher (set as the preferred HOME, so there's no "choose an app" prompt) |
+| Pinned | Yes (`startLockTask`; FM radio, camera, calculator, clock and settings still open from Tools) | No |
+| Device owner | Kept | Kept, so switching back is one tap |
+
+The choice is saved and applied again at every start and at boot (`BootReceiver`). Normal mode is refused if there is
+no other home app, so the phone can never end up without one. The screen also has:
+
+- **Restore all phone apps:** re-installs every system app removed with `pm uninstall --user 0`
+  (`DevicePolicyManager.enableSystemApp`), with progress.
+- **Remove owner permission (advanced):** two confirmations; afterwards survival mode needs a PC again
+  (`adb shell dpm set-device-owner uk.theseus.survival/.KioskAdminReceiver`).
+- **Unpin until restart** (hidden menu only).
 
 ## Repository layout
 
 ```
-app/                     Android app (Kotlin, single Activity hosting a WebView)
-  src/main/java/...      MainActivity, WebBridge (JS ⇄ native), Kiosk, Tools, Torch, Prefs
-  src/main/assets/       the offline web UI: index.html, app.css, app.js
-    icons.js, fonts.css  GENERATED by tools/build_ui_assets.py (icon sprite, embedded font)
-    content/             GENERATED by tools/build_content.py (index, bodies, search, credits)
-    diagrams/            SVG diagrams used by articles (copied by build_content.py)
-    img/, img/t/         photos (WebP ≤1000 px) and 360 px thumbnails, from tools/fetch_images.py
-  src/test/              Robolectric tests (launch, no network, HOME launcher, assets, bridge)
-content/                 the hand-written sources
-  categories.json        the 11 home-screen categories
-  articles/NN-<cat>.md   articles, many per file
-  species/*.md           species entries, many per file
-  diagrams/*.svg         inline diagrams (embedded with !svg name)
-  images.json            photo manifest written by fetch_images.py (credits, sizes)
-  image_exclude.txt      Commons files rejected after visual review
-third_party/
-  lucide/icons/          the Lucide icons the app uses (ISC licence, LICENSE alongside)
-  icons-custom/          a few extra icons drawn in the same style (knot, mushroom, snake)
-  atkinson-hyperlegible/ the UI font, latin subset (SIL OFL 1.1, OFL.txt alongside)
-tools/
-  build_ui_assets.py     icons.js + fonts.css from third_party/ (stdlib only)
-  build_content.py       Markdown → HTML, index.json, search index, credits (stdlib only)
-  fetch_images.py        Wikimedia downloader (needs Pillow)
-  check_links.py         link / image / credit / icon / offline / no-call checker
-  ui_smoke_test.mjs      Playwright test of the web UI at 360×800 in desktop Chromium
-keystore/                release key + password (personal app; see keystore/README)
-.github/workflows/build.yml   CI: fetch photos → build content → check → assembleRelease + tests
+app/src/main/java/uk/theseus/survival/
+  MainActivity.kt   WebView host; WebViewAssetLoader (https://appassets.androidplatform.net); lifecycle
+  WebBridge.kt      window.Android: state, brightness, sensors, GPS, signals, speech, map status, phone mode
+  PhoneMode.kt      survival/normal modes, HOME preference, lock task, restore apps, remove owner
+  SensorHub.kt      compass (rotation vector, falls back to accel + magnetometer), level, step counter
+  GpsHub.kt         LocationManager GPS_PROVIDER, satellites, location switch as device owner, timeouts
+  Signals.kt        torch and sound patterns (SOS, 6 a minute, Morse, CPR metronome)
+  Speech.kt         read aloud with any installed offline TTS voice
+  MapFiles.kt       serves /maps/* from the phone's media folder with HTTP range requests
+  BootReceiver.kt, Tools.kt, Torch.kt, Prefs.kt, KioskAdminReceiver.kt
+app/src/main/assets/
+  index.html, app.css, app.js   the UI shell, guide screens and router
+  tools.js, map.js, geo.js      tool screens, the map, offline maths (OS grid, WMM2025, sun and moon)
+  lib/                          MapLibre GL JS 5, PMTiles 4 (bundled)
+  map/glyphs/                   Noto Sans label glyphs (Latin ranges)
+  icons.js, fonts.css           GENERATED by tools/build_ui_assets.py
+  content/                      GENERATED by tools/build_content.py (index, bodies, flows, search, credits)
+  img/, img/t/                  photos and thumbnails, from tools/fetch_images.py
+content/
+  structure.json    the whole hierarchy: group > category > topic > article, urgent tiles, flows, quick cards
+  articles/*.md     articles (any file; where they appear is set by structure.json)
+  flows/*.md        decision flows
+  species/*.md      species
+  kit.json          kit items for "You'll need"
+  synonyms.txt      search synonyms
+docs/CONTENT.md     how to write articles, flows and species (rules the build enforces)
+docs/MAP.md         the offline map data
+tools/              build_content.py, build_ui_assets.py, fetch_images.py, check_links.py,
+                    serve_test.mjs, ui_smoke_test.mjs, map/ (map data pipeline)
+third_party/        licences and sources of bundled icons, fonts and libraries
+keystore/           release key + password (personal app; see keystore/README)
+.github/workflows/  build.yml (APK), map.yml (map data release)
 ```
 
 ## Building
 
-Requirements: JDK 17 or 21, Android SDK (platform 34, build-tools 34+), Python 3.9+.
+Requirements: JDK 17, Android SDK 34, Python 3.9+.
 
 ```
-python3 tools/build_ui_assets.py      # regenerate icons.js + fonts.css (already committed)
-python3 tools/build_content.py        # regenerate app/src/main/assets/content (already committed)
+python3 tools/build_ui_assets.py      # icons.js + fonts.css (already committed)
+python3 tools/build_content.py        # app/src/main/assets/content (already committed)
 python3 tools/check_links.py --min 120
-./gradlew assembleRelease             # → app/build/outputs/apk/release/app-release.apk (signed)
-./gradlew testDebugUnitTest           # Robolectric tests
+./gradlew assembleRelease testDebugUnitTest
 ```
 
-The generated content and photos are committed, so `./gradlew assembleRelease` works from a clean
-checkout without running Python. GitHub Actions (`.github/workflows/build.yml`) runs the whole
-pipeline on every push and uploads the signed APK as an artifact. If the head commit message
-contains `[apk]` (or the workflow is run manually with *commit_apk*), CI also commits the APK to
-`dist/app-release.apk`. A commit message containing `[refresh-images]` re-resolves all photos.
+GitHub Actions builds, tests and signs the APK on every push. It also checks that no Google Play services or Firebase
+library is in the dependency tree. A commit message containing `[apk]` also commits the APK to `dist/app-release.apk`;
+`[refresh-images]` re-resolves all photos, and `[map]` rebuilds the map data.
 
-Desktop check of the UI: open `app/src/main/assets/index.html` directly in a browser (it works
-from `file://`), or run the automated test:
+Desktop check of the UI: `node tools/serve_test.mjs` and open http://127.0.0.1:8137/, or run the full test
+(Playwright + Chromium):
 
 ```
-npm install playwright   # once
 node tools/ui_smoke_test.mjs [screenshot-dir]
 ```
 
-It runs every page at 360×800 in the dark and daylight themes and fails on JavaScript errors,
-network requests, missing icons, horizontal overflow, tap targets under 48 px, call/SMS links
-and typo'd searches that miss. With a directory argument it saves screenshots of Home, a category,
-an article, the species grid, a species page and Tools in both themes.
+It visits every group, category, article, species, flow node and tool at 360×800 in all three themes. It fails on:
+- JavaScript errors, or network requests beyond the test server
+- missing icons, horizontal overflow, or tap targets under 48 px
+- call or SMS links
+- searches that miss, a map that doesn't render or search
 
-## Interface
+It also checks the OS grid, WMM and sun maths.
 
-A "rugged field manual" look: warm charcoal with one amber accent (dark, default), a daylight
-theme for direct sun and a red night theme. Atkinson Hyperlegible, bundled. Lucide line icons,
-one per category and per article, bundled as an inline sprite (no emoji). An 8 px grid with
-hairline dividers; list rows 56–64 px; every tap target ≥48 px.
+## Writing content
 
-- **Bottom nav:** Home, Search, Species, Saved, Tools.
-- **Home:** battery chip, search box, *What to do first* and *Signal for help* cards, then the
-  11 categories as two-column tiles with a one-line subtitle and a thin category accent.
-- **Species:** photo-first grid with status pills and filter chips (group and status). Species
-  pages have a hero photo, a key-facts block (season, habitat, type), the ID features, then
-  *Don't confuse with* lookalike cards.
-- **Articles:** Quick steps with an accent border, styled tables and callouts. Photos and
-  diagrams open full screen when tapped.
-
-To use another icon, give an article `icon: <lucide-name>` (or call `icon("name")` in app.js),
-then run `python3 tools/build_ui_assets.py --lucide <path to lucide-static>/icons`. This copies it
-into `third_party/lucide/icons` and rebuilds `icons.js`. Every article needs an `icon:` line.
-
-## Adding articles
-
-Articles live in `content/articles/NN-<category>.md`. The category is the part of the file name
-after the number, and must exist in `content/categories.json`. Each file holds many entries:
-
-```
-=== my-article-id
-title: Lighting a fire in snow
-summary: One-sentence summary shown in lists and search results.
-tags: snow, winter, fire, platform
-icon: flame                  # Lucide icon name for list rows (required)
-wiki: Optional Wikipedia title(s) for a lead photo | separated by pipes
-compare: optional, species-id, list (renders a side-by-side photo comparison)
----
-!quick
-1. Two to four short steps for stress situations.
-2. ...
-!end
-
-## Detail heading
-Normal Markdown: **bold**, *italic*, lists, | tables |, > quotes.
-Link to other pages with [[a:article-id]], [[s:species-id]] or [[s:id|custom text]].
-
-!warn Optional title
-Callouts: !warn, !danger, !note, !tip, !law, !checklist ... !end
-!end
-
-!svg diagram-name          (embeds content/diagrams/diagram-name.svg)
-
-## Sources
-- Organisation: page name (domain)
-```
-
-The build **fails** if an article doesn't start with a Quick steps box of 2–4 items, has no
-`## Sources` section, has no `icon:`, links to something that doesn't exist, or tells the reader to
-call/text 999 from this phone (only the "when you reach a phone or a person" pages may mention
-calling).
-
-## Adding species
-
-Species live in `content/species/*.md`:
-
-```
-=== wood-anemone
-name: Wood anemone
-latin: Anemonoides nemorosa
-aka: windflower
-group: plant                 # plant | fungus | animal
-kind: herb
-status: poisonous            # any of: deadly, poisonous, venomous, caution, invasive, edible, medicinal, protected, info
-season: Flowers Mar–May
-habitat: Ancient woodland floors
-summary: One or two sentences.
-lookalikes: wild-garlic, lesser-celandine
-tags: spring, white flowers
-wiki: Anemonoides nemorosa   # English Wikipedia title used to find photos
-commons: Optional explicit Commons file name(s) | separated by pipes
----
-## Identification
-- ...
-```
-
-Every species must have at least one status. The build sorts them by severity (deadly first), the
-species grid shows the most severe as a pill on the photo, and the species page shows them all. Fungus pages always show the "never eat
-wild fungi unless an expert has confirmed it" banner.
+See [docs/CONTENT.md](docs/CONTENT.md). In short: every article starts with 2–4 quick steps, ends with sources, has
+an icon and lives in exactly one topic in `content/structure.json`. It may list a time, difficulty and "You'll
+need" kit, and never tells the reader to call or text from this phone. Psychoactive species are covered for
+identification, safety, the law and first aid only. The build fails on broken rules or links.
 
 ## Photos (Wikimedia Commons)
 
-```
-pip install pillow
-python3 tools/fetch_images.py                 # fetch photos for new entries only
-python3 tools/fetch_images.py --only nettle   # redo one entry
-python3 tools/fetch_images.py --refresh       # re-resolve everything (reuses downloaded files)
-python3 tools/build_content.py
-```
+`tools/fetch_images.py` (run by CI) takes each entry's Wikipedia lead image, more photos from the same article
+whose file names contain the exact binomial or common name, and tops species up to three photos from their own
+Commons category. Only public domain, CC0, CC BY and CC BY-SA files are used. Photos are resized to ≤1000 px WebP
+with metadata stripped, and credited in `content/images.json` and the in-app Credits page. Every photo is
+reviewed by eye. Rejected files go in `content/image_exclude.txt` (drawings, maps, micrographs, wrong species…).
 
-For each entry with `wiki:`, the fetcher takes the article's lead image (Wikipedia REST
-`page/summary`). For species it adds up to two more photos from the same article, but only files
-whose names contain the exact Latin binomial or full common name. It checks each licence via the
-Commons API (`imageinfo` + `extmetadata`) and keeps only public domain, CC0, CC BY and CC BY-SA.
-It downloads a standard 1280 px thumbnail, resizes it to ≤1000 px on the long edge, strips all
-metadata and saves WebP at quality 75, plus a square 360 px thumbnail for lists and the species
-grid. Author, licence
-and source page go into `content/images.json`, which drives the in-app **Photo credits &
-licences** page (required by CC BY-SA). Every photo was reviewed by eye. Rejected files are
-listed in `content/image_exclude.txt`; add more lines there to drop a photo, then re-run with
-`--only <id>`. The library can grow to thousands of photos; at ~90 KB each, the 600 MB budget
-allows around 6,000.
+## Battery design
 
-Wikimedia hosts may be blocked in some sandboxes, which is why CI runs the fetcher and commits
-the results back to the branch.
+- Nothing runs in the background: no services, no wakelocks, no alarms. The phone's own screen timeout applies.
+- Sensors and GPS run only while their tool is on screen:
+  - registered on demand, at `SENSOR_DELAY_UI` at most
+  - unregistered in `onPause` (a Robolectric test checks every listener is gone)
+  - restarted on resume only if still wanted
+  - stopped after a timeout: compass 10 min, GPS fix 3 min, follow 30 min
+  - a header chip shows while any is active
+- GPS uses `GPS_PROVIDER` only. As device owner the app switches the location setting on just for the fix and off
+  afterwards.
+- Signals keep the screen on, dimmed, only while running, and stop after the time you choose (2 h maximum). Each
+  shows its expected battery cost.
+- The map redraws only when something changes, is capped at 30 frames a second, prefetches nothing beyond the
+  view, and is removed when you leave it. It costs roughly 2–3× the drain of reading a guide, which the Battery
+  page says.
+- The web UI has no animations. Timers exist only on tool screens that need them (metronome, boil timer) and stop
+  when you leave.
+- Dark theme by default, a high-contrast daylight theme, and a red-on-black night theme. An in-app brightness
+  slider goes below the system minimum.
 
-## Battery and performance design
+## Content sources and licences
 
-- **No background work:** no services, receivers, alarms, wakelocks or `FLAG_KEEP_SCREEN_ON`. The
-  phone's own screen timeout applies.
-- **No timers:** the web UI never uses `setInterval`/polling. The battery chip on Home is read
-  once when Home is shown, not polled. The 5-second long press is measured
-  from press to release timestamps, so no timer is needed. No CSS animations or transitions.
-- **WebView:** `offscreenPreRaster=false`; `onPause()`/`pauseTimers()` when the activity is
-  hidden; Safe Browsing off (it would try to reach Google); no cache work; `blockNetworkLoads`.
-- **Fast start:** one small HTML page and the index (~200 KB) load at startup. Article and species
-  bodies load on demand (one small file each); the search index loads on first search.
-- **Images:** lazy-loaded, thumbnails are 360 px, full photos are only decoded on detail pages.
-  WebP files are stored uncompressed in the APK so they stream straight from it.
-  **Low-power mode** hides all photos until tapped.
-- **Screen:** dark theme by default, a high-contrast light theme for direct sun on the LCD, and a
-  red night theme. An in-app brightness slider overrides window brightness down to below the
-  system minimum, and is remembered. An optional extra dimming overlay is also available.
-- **Text size** is adjustable (persisted); base 18 px, tap targets ≥48 dp.
+Articles were written for this app from public UK guidance (NHS, St John Ambulance, British Red Cross,
+Resuscitation Council UK, RNLI, Mountain Rescue, Met Office, UKHSA, Environment Agency, gov.uk, Ordnance Survey,
+British Mycological Society, legislation.gov.uk and others); each lists its sources.
 
-## Content sources
+Bundled third-party material:
+- Lucide icons (ISC)
+- Atkinson Hyperlegible (OFL)
+- MapLibre GL JS (BSD-3)
+- PMTiles (BSD-3)
+- Noto Sans glyphs (OFL)
+- WMM2025 coefficients (public domain)
+- map data © OpenStreetMap contributors (ODbL)
+- contours containing OS data © Crown copyright (OGL v3)
 
-Articles were written for this app from public guidance by the NHS, St John Ambulance, the
-British Red Cross, Resuscitation Council UK, the CDC (water), the Met Office, Mountain Rescue
-England and Wales, Ordnance Survey, the Woodland Trust, the British Mycological Society, the RNLI,
-HM Coastguard and UK legislation. Each article lists its sources. The content is information, not
-training: see the in-app *About & disclaimer*.
+The content is information, not training: see the in-app About page.

@@ -153,7 +153,7 @@ icon: heater
 time: 30–60 min
 level: easy
 needs: warm-layers, survival-bag, "hot water bottle", "blankets and duvets"
-related: hypothermia, layering, staying-warm-night, cooking-without-power
+related: hypothermia, layering, sleeping-warm, cooking-without-power
 ---
 !quick
 1. **Pick one small room** and close its door. Everyone lives in it. Block draughts and close curtains at dusk.

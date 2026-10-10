@@ -423,7 +423,7 @@ Watch for:
 - **Pale or blotchy skin, cold tummy** (feel under the clothes at the tummy or back of the neck, not the hands).
 - **Babies:** cold to touch, floppy, very quiet or sleepy, not feeding. Their skin may look pink and healthy even when they are dangerously cold.
 
-Act early: shelter, extra layers, hat, a dry nappy or underwear, food and a warm drink, cuddled against an adult under a shared cover. See [[a:hypothermia]] and [[a:staying-warm-night]].
+Act early: shelter, extra layers, hat, a dry nappy or underwear, food and a warm drink, cuddled against an adult under a shared cover. See [[a:hypothermia]] and [[a:sleeping-warm]].
 
 ## Keeping children calm and occupied
 - **Tell them the truth at their level:** "We're going to stay here tonight. It'll be uncomfortable, but we're together and we have a plan."
